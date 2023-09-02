@@ -1,3 +1,8 @@
 {
-    "appName":"Ecommerce"
+    "appName":"Clothnest",
+    "navHomeButtonText": "Home",
+    "navSearchButtonText": "Search",
+    "navScheduleButtonText": "Notification",
+    "navListButtonText": "My List",
+    "navProfileButtonText": "Account"
 }

@@ -57,7 +57,7 @@ class _EcommerceAppState extends State<EcommerceApp> {
             child: MaterialApp.router(
               scrollBehavior: const MyScrollBehavior(),
               key: NavigationService.navigatorKey,
-              title: 'bangumiapp',
+              title: 'Clothness',
               // theme: AppThemes.lightTheme,
 
               // /// disable dark theme
