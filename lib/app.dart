@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/configs/i18n/app_languages.dart';
+import 'package:ecommerce/app/resources/app_themes.dart';
 import 'package:flutter/material.dart';
 
 class NavigationService {
@@ -50,30 +51,24 @@ class _EcommerceAppState extends State<EcommerceApp> {
       path: 'assets/translations',
       child: Builder(
         builder: (context) {
-          return GestureDetector(
-            onTap: () {
-              Focus.of(context).requestFocus(FocusNode());
-            },
-            child: MaterialApp.router(
-              scrollBehavior: const MyScrollBehavior(),
-              key: NavigationService.navigatorKey,
-              title: 'Clothness',
-              // theme: AppThemes.lightTheme,
-
-              // /// disable dark theme
-              // darkTheme: AppThemes.lightTheme,
-              themeMode: ThemeMode.system,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              debugShowCheckedModeBanner: false,
-              routerDelegate: widget.rootRouteDelegate,
-              routeInformationParser: BeamerParser(),
-              backButtonDispatcher: BeamerBackButtonDispatcher(
-                delegate: widget.rootRouteDelegate,
-                alwaysBeamBack: false,
-                fallbackToBeamBack: false,
-              ),
+          debugPrint('locale: ${context.locale}');
+          return MaterialApp.router(
+            scrollBehavior: const MyScrollBehavior(),
+            key: NavigationService.navigatorKey,
+            title: 'Clothnest',
+            theme: AppThemes.lightTheme,
+            darkTheme: AppThemes.lightTheme,
+            themeMode: ThemeMode.system,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            debugShowCheckedModeBanner: false,
+            routerDelegate: widget.rootRouteDelegate,
+            routeInformationParser: BeamerParser(),
+            backButtonDispatcher: BeamerBackButtonDispatcher(
+              delegate: widget.rootRouteDelegate,
+              alwaysBeamBack: false,
+              fallbackToBeamBack: false,
             ),
           );
         },

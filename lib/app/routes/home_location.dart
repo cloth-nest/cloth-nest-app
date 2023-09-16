@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:ecommerce/app/routes/account/account_location.dart';
 import 'package:ecommerce/presentation/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -61,8 +62,6 @@ final notificationTabHomeRouteDelegate = BeamerDelegate(
 
 final accountTabHomeRouteDelegate = BeamerDelegate(
   locationBuilder: (routeInformation, _) {
-    return NotFound(
-      path: routeInformation.location!,
-    );
+    return AccountLocation();
   },
 );

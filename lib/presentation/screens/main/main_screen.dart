@@ -306,12 +306,14 @@ class _MainScreenState extends State<MainScreen> {
                             BottomNavigationBarItem(
                               label: 'Movie',
                               icon: BtnNavItem(
-                                btnName: LocaleKeys.navScheduleButtonText.tr(),
+                                btnName:
+                                    LocaleKeys.navNotificationButtonText.tr(),
                                 isActive: false,
                                 iconPath: SvgPaths.iconNotification,
                               ),
                               activeIcon: BtnNavItem(
-                                btnName: LocaleKeys.navScheduleButtonText.tr(),
+                                btnName:
+                                    LocaleKeys.navNotificationButtonText.tr(),
                                 isActive: true,
                                 iconPath: SvgPaths.iconNotification,
                               ),

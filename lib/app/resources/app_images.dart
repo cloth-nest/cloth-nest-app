@@ -7,4 +7,9 @@ class SvgPaths {
   static const String iconList = '$_svgPath/ic_list.svg';
   static const String iconNotification = '$_svgPath/ic_notification.svg';
   static const String iconProfile = '$_svgPath/ic_profile.svg';
+  static const String iconUserId = '$_svgPath/ic_user_id.svg';
+  static const String iconPassword = '$_svgPath/ic_password.svg';
+  static const String iconEyeCrossed = '$_svgPath/ic_eye_crossed.svg';
+  static const String iconEyeOpen = '$_svgPath/ic_eye_open.svg';
+  static const String iconLogo = '$_svgPath/ic_logo.svg';
 }

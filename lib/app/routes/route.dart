@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/routes/home_location.dart';
 import 'package:ecommerce/app/routes/login_location.dart';
+import 'package:ecommerce/app/routes/onboarding/onboarding_location.dart';
 import 'package:flutter/material.dart';
 
 Future<BeamerDelegate> makeRootRouteDelegate() async {
@@ -17,6 +18,7 @@ Future<BeamerDelegate> makeRootRouteDelegate() async {
     routeListener: (routeInformation, delegate) {},
     locationBuilder: BeamerLocationBuilder(
       beamLocations: [
+        OnboardingLocation(),
         LoginLocation(),
         HomeLocation(),
         // home location

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class BastTextField extends StatefulWidget {
+abstract class BaseTextField extends StatefulWidget {
   final TextEditingController controller;
   final String placeHolder;
   final Widget? prefixIcon;
@@ -15,7 +15,7 @@ abstract class BastTextField extends StatefulWidget {
   final Function(String?)? onSubmitted;
   final Function(bool?)? onFocusChanged;
 
-  const BastTextField({
+  const BaseTextField({
     super.key,
     required this.controller,
     required this.placeHolder,

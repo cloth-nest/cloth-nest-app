@@ -1,0 +1,11 @@
+{
+    "explorer.fileNesting.enabled": true,
+    "editor.stickyScroll.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+      "pubspec.yaml": ".flutter-plugins, .packages, .dart_tool, .flutter-plugins-dependencies, .metadata, .packages, pubspec.lock",
+      "analysis_options.yaml": " all_lint_rules.yaml",
+      ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
+      "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).gr.dart",
+    }
+  }

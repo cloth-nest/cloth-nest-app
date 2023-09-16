@@ -22,7 +22,10 @@ class ProviderMainPresenter extends ChangeNotifier implements MainPresenter {
   void changeIndex(int newIndex) {
     _beforeIndex = _currentIndex;
     _currentIndex = newIndex;
-    homeRouteDelegate[newIndex].update(rebuild: false);
+
+    /// consider to use it
+    /// when use it, change language is wrong
+    //homeRouteDelegate[newIndex].update(rebuild: false);
     if (_mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();

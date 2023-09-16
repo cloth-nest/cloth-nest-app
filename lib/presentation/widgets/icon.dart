@@ -48,10 +48,7 @@ class PrimaryIcon extends StatelessWidget {
           width: width,
           height: height,
           child: SvgPicture.string(
-            (snapshot.data ?? defaultStringSvg).replaceAll(
-              defaultColor,
-              color.toHexTriplet(),
-            ),
+            (snapshot.data ?? defaultStringSvg),
             colorFilter: subColor == null
                 ? null
                 : ColorFilter.mode(subColor!, BlendMode.srcIn),

@@ -1,0 +1,11 @@
+{
+    "appName":"Clothnest",
+    "navHomeButtonText": "Trang chủ",
+    "navSearchButtonText": "Tìm kiếm",
+    "navNotificationButtonText": "Thông báo",
+    "navListButtonText": "Yêu thích",
+    "navProfileButtonText": "Tài khoản",
+    "emailInputText":"Email",
+    "passwordInputText":"Mật khẩu",
+    "loginButtonText":"Đăng nhập"
+}
