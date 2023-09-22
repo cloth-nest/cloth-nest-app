@@ -5,5 +5,6 @@ abstract class SaveCacheStorage {
     required dynamic value,
   });
 
-  Future<void> putAll({required String boxKey, Map<String, dynamic> value});
+  Future<void> putAll(
+      {required String boxKey, required Map<String, dynamic> value});
 }

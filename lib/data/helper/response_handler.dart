@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:ecommerce/data/exceptions/bad_request_exception.dart';
-import 'package:ecommerce/data/exceptions/forbiden_exception.dart';
-import 'package:ecommerce/data/exceptions/internal_server_exception.dart';
-import 'package:ecommerce/data/exceptions/not_found_exception.dart';
-import 'package:ecommerce/data/exceptions/unauthorized_exception.dart';
+import 'package:ecommerce/data/http/exceptions/bad_request_exception.dart';
+import 'package:ecommerce/data/http/exceptions/forbiden_exception.dart';
+import 'package:ecommerce/data/http/exceptions/internal_server_exception.dart';
+import 'package:ecommerce/data/http/exceptions/not_found_exception.dart';
+import 'package:ecommerce/data/http/exceptions/unauthorized_exception.dart';
 import 'package:ecommerce/data/models/http_exception_model.dart';
 import 'package:http/http.dart';
 
