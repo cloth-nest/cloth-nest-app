@@ -11,7 +11,7 @@ enum HttpMethod {
 }
 
 abstract class HttpClient {
-  Future<dynamic> makeRequest({
+  Future<http.Response> makeRequest({
     required Uri uri,
     required HttpMethod method,
     Map<String, dynamic>? body,
@@ -23,6 +23,6 @@ abstract class HttpClient {
   Future<http.Response> post(
     Uri uri, {
     Map<String, String>? headers,
-    Map<String, dynamic>? body,
+    String? body,
   });
 }

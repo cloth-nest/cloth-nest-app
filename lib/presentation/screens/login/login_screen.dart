@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
@@ -83,9 +85,16 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Stack(
           children: [
             SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              reverse: true,
               child: Container(
                 height: size.height,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+                margin: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: Platform.isIOS ? 14 : 17,
+                  bottom: Platform.isIOS ? 34 : 8,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
