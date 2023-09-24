@@ -1,5 +1,5 @@
 abstract class FetchSecureCacheStorage {
-  Future<void> fetchByKey({
+  Future fetchByKey({
     required String encryptionKey,
     required String boxKey,
     required String key,

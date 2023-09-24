@@ -1,4 +1,4 @@
 const defaultHeaders = <String, String>{
-  'content-type': 'application/json',
-  'accept': 'application/json',
+  'Accept': '*/*',
+  'Content-Type': 'application/json',
 };

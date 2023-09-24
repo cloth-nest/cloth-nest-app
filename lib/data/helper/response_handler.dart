@@ -21,7 +21,7 @@ import 'package:http/http.dart';
 class ResponseHandler {
   static dynamic handle<T>(Response httpResponse) {
     switch (httpResponse.statusCode) {
-      case 200:
+      case 201:
         final jsonBody = jsonDecode(httpResponse.body);
         return jsonBody;
       case 204:

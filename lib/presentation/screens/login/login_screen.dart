@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
 import 'package:ecommerce/presentation/widgets/text_field/normal_text_field.dart';
@@ -29,7 +31,16 @@ class _LoginViewState extends State<LoginView> {
     _presenter.addListener(_onListener);
   }
 
-  void _onListener() {}
+  void _onListener() {
+    if (_presenter.navigateTo != null) {
+      switch (_presenter.navigateTo) {
+        case LoginRedirect.homeAuth:
+          context.beamToReplacementNamed('/home');
+          break;
+        default:
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -165,8 +176,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         buttonName: LocaleKeys.loginButtonText.tr(),
                         onClick: () {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          // widget.presenter
-                          //     .login(widget.authHeader);
+                          widget.presenter.login(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
+                          );
                         },
                         customTextStyle: const TextStyle(
                           fontSize: 15,
@@ -181,9 +194,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Selector<LoginPresenter, bool>(
-              selector: (context, presenter) => false,
-              builder: (context, value, _) {
-                if (value) {
+              selector: (context, presenter) => presenter.isLoading,
+              builder: (context, isLoading, _) {
+                if (isLoading) {
                   return Container(
                     color: Colors.grey.withOpacity(0.5),
                     child: const Center(

@@ -1,23 +1,52 @@
+import 'package:ecommerce/domain/entities/token/token_entity.dart';
+import 'package:ecommerce/domain/usecases/authentication/login/fetch_login.dart';
+import 'package:ecommerce/domain/usecases/authentication/login/login_params.dart';
+import 'package:ecommerce/domain/usecases/token/save_token.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
 import 'package:flutter/material.dart';
 
 class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
   // The current state of the login screen
-  LoginState state;
+  LoginState _state;
+
+  final FetchLogin _fetchLogin;
+  final SaveToken _saveToken;
 
   @override
-  void login() async {
+  void login({required String email, required String password}) async {
     try {
-      state = state.copyWith(isLoading: true);
-      await Future.delayed(const Duration(seconds: 5));
-    } catch (_) {
-    } finally {
-      state = state.copyWith(isLoading: false);
-    }
+      _state = _state.copyWith(isLoading: true);
+      notifyListeners();
+
+      final loginParams = LoginParams(
+        email: email,
+        password: password,
+      );
+
+      TokenEntity tokenEntity =
+          await _fetchLogin.call(loginParams: loginParams);
+      await _saveToken.call(tokenEntity: tokenEntity);
+
+      _state = _state.copyWith(
+        isLoading: false,
+        navigateTo: LoginRedirect.homeAuth,
+      );
+      notifyListeners();
+    } catch (_) {}
   }
 
   ProviderLoginPresenter({
-    required this.state,
-  });
+    required LoginState state,
+    required FetchLogin fetchLogin,
+    required SaveToken saveToken,
+  })  : _state = state,
+        _fetchLogin = fetchLogin,
+        _saveToken = saveToken;
+
+  @override
+  bool get isLoading => _state.isLoading;
+
+  @override
+  LoginRedirect? get navigateTo => _state.navigateTo;
 }
