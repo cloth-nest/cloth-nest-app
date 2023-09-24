@@ -13,12 +13,17 @@
 │   ├── generated               # Contains generated localization keys
 │   ├── data                    # Contains data files
 |   │   ├── models              # Contains models
+|   │   ├── cache               # Contains class definition for local storage
+|   │   ├── helper              # Contains helper methos for handle response
+|   │   ├── http                # Contains class definition for remote storage
+|   │   ├── usecases            # Contains usecases
 │   ├── domain                  # Contains domain-related files
 │   │   ├── entities            # Contains entities
 │   │   ├── usecases            # Contains usecases
 │   ├── presentation            # Contains presentation files
 |   │   ├── presenters          # Contains logic UI
 |   │   ├── screens             # Contains UI
+|   │   ├── widgets             # Contains common widgets
 │   ├── util                    # Contains utility files
 │   └── main.dart               # Main file that runs the application
 ├── assets                      # Contains assets such as images, translations, etc.
