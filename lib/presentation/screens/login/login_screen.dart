@@ -73,7 +73,21 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  var _isInputValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController.addListener(_validateLoginForm);
+    passwordController.addListener(_validateLoginForm);
+  }
+
+  void _validateLoginForm() {
+    setState(() {
+      _isInputValid = _formKey.currentState!.validate();
+    });
+  }
 
   @override
   void dispose() {
@@ -94,19 +108,20 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         body: Stack(
           children: [
-            SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              reverse: true,
-              child: Container(
-                height: size.height,
-                margin: EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  top: Platform.isIOS ? 14 : 17,
-                  bottom: Platform.isIOS ? 34 : 8,
-                ),
-                child: Form(
-                  key: _formKey,
+            Form(
+              key: _formKey,
+              onChanged: _validateLoginForm,
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                reverse: true,
+                child: Container(
+                  height: size.height,
+                  margin: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: Platform.isIOS ? 14 : 17,
+                    bottom: Platform.isIOS ? 34 : 8,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -150,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeight.w600,
                             color: AppColors.white,
                           ),
-                          isActive: true,
+                          isActive: _isInputValid,
                         ),
                       ),
                     ],
@@ -180,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class _EmailTextField extends StatelessWidget {
+class _EmailTextField extends StatefulWidget {
   const _EmailTextField({
     required this.emailController,
     required this.emailFocusNode,
@@ -192,11 +207,16 @@ class _EmailTextField extends StatelessWidget {
   final FocusNode passwordFocusNode;
 
   @override
+  State<_EmailTextField> createState() => _EmailTextFieldState();
+}
+
+class _EmailTextFieldState extends State<_EmailTextField> {
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
-        controller: emailController,
-        focusNode: emailFocusNode,
+        controller: widget.emailController,
+        focusNode: widget.emailFocusNode,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
