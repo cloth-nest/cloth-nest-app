@@ -89,6 +89,13 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  void _logIn() {
+    widget.presenter.login(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -100,9 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final double horizontalPaddingSubmitButton = size.width * (75 / 390);
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
@@ -115,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 reverse: true,
                 child: Container(
-                  height: size.height,
+                  height: MediaQuery.sizeOf(context).height,
                   margin: EdgeInsets.only(
                     left: 20,
                     right: 20,
@@ -124,14 +128,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Center(
-                          child: SvgPicture.asset(
-                            SvgPaths.iconLogo,
-                            width: 100,
-                            height: 100,
-                          ),
+                        child: SvgPicture.asset(
+                          SvgPaths.iconLogo,
+                          width: 100,
+                          height: 100,
                         ),
                       ),
                       _EmailTextField(
@@ -142,32 +145,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       _PasswordTextField(
                           passwordController: passwordController,
                           passwordFocusNode: passwordFocusNode),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 18,
-                          left: horizontalPaddingSubmitButton,
-                          right: horizontalPaddingSubmitButton,
-                          bottom: 0,
-                        ),
-                        child: BRoundButton(
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 11),
-                          buttonName: LocaleKeys.loginButtonText.tr(),
-                          onClick: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            widget.presenter.login(
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim(),
-                            );
-                          },
-                          customTextStyle: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.white,
-                          ),
-                          isActive: _isInputValid,
-                        ),
-                      ),
+                      const SizedBox(height: 16),
+                      _LoginButton(onClick: _logIn, isActive: _isInputValid),
                     ],
                   ),
                 ),
@@ -293,5 +272,30 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
           }
           return null;
         });
+  }
+}
+
+class _LoginButton extends StatelessWidget {
+  const _LoginButton({required this.onClick, required this.isActive});
+
+  final VoidCallback onClick;
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    return BRoundButton(
+      contentPadding: const EdgeInsets.symmetric(vertical: 12),
+      buttonName: LocaleKeys.loginButtonText.tr(),
+      onClick: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        onClick;
+      },
+      customTextStyle: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+        color: AppColors.white,
+      ),
+      isActive: isActive,
+    );
   }
 }
