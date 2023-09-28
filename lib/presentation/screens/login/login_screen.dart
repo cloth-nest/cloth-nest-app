@@ -75,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode passwordFocusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
   var _isInputValid = false;
+  var _shouldRememberLogin = false;
 
   @override
   void initState() {
@@ -91,9 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _logIn() {
     widget.presenter.login(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+        rememberLogin: _shouldRememberLogin);
   }
 
   @override
@@ -145,6 +146,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       _PasswordTextField(
                           passwordController: passwordController,
                           passwordFocusNode: passwordFocusNode),
+                      CheckboxListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text("Remember Me"),
+                        value: _shouldRememberLogin,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _shouldRememberLogin = newValue ?? false;
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
                       const SizedBox(height: 16),
                       _LoginButton(onClick: _logIn, isActive: _isInputValid),
                     ],

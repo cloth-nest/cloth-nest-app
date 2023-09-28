@@ -14,7 +14,10 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
   final SaveToken _saveToken;
 
   @override
-  void login({required String email, required String password}) async {
+  void login(
+      {required String email,
+      required String password,
+      required bool rememberLogin}) async {
     try {
       _state = _state.copyWith(isLoading: true);
       notifyListeners();
