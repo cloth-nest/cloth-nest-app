@@ -2,22 +2,17 @@ import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/routes/home_location.dart';
 import 'package:ecommerce/app/routes/login_location.dart';
 import 'package:ecommerce/app/routes/onboarding/onboarding_location.dart';
-import 'package:flutter/material.dart';
+import 'package:ecommerce/app/routes/splash_location.dart';
 
 Future<BeamerDelegate> makeRootRouteDelegate() async {
-  String initialPath = '';
-
-  // check authenticated ? /login : /home
-
-  initialPath = '/login';
-
-  debugPrint('#initialPath $initialPath');
+  String initialPath = '/splash';
 
   return BeamerDelegate(
     initialPath: initialPath,
     routeListener: (routeInformation, delegate) {},
     locationBuilder: BeamerLocationBuilder(
       beamLocations: [
+        SplashLocation(),
         OnboardingLocation(),
         LoginLocation(),
         HomeLocation(),
