@@ -8,8 +8,7 @@ import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
-import 'package:ecommerce/presentation/widgets/text_field/normal_text_field.dart';
-import 'package:ecommerce/presentation/widgets/text_field/password_text_field.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -74,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -88,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final double horizontalPaddingSubmitButton = size.width * (75 / 390);
-    const double heightInputField = 50.0;
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -106,90 +105,56 @@ class _LoginScreenState extends State<LoginScreen> {
                   top: Platform.isIOS ? 14 : 17,
                   bottom: Platform.isIOS ? 34 : 8,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: SvgPicture.asset(
-                          SvgPaths.iconLogo,
-                          width: 100,
-                          height: 100,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: heightInputField,
-                      child: NormalTextField(
-                        controller: emailController,
-                        focusNode: emailFocusNode,
-                        nextFocus: passwordFocusNode,
-                        placeHolder: LocaleKeys.emailInputText.tr(),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 12, right: 10),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Center(
                           child: SvgPicture.asset(
-                            SvgPaths.iconUserId,
+                            SvgPaths.iconLogo,
+                            width: 100,
+                            height: 100,
                           ),
                         ),
-                        onChanged: (String? value) {
-                          /// TODO: add logic
-                        },
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      height: heightInputField,
-                      child: PasswordTextField(
-                        controller: passwordController,
-                        focusNode: passwordFocusNode,
-                        placeHolder: LocaleKeys.passwordInputText.tr(),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 12,
-                            right: 10,
-                          ),
-                          child: SvgPicture.asset(
-                            SvgPaths.iconPassword,
-                          ),
+                      _EmailTextField(
+                          emailController: emailController,
+                          emailFocusNode: emailFocusNode,
+                          passwordFocusNode: passwordFocusNode),
+                      const SizedBox(height: 16),
+                      _PasswordTextField(
+                          passwordController: passwordController,
+                          passwordFocusNode: passwordFocusNode),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: 18,
+                          left: horizontalPaddingSubmitButton,
+                          right: horizontalPaddingSubmitButton,
+                          bottom: 0,
                         ),
-                        onChanged: (String? value) {
-                          /// TODO: add logic
-                        },
-                        isObscureText: false,
-                        suffixIconPath: SvgPaths.iconEyeOpen,
-                        onSuffixIconClicked: () {
-                          /// TODO: widget.presenter.toggleShowPassword
-                        },
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 18,
-                        left: horizontalPaddingSubmitButton,
-                        right: horizontalPaddingSubmitButton,
-                        bottom: 0,
-                      ),
-                      child: BRoundButton(
-                        contentPadding:
-                            const EdgeInsets.symmetric(vertical: 11),
-                        buttonName: LocaleKeys.loginButtonText.tr(),
-                        onClick: () {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          widget.presenter.login(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                          );
-                        },
-                        customTextStyle: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.white,
+                        child: BRoundButton(
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 11),
+                          buttonName: LocaleKeys.loginButtonText.tr(),
+                          onClick: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            widget.presenter.login(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                            );
+                          },
+                          customTextStyle: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.white,
+                          ),
+                          isActive: true,
                         ),
-                        isActive: true,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -212,5 +177,101 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+}
+
+class _EmailTextField extends StatelessWidget {
+  const _EmailTextField({
+    required this.emailController,
+    required this.emailFocusNode,
+    required this.passwordFocusNode,
+  });
+
+  final TextEditingController emailController;
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        controller: emailController,
+        focusNode: emailFocusNode,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: 'Email',
+          hintText: LocaleKeys.emailInputText.tr(),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SvgPicture.asset(SvgPaths.iconUserId),
+          ),
+        ),
+        // The validator receives the text that the user has entered.
+        validator: (value) {
+          if (value == null ||
+              value.isEmpty ||
+              !EmailValidator.validate(value)) {
+            return 'Invalid Email';
+          }
+          return null;
+        });
+  }
+}
+
+class _PasswordTextField extends StatefulWidget {
+  const _PasswordTextField({
+    required this.passwordController,
+    required this.passwordFocusNode,
+  });
+
+  final TextEditingController passwordController;
+  final FocusNode passwordFocusNode;
+
+  @override
+  State<_PasswordTextField> createState() => _PasswordTextFieldState();
+}
+
+class _PasswordTextFieldState extends State<_PasswordTextField> {
+  var _isPasswordShown = false;
+
+  void togglePasswordVisibility() {
+    setState(() {
+      _isPasswordShown = !_isPasswordShown;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+        controller: widget.passwordController,
+        focusNode: widget.passwordFocusNode,
+        obscureText: !_isPasswordShown,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: 'Password',
+          hintText: LocaleKeys.passwordInputText.tr(),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SvgPicture.asset(SvgPaths.iconPassword),
+          ),
+          suffixIcon: IconButton(
+            icon: _isPasswordShown
+                ? SvgPicture.asset(
+                    SvgPaths.iconEyeCrossed,
+                  )
+                : SvgPicture.asset(
+                    SvgPaths.iconEyeOpen,
+                  ),
+            onPressed: togglePasswordVisibility,
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Invalid Password';
+          }
+          return null;
+        });
   }
 }
