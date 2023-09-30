@@ -1,5 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/routes/account/account_location.dart';
+import 'package:ecommerce/app/routes/search/search_detail_location.dart';
+import 'package:ecommerce/app/routes/search/search_location.dart';
 import 'package:ecommerce/presentation/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -38,9 +40,10 @@ final topTabHomeRouteDelegate = BeamerDelegate(
 
 final searchTabHomeRouteDelegate = BeamerDelegate(
   locationBuilder: (routeInformation, _) {
-    return NotFound(
-      path: routeInformation.location!,
-    );
+    if (routeInformation.location!.contains('search/result')) {
+      return SearchDetailLocation(routeInformation);
+    }
+    return SearchLocation();
   },
 );
 

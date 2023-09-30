@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:beamer/beamer.dart';
+import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
 import 'package:ecommerce/presentation/screens/splash/splash_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,14 +17,20 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late final SplashPresenter splashPresenter;
+  late final ContentMasterPresenter contentMasterPresenter;
 
   @override
   void initState() {
     super.initState();
+
     splashPresenter = context.read<SplashPresenter>();
+    contentMasterPresenter = context.read<ContentMasterPresenter>();
+
     splashPresenter.addListener(_onListener);
     Future.delayed(const Duration(milliseconds: 1000), () async {
       //await loadApi();
+      await contentMasterPresenter.fetchMasterCategory();
+
       splashPresenter.findNextRoute();
     });
   }

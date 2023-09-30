@@ -7,7 +7,7 @@ class ProviderSplashPresenter extends SplashPresenter with ChangeNotifier {
   @override
   void findNextRoute() {
     /// TODO: check authorized or not here
-    _navigateTo = '/login';
+    _navigateTo = '/home';
     notifyListeners();
   }
 
