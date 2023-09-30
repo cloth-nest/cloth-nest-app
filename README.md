@@ -28,3 +28,15 @@
 │   └── main.dart               # Main file that runs the application
 ├── assets                      # Contains assets such as images, translations, etc.
 ```
+
+## Generate locales
+
+```
+flutter pub run easy_localization:generate -S "assets/translations" -O "lib/app/res" -f keys -o locale_keys.g.dart
+```
+
+## Generate hive
+
+```
+flutter pub run build_runner build --delete-conflicting-outputs
+```
