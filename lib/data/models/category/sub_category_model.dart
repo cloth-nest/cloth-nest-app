@@ -33,5 +33,6 @@ class SubCategoryModel {
   SubCategoryEntity toEntity() => SubCategoryEntity(
         id: id,
         name: name,
+        categoryThumbUrl: categoryThumbUrl,
       );
 }

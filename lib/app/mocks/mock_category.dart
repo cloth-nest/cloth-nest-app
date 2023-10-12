@@ -135,6 +135,11 @@ final bodyCategoryMock = {
   ],
   'top': [
     {
+      "id": "0000",
+      "name": "home",
+      "sub_category": [],
+    },
+    {
       "id": "1000",
       "name": "women",
       "sub_category": [
@@ -191,7 +196,25 @@ final bodyCategoryMock = {
           "name": "heattech",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/resf3ced6f7bf2f9f59253b75ed9be0fc1dfr.jpg"
-        }
+        },
+        {
+          "id": "11",
+          "name": "shirts",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/res7e90ce25a9db0be9cc60e07ee30e1e39fr.jpg"
+        },
+        {
+          "id": "11",
+          "name": "loungewear",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/rese8c09c5e67b5311e1786f69a51dafe2afr.jpg"
+        },
+        {
+          "id": "11",
+          "name": "graphic t-shirts",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/res3e1fbcaac67b4a9da28c218504319bc8fr.jpg"
+        },
       ]
     },
     {
@@ -205,52 +228,70 @@ final bodyCategoryMock = {
               "https://im.uniqlo.com/global-cms/spa/res9f7885170044bce9f3694b86d2983198fr.jpg"
         },
         {
-          "id": "3",
+          "id": "2",
           "name": "shirt",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res20ef16a9f0069058ec50f089c758f17ffr.jpg"
         },
         {
-          "id": "4",
+          "id": "3",
           "name": "sweat",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/resc70d76644577bddb0df029dc4c42a720fr.jpg"
         },
         {
-          "id": "5",
+          "id": "4",
           "name": "t-shirts & polo",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/resfbac710620900d6022af12d3482e463ffr.jpg"
         },
         {
-          "id": "6",
+          "id": "5",
           "name": "jeans",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/resea5a0a0960b7c0e53641951699e34157fr.jpg"
         },
         {
-          "id": "7",
+          "id": "6",
           "name": "shorts",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res09f057e4a13b808dc38dc4ae0351c95bfr.jpg"
         },
         {
-          "id": "8",
+          "id": "7",
           "name": "innerwear",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res54eec6ab75c5c0fdfd418f11a4c46363fr.jpg"
         },
         {
-          "id": "9",
+          "id": "8",
           "name": "accessories",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/resd5d9d1091259f07db463aa87f49241e6fr.jpg"
         },
         {
-          "id": "10",
+          "id": "9",
           "name": "heattech",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/resf3ced6f7bf2f9f59253b75ed9be0fc1dfr.jpg"
+        },
+        {
+          "id": "10",
+          "name": "loungewear",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/res240b5d61e7d1881609f9b5fd8f94c9bcfr.jpg"
+        },
+        {
+          "id": "11",
+          "name": "knit",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/resa0876ff1578d42307b5e6052a35f0be1fr.jpg"
+        },
+        {
+          "id": "12",
+          "name": "graphict-shirts",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/res3e1fbcaac67b4a9da28c218504319bc8fr.jpg"
         }
       ]
     },
@@ -265,52 +306,70 @@ final bodyCategoryMock = {
               "https://im.uniqlo.com/global-cms/spa/res75204e3903209b09ed3e42183c867bd5fr.jpg"
         },
         {
-          "id": "3",
+          "id": "2",
           "name": "sport utility wear",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res8a705bb500c3404c2b11a9de64079ba3fr.jpg"
         },
         {
-          "id": "4",
+          "id": "3",
           "name": "sweat",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res47ab5d541d4e12c984dee3cf5224b8dbfr.jpg"
         },
         {
-          "id": "5",
+          "id": "4",
           "name": "pants",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res6df469c272bae42c26ab6675edf1ab2bfr.jpg"
         },
         {
-          "id": "7",
+          "id": "5",
           "name": "shorts",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res09f057e4a13b808dc38dc4ae0351c95bfr.jpg"
         },
         {
-          "id": "8",
+          "id": "6",
           "name": "skirt",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res694442d63e29ccf61c23845f0088513ffr.jpg"
         },
         {
-          "id": "9",
+          "id": "7",
           "name": "innerwear",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/resd1a3f7350695993a352f4ed56a86e915fr.jpg"
         },
         {
-          "id": "10",
+          "id": "8",
           "name": "heattech",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/resf3ced6f7bf2f9f59253b75ed9be0fc1dfr.jpg"
         },
         {
-          "id": "10",
+          "id": "9",
           "name": "airism",
           "categoryThumbUrl":
               "https://im.uniqlo.com/global-cms/spa/res2bee7dee930152e2822512bdf92e316afr.jpg"
+        },
+        {
+          "id": "10",
+          "name": "loungewear",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/res240b5d61e7d1881609f9b5fd8f94c9bcfr.jpg"
+        },
+        {
+          "id": "11",
+          "name": "heattech",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/resf3ced6f7bf2f9f59253b75ed9be0fc1dfr.jpg"
+        },
+        {
+          "id": "12",
+          "name": "graphict-shirts",
+          "categoryThumbUrl":
+              "https://im.uniqlo.com/global-cms/spa/res3e1fbcaac67b4a9da28c218504319bc8fr.jpg"
         }
       ]
     },

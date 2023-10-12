@@ -12,6 +12,7 @@ abstract class  LocaleKeys {
   static const loginButtonText = 'loginButtonText';
   static const searchInputText = 'searchInputText';
   static const historySearch = 'historySearch';
+  static const featureCategory = 'featureCategory';
   static const womenCategories_top = 'womenCategories.top';
   static const womenCategories_outerwear = 'womenCategories.outerwear';
   static const womenCategories_bottoms = 'womenCategories.bottoms';
