@@ -1,7 +1,6 @@
-import 'package:ecommerce/domain/entities/history_search/history_search_entity.dart';
 import 'package:flutter/material.dart';
 
-abstract class SearchPresenter implements ChangeNotifier {
+abstract class TopPresenter implements ChangeNotifier {
   int get tabIndex;
 
   bool get isShowButton;
@@ -19,8 +18,6 @@ abstract class SearchPresenter implements ChangeNotifier {
   void fetchHistorySearch();
 
   void saveKeyword(String keyword);
-
-  HistorySearchEntity get historySearch;
 
   bool validateKeyWord(String keyword);
 

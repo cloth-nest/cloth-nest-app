@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/routes/account/account_location.dart';
 import 'package:ecommerce/app/routes/search/search_detail_location.dart';
 import 'package:ecommerce/app/routes/search/search_location.dart';
+import 'package:ecommerce/app/routes/top/top_location.dart';
 import 'package:ecommerce/presentation/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ final topTabHomeRouteDelegate = BeamerDelegate(
     if (routeInformation.location!.contains('/home')) {
       return NotFound(path: routeInformation.location!);
     }
-    return NotFound(path: routeInformation.location!);
+    return TopLocation();
   },
 );
 

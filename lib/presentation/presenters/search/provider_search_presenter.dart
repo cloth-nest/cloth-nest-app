@@ -25,12 +25,6 @@ class ProviderSearchPresenter with ChangeNotifier implements SearchPresenter {
   TextEditingController get searchController => _state.searchController;
 
   @override
-  void dispose() {
-    super.dispose();
-    _state = SearchState.initial();
-  }
-
-  @override
   void onClearText() {
     _state.searchController.clear();
     _state = _state.copyWith(isShowButton: false);
@@ -102,5 +96,10 @@ class ProviderSearchPresenter with ChangeNotifier implements SearchPresenter {
   @override
   bool validateKeyWord(String keyword) {
     return keyword.isEmpty ? false : true;
+  }
+
+  @override
+  void refreshState() {
+    _state = SearchState.initial();
   }
 }

@@ -10,6 +10,7 @@
     "loginButtonText":"Login",
     "searchInputText":"Which products are you looking for ?",
     "historySearch":"History Search",
+    "featureCategory":"Featured Category",
     "womenCategories": {
         "top": "top",
         "outerwear": "outerwear",
