@@ -5,10 +5,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/app/resources/app_themes.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -97,6 +99,16 @@ class _LoginScreenState extends State<LoginScreen> {
         rememberLogin: _shouldRememberLogin);
   }
 
+  void _navigateToRegister() {
+    // TODO: Implement "Register"
+    print('Register');
+  }
+
+  void _userForgotPassword() {
+    //TODO: Implement "Forgot password"
+    print('forgot password');
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -146,19 +158,36 @@ class _LoginScreenState extends State<LoginScreen> {
                       _PasswordTextField(
                           passwordController: passwordController,
                           passwordFocusNode: passwordFocusNode),
-                      CheckboxListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: const Text("Remember Me"),
-                        value: _shouldRememberLogin,
-                        onChanged: (newValue) {
-                          setState(() {
-                            _shouldRememberLogin = newValue ?? false;
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: CheckboxListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: const Text("Remember Me"),
+                              value: _shouldRememberLogin,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _shouldRememberLogin = newValue ?? false;
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(16.0),
+                            ),
+                            onPressed: _userForgotPassword,
+                            child: const Text('Forgot password?'),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 16),
                       _LoginButton(onClick: _logIn, isActive: _isInputValid),
+                      const SizedBox(height: 16),
+                      _RegisterText(onRegisterClick: _navigateToRegister),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
@@ -284,6 +313,32 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
           }
           return null;
         });
+  }
+}
+
+class _RegisterText extends StatelessWidget {
+  final VoidCallback onRegisterClick;
+
+  const _RegisterText({required this.onRegisterClick});
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+              style: AppThemes.lightTextTheme.bodyLarge,
+              text: 'Don\'t have an an account ? '),
+          TextSpan(
+              text: 'Register',
+              // TODO: Centralize TextStyles
+              style: TextStyle(
+                color: AppThemes.lightTheme.primaryColor,
+              ),
+              recognizer: TapGestureRecognizer()..onTap = onRegisterClick),
+        ],
+      ),
+    );
   }
 }
 
