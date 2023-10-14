@@ -1,5 +1,4 @@
 import 'package:ecommerce/app/resources/app_colors.dart';
-import 'package:ecommerce/app/utils/extensions/icon_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

@@ -7,5 +7,44 @@
     "navProfileButtonText": "Tài khoản",
     "emailInputText":"Email",
     "passwordInputText":"Mật khẩu",
-    "loginButtonText":"Đăng nhập"
+    "loginButtonText":"Đăng nhập",
+    "searchInputText":"Bạn đang tìm kiếm sản phẩm gì ?",
+    "historySearch":"Lịch sử tìm kiếm",
+    "featureCategory":"Danh mục nổi bật",
+    "womenCategories": {
+        "top": "Áo",
+        "outerwear": "Đồ mặc ngoài",
+        "bottoms":"Quần",
+        "skirts":"Chân váy",
+        "dresses":"Đầm & jumpsuit",
+        "sporty":"sport utility wear",
+        "innerwear":"Đồ mặc trong và Đồ lót",
+        "loungewear":"Đồ mặc nhà",
+        "accessories":"Phụ kiện",
+        "maternity":"Đồ bầu"
+    },
+    "menCategories": {
+        "top": "Áo",
+        "outerwear": "Đồ mặc ngoài",
+        "bottoms":"Quần",
+        "sporty":"sport utility wear",
+        "innerwear":"Đồ mặc trong và Đồ lót",
+        "accessories":"Phụ kiện",
+        "loungewear":"Đồ mặc nhà"
+    },
+    "kidsCategories": {
+        "top": "Áo",
+        "outerwear": "Đồ mặc ngoài",
+        "bottoms":"Quần",
+        "dresses":"Đầm và Đầm yếm",
+        "sporty":"sport utility wear",
+        "innerwear":"Đồ mặc trong và Đồ lót",
+        "accessories":"Phụ kiện",
+        "loungewear":"Đồ mặc nhà"
+    },
+    "babyCategories": {
+        "newBorn1":"Trẻ sơ sinh (0 - 3 months)",
+        "newBorn2":"Trẻ sơ sinh (3 - 24 months)",
+        "toddler":"Trẻ sơ sinh (6 months - 5 years)"
+    }
 }
