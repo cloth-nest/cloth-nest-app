@@ -8,6 +8,7 @@ import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/app/resources/app_themes.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
+import 'package:ecommerce/presentation/screens/login/utils.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
@@ -308,8 +309,15 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
           ),
         ),
         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Invalid Password';
+          if (value == null || value.isEmpty || !value.isValidPassword()) {
+            print("value.isValidPassword(): ${value?.isValidPassword()}");
+            return """
+- Must be at least 8 characters
+- Should contain at least 1 number (0-9)
+- Should contain at least 1 uppercase letter (A-Z)
+- Should contain at least 1 lowercase letter (a-z)
+- No special characters allowed
+""";
           }
           return null;
         });
