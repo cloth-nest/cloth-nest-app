@@ -102,6 +102,12 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
 
       TokenEntity tokenEntity =
           await _fetchLogin.call(loginParams: loginParams);
+
+      tokenEntity = tokenEntity.copyWith(
+        isRemember:
+            _state.rememberChoice == RememberChoice.remember ? true : false,
+      );
+
       await _saveToken.call(tokenEntity: tokenEntity);
       await _fetchProfile.call();
       _state = _state.copyWith(

@@ -18,10 +18,14 @@ class TokenModel extends HiveObject {
   @HiveField(2)
   final UserModel? userModel;
 
+  @HiveField(3)
+  final bool isRemember;
+
   TokenModel({
     required this.accessToken,
     required this.refreshToken,
     this.userModel,
+    required this.isRemember,
   });
 
   Map<String, dynamic> toJson() {
@@ -33,11 +37,11 @@ class TokenModel extends HiveObject {
   }
 
   factory TokenModel.fromMap(Map<String, dynamic> map) {
-    print(map);
     return TokenModel(
       accessToken: map['accessToken'] as String,
       refreshToken: map['refreshToken'] as String,
       userModel: map['user'] != null ? UserModel.fromJson(map['user']) : null,
+      isRemember: map['isRemember'] ?? false,
     );
   }
 
@@ -46,6 +50,7 @@ class TokenModel extends HiveObject {
       accessToken: accessToken,
       refreshToken: refreshToken,
       user: userModel?.toEntity(),
+      isRemember: isRemember,
     );
   }
 }
