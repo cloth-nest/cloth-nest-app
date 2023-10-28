@@ -12,7 +12,7 @@ class LengthValidation extends Equatable implements FieldValidation {
   @override
   List get props => [field];
 
-  LengthValidation(this.field, this.minLength, this.maxLength) : super();
+  const LengthValidation(this.field, this.minLength, this.maxLength) : super();
 
   @override
   ValidationException? validate(Map input) {
