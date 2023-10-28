@@ -16,19 +16,19 @@ class TokenModel extends HiveObject {
   final String refreshToken;
 
   @HiveField(2)
-  final UserModel userModel;
+  final UserModel? userModel;
 
   TokenModel({
     required this.accessToken,
     required this.refreshToken,
-    required this.userModel,
+    this.userModel,
   });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'accessToken': accessToken,
       'refreshToken': refreshToken,
-      'userModel': userModel.toJson(),
+      'userModel': userModel!.toJson(),
     };
   }
 
@@ -37,7 +37,7 @@ class TokenModel extends HiveObject {
     return TokenModel(
       accessToken: map['accessToken'] as String,
       refreshToken: map['refreshToken'] as String,
-      userModel: UserModel.fromJson(map['user']),
+      userModel: map['user'] != null ? UserModel.fromJson(map['user']) : null,
     );
   }
 
@@ -45,7 +45,7 @@ class TokenModel extends HiveObject {
     return TokenEntity(
       accessToken: accessToken,
       refreshToken: refreshToken,
-      user: userModel.toEntity(),
+      user: userModel?.toEntity(),
     );
   }
 }

@@ -9,7 +9,7 @@ class TokenEntity extends Equatable {
 
   final String refreshToken;
 
-  final UserEntity user;
+  final UserEntity? user;
 
   const TokenEntity({
     required this.accessToken,
@@ -18,13 +18,13 @@ class TokenEntity extends Equatable {
   });
 
   @override
-  List<Object> get props => [accessToken, refreshToken, user];
+  List<Object> get props => [accessToken, refreshToken];
 
   TokenModel toModel() {
     return TokenModel(
       accessToken: accessToken,
       refreshToken: refreshToken,
-      userModel: user.toModel(),
+      userModel: user?.toModel(),
     );
   }
 }

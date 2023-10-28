@@ -19,7 +19,7 @@ class TokenModelAdapter extends TypeAdapter<TokenModel> {
     return TokenModel(
       accessToken: fields[0] as String,
       refreshToken: fields[1] as String,
-      userModel: fields[2] as UserModel,
+      userModel: fields[2] as UserModel?,
     );
   }
 

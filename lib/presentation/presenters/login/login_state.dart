@@ -5,7 +5,7 @@ enum RememberChoice { remember, forget }
 enum LoginType { guest, auth }
 
 // Define the possible destinations after a successful login
-enum LoginRedirect { home, homeAuth, termOfUse }
+enum LoginRedirect { home, homeAuth, verifyEmail, signUp, forgetPassword }
 
 class LoginState {
   final String? loginId; // The user's email or skype id

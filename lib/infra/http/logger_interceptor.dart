@@ -33,7 +33,7 @@ class LoggerInterceptor implements InterceptorContract {
   Future<BaseResponse> interceptResponse(
       {required BaseResponse response}) async {
     try {
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         if (kDebugMode) {
           debugPrint('┌───────────────── Response ───────────────────────────');
           debugPrint('│ Uri : ${response.request?.url}');

@@ -5,5 +5,5 @@ import 'package:ecommerce/domain/usecases/authentication/login/fetch_login.dart'
 
 FetchLogin makeFetchLogin() => RemoteFetchLogin(
       httpClient: makeHttpAuthorizedAdapter(),
-      url: makeApiUrl('auth/login'),
+      url: makeApiUrl('auth/sign-in'),
     );

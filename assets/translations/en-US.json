@@ -7,7 +7,11 @@
     "navProfileButtonText": "Account",
     "emailInputText":"Email",
     "passwordInputText":"Password",
+    "firstNameInputText":"First name",
+    "lastNameInputText":"Last name",
     "loginButtonText":"Login",
+    "signUpButtonText":"Sign up",
+    "verifyEmailButtonText":"Verify",
     "searchInputText":"Which products are you looking for ?",
     "historySearch":"History Search",
     "featureCategory":"Featured Category",
@@ -46,5 +50,7 @@
         "newBorn1":"newborn (0 - 3 months)",
         "newBorn2":"newborn (3 - 24 months)",
         "toddler":"newborn (6 months - 5 years)"
-    }
+    },
+    "autoLoginButtonText":"Automation login",
+    "forgetPasswordButtonText":"Forget Password"
 }

@@ -5,13 +5,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
-import 'package:ecommerce/app/resources/app_themes.dart';
+import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
-import 'package:ecommerce/presentation/screens/login/utils.dart';
+import 'package:ecommerce/presentation/screens/login/widgets/auto_login_button.dart';
+import 'package:ecommerce/presentation/screens/login/widgets/forget_password_button.dart';
+import 'package:ecommerce/presentation/screens/login/widgets/sign_up_button.dart';
+import 'package:ecommerce/presentation/screens/verify_email/verify_email_screen.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter/gestures.dart';
+import 'package:ecommerce/presentation/widgets/text_field/normal_text_field.dart';
+import 'package:ecommerce/presentation/widgets/text_field/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -34,10 +37,35 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void _onListener() {
-    if (_presenter.navigateTo != null) {
+    LoginRedirect? navigateTo = _presenter.navigateTo;
+    String? errorMessage = _presenter.errorMessage;
+
+    if (errorMessage != null) {
+      showErrorDialog(context, 'Login Failed', errorMessage);
+    }
+
+    if (navigateTo != null) {
       switch (_presenter.navigateTo) {
         case LoginRedirect.homeAuth:
           context.beamToReplacementNamed('/home');
+          break;
+        case LoginRedirect.signUp:
+          context.beamToReplacementNamed('/sign_up');
+          break;
+        case LoginRedirect.forgetPassword:
+          context.beamToNamed('/forget_password');
+          break;
+        case LoginRedirect.verifyEmail:
+          showRoundedBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            useSafeArea: false,
+            radius: 10,
+            backgroundColor: Colors.transparent,
+            child: VerifyEmailScreen(
+              email: _presenter.loginId,
+            ),
+          );
           break;
         default:
       }
@@ -46,9 +74,9 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void dispose() {
-    super.dispose();
     _presenter.removeListener(_onListener);
-    _presenter.dispose();
+    _presenter.resetState();
+    super.dispose();
   }
 
   @override
@@ -76,39 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
-  final _formKey = GlobalKey<FormState>();
-  var _isInputValid = false;
-  var _shouldRememberLogin = false;
-
-  @override
-  void initState() {
-    super.initState();
-    emailController.addListener(_validateLoginForm);
-    passwordController.addListener(_validateLoginForm);
-  }
-
-  void _validateLoginForm() {
-    setState(() {
-      _isInputValid = _formKey.currentState!.validate();
-    });
-  }
-
-  void _logIn() {
-    widget.presenter.login(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-        rememberLogin: _shouldRememberLogin);
-  }
-
-  void _navigateToRegister() {
-    // TODO: Implement "Register"
-    print('Register');
-  }
-
-  void _userForgotPassword() {
-    //TODO: Implement "Forgot password"
-    print('forgot password');
-  }
 
   @override
   void dispose() {
@@ -121,76 +116,142 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final double horizontalPaddingSubmitButton = size.width * (75 / 390);
+    const double heightInputField = 50.0;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
         body: Stack(
           children: [
-            Form(
-              key: _formKey,
-              onChanged: _validateLoginForm,
-              child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                reverse: true,
-                child: Container(
-                  height: MediaQuery.sizeOf(context).height,
-                  margin: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: Platform.isIOS ? 14 : 17,
-                    bottom: Platform.isIOS ? 34 : 8,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
+            SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              reverse: true,
+              child: Container(
+                height: size.height,
+                margin: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: Platform.isIOS ? 14 : 17,
+                  bottom: Platform.isIOS ? 34 : 8,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Center(
                         child: SvgPicture.asset(
                           SvgPaths.iconLogo,
                           width: 100,
                           height: 100,
                         ),
                       ),
-                      _EmailTextField(
-                          emailController: emailController,
-                          emailFocusNode: emailFocusNode,
-                          passwordFocusNode: passwordFocusNode),
-                      const SizedBox(height: 16),
-                      _PasswordTextField(
-                          passwordController: passwordController,
-                          passwordFocusNode: passwordFocusNode),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: CheckboxListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: const Text("Remember Me"),
-                              value: _shouldRememberLogin,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _shouldRememberLogin = newValue ?? false;
-                                });
-                              },
-                              controlAffinity: ListTileControlAffinity.leading,
-                            ),
+                    ),
+                    SizedBox(
+                      height: heightInputField,
+                      child: NormalTextField(
+                        controller: emailController,
+                        focusNode: emailFocusNode,
+                        nextFocus: passwordFocusNode,
+                        placeHolder: LocaleKeys.emailInputText.tr(),
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(left: 12, right: 10),
+                          child: SvgPicture.asset(
+                            SvgPaths.iconUserId,
                           ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(16.0),
-                            ),
-                            onPressed: _userForgotPassword,
-                            child: const Text('Forgot password?'),
-                          ),
-                        ],
+                        ),
+                        onChanged: (String? value) {
+                          widget.presenter.setLoginId(value!);
+                        },
                       ),
-                      const SizedBox(height: 16),
-                      _LoginButton(onClick: _logIn, isActive: _isInputValid),
-                      const SizedBox(height: 16),
-                      _RegisterText(onRegisterClick: _navigateToRegister),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: heightInputField,
+                      child: Selector<LoginPresenter, bool>(
+                        selector: (_, presenter) => presenter.isShowPassword,
+                        builder: (_, isShowPassword, __) => PasswordTextField(
+                          controller: passwordController,
+                          focusNode: passwordFocusNode,
+                          placeHolder: LocaleKeys.passwordInputText.tr(),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 12,
+                              right: 10,
+                            ),
+                            child: SvgPicture.asset(
+                              SvgPaths.iconPassword,
+                            ),
+                          ),
+                          onChanged: (String? value) {
+                            widget.presenter.setPassword(value!);
+                          },
+                          isObscureText: !isShowPassword,
+                          suffixIconPath: isShowPassword
+                              ? SvgPaths.iconEyeOpen
+                              : SvgPaths.iconEyeCrossed,
+                          onSuffixIconClicked: () {
+                            widget.presenter.toggleShowPassword();
+                          },
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: Platform.isIOS ? 2 : 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Selector<LoginPresenter, RememberChoice>(
+                          selector: (_, presenter) => presenter.rememberChoice,
+                          builder: (context, value, _) {
+                            return AutoLoginButton(
+                              iconPath: value == RememberChoice.remember
+                                  ? SvgPaths.iconSelect
+                                  : SvgPaths.iconUnselect,
+                              onClick: widget.presenter.toggleAutoLogin,
+                            );
+                          },
+                        ),
+                        ForgetPasswordButton(onClick: () {
+                          widget.presenter.navigateToForgetPasswordScreen();
+                        }),
+                      ],
+                    ),
+                    SizedBox(height: Platform.isIOS ? 13 : 17),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 18,
+                        left: horizontalPaddingSubmitButton,
+                        right: horizontalPaddingSubmitButton,
+                        bottom: 0,
+                      ),
+                      child: Selector<LoginPresenter, bool>(
+                        selector: (_, presenter) => presenter.isFormValid,
+                        builder: (_, isActive, __) => BRoundButton(
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 11),
+                          buttonName: LocaleKeys.loginButtonText.tr(),
+                          onClick: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            widget.presenter.login();
+                          },
+                          customTextStyle: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.white,
+                          ),
+                          isActive: isActive,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: Platform.isIOS ? 20 : 23),
+                    SignUpButton(
+                      onClick: () async {
+                        widget.presenter.navigateToSignUpScreen();
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -212,165 +273,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _EmailTextField extends StatefulWidget {
-  const _EmailTextField({
-    required this.emailController,
-    required this.emailFocusNode,
-    required this.passwordFocusNode,
-  });
-
-  final TextEditingController emailController;
-  final FocusNode emailFocusNode;
-  final FocusNode passwordFocusNode;
-
-  @override
-  State<_EmailTextField> createState() => _EmailTextFieldState();
-}
-
-class _EmailTextFieldState extends State<_EmailTextField> {
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        controller: widget.emailController,
-        focusNode: widget.emailFocusNode,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: 'Email',
-          hintText: LocaleKeys.emailInputText.tr(),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: SvgPicture.asset(SvgPaths.iconUserId),
-          ),
-        ),
-        // The validator receives the text that the user has entered.
-        validator: (value) {
-          if (value == null ||
-              value.isEmpty ||
-              !EmailValidator.validate(value)) {
-            return 'Invalid Email';
-          }
-          return null;
-        });
-  }
-}
-
-class _PasswordTextField extends StatefulWidget {
-  const _PasswordTextField({
-    required this.passwordController,
-    required this.passwordFocusNode,
-  });
-
-  final TextEditingController passwordController;
-  final FocusNode passwordFocusNode;
-
-  @override
-  State<_PasswordTextField> createState() => _PasswordTextFieldState();
-}
-
-class _PasswordTextFieldState extends State<_PasswordTextField> {
-  var _isPasswordShown = false;
-
-  void togglePasswordVisibility() {
-    setState(() {
-      _isPasswordShown = !_isPasswordShown;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-        controller: widget.passwordController,
-        focusNode: widget.passwordFocusNode,
-        obscureText: !_isPasswordShown,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: 'Password',
-          hintText: LocaleKeys.passwordInputText.tr(),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: SvgPicture.asset(SvgPaths.iconPassword),
-          ),
-          suffixIcon: IconButton(
-            icon: _isPasswordShown
-                ? SvgPicture.asset(
-                    SvgPaths.iconEyeCrossed,
-                  )
-                : SvgPicture.asset(
-                    SvgPaths.iconEyeOpen,
-                  ),
-            onPressed: togglePasswordVisibility,
-          ),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty || !value.isValidPassword()) {
-            print("value.isValidPassword(): ${value?.isValidPassword()}");
-            return """
-- Must be at least 8 characters
-- Should contain at least 1 number (0-9)
-- Should contain at least 1 uppercase letter (A-Z)
-- Should contain at least 1 lowercase letter (a-z)
-- No special characters allowed
-""";
-          }
-          return null;
-        });
-  }
-}
-
-class _RegisterText extends StatelessWidget {
-  final VoidCallback onRegisterClick;
-
-  const _RegisterText({required this.onRegisterClick});
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: <TextSpan>[
-          TextSpan(
-              style: AppThemes.lightTextTheme.bodyLarge,
-              text: 'Don\'t have an an account ? '),
-          TextSpan(
-              text: 'Register',
-              // TODO: Centralize TextStyles
-              style: TextStyle(
-                color: AppThemes.lightTheme.primaryColor,
-              ),
-              recognizer: TapGestureRecognizer()..onTap = onRegisterClick),
-        ],
-      ),
-    );
-  }
-}
-
-class _LoginButton extends StatelessWidget {
-  const _LoginButton({required this.onClick, required this.isActive});
-
-  final VoidCallback onClick;
-  final bool isActive;
-
-  @override
-  Widget build(BuildContext context) {
-    return BRoundButton(
-      contentPadding: const EdgeInsets.symmetric(vertical: 12),
-      buttonName: LocaleKeys.loginButtonText.tr(),
-      onClick: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-        onClick;
-      },
-      customTextStyle: const TextStyle(
-        fontSize: 15,
-        fontWeight: FontWeight.w600,
-        color: AppColors.white,
-      ),
-      isActive: isActive,
     );
   }
 }

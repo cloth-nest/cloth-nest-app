@@ -1,20 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/configs/i18n/app_languages.dart';
+import 'package:ecommerce/presentation/screens/account/account_presenter.dart';
+import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
 import 'package:flutter/material.dart';
-
-class AccountView extends StatefulWidget {
-  const AccountView({super.key});
-
-  @override
-  State<AccountView> createState() => _AccountViewState();
-}
-
-class _AccountViewState extends State<AccountView> {
-  @override
-  Widget build(BuildContext context) {
-    return const AccountScreen();
-  }
-}
+import 'package:provider/provider.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -24,23 +14,73 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  late AccountPresenter _presenter;
+
+  @override
+  void initState() {
+    super.initState();
+    _presenter = context.read<AccountPresenter>();
+    _presenter.addListener(_onListener);
+  }
+
+  void _onListener() {
+    if (_presenter.navigateTo != null) {
+      Beamer.of(context, root: true).beamToReplacementNamed('/login');
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _presenter.removeListener(_onListener);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                if (context.locale == AppLanguages.viLocale) {
-                  context.setLocale(AppLanguages.enLocale);
-                } else {
-                  context.setLocale(AppLanguages.viLocale);
-                }
-              },
-              child: const Text('Change Language'),
+          SizedBox(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (context.locale == AppLanguages.viLocale) {
+                        context.setLocale(AppLanguages.enLocale);
+                      } else {
+                        context.setLocale(AppLanguages.viLocale);
+                      }
+                    },
+                    child: const Text('Change Language'),
+                  ),
+                ),
+                BRoundButton(
+                  minimumSize: const Size(200, 45),
+                  maximumSize: const Size(200, 45),
+                  buttonName: 'Logout',
+                  onClick: () {
+                    _presenter.logout();
+                  },
+                ),
+              ],
             ),
+          ),
+          Selector<AccountPresenter, bool>(
+            selector: (context, presenter) => presenter.isLoading,
+            builder: (context, isLoading, _) {
+              if (isLoading) {
+                return Container(
+                  color: Colors.grey.withOpacity(0.5),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
           ),
         ],
       ),

@@ -10,9 +10,13 @@ install: ## install all dependencies
 	&& flutter pub run easy_localization:generate -S "assets/translations" -O "lib/generated" -f keys -o locale_keys.g.dart
 
 
-.PHONY: generate-i18n
-generate-i18n: ## generate template language
-	flutter pub run easy_localization:generate -S "assets/translations" -O "lib/generated" -f keys -o locale_keys.g.dart
+.PHONY: generate-language
+generate-language: ## generate template language
+	flutter pub run easy_localization:generate -S "assets/translations" -O "lib/app/res" -f keys -o locale_keys.g.dart
+
+.PHONY: generate-hive
+generate-hive: ## generate template language
+	flutter pub run build_runner build --delete-conflicting-outputs
 
 .PHONY: start-dev
 start-dev: ## start app with dev environment

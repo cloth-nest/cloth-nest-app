@@ -1,10 +1,6 @@
 import 'dart:convert';
 
 import 'package:ecommerce/data/http/exceptions/bad_request_exception.dart';
-import 'package:ecommerce/data/http/exceptions/forbiden_exception.dart';
-import 'package:ecommerce/data/http/exceptions/internal_server_exception.dart';
-import 'package:ecommerce/data/http/exceptions/not_found_exception.dart';
-import 'package:ecommerce/data/http/exceptions/unauthorized_exception.dart';
 import 'package:ecommerce/data/models/http_exception_model.dart';
 import 'package:http/http.dart';
 
@@ -24,6 +20,9 @@ class ResponseHandler {
       case 201:
         final jsonBody = jsonDecode(httpResponse.body);
         return jsonBody;
+      case 200:
+        final jsonBody = jsonDecode(httpResponse.body);
+        return jsonBody;
       case 204:
         return;
       default:
@@ -33,7 +32,7 @@ class ResponseHandler {
 
   static _createExceptionFormResponse(Response httpResponse) {
     final jsonBody = jsonDecode(httpResponse.body);
-    final httpException = HttpExceptionModel.fromJson(jsonBody);
+    final httpException = HttpExceptionModel.fromJson(jsonBody['error']);
 
     return _createExceptionFromStatusCode(
       statusCode: httpResponse.statusCode,
@@ -48,17 +47,6 @@ class ResponseHandler {
     final code = httpException.code;
     final message = httpException.message;
 
-    switch (statusCode) {
-      case 400:
-        throw BadRequestException(code: code, message: message);
-      case 401:
-        throw UnauthorizedException(code: code, message: message);
-      case 403:
-        throw ForbidenException(code: code, message: message);
-      case 404:
-        throw NotFoundException(code: code, message: message);
-      case 500:
-        throw InternalServerException(code: code, message: message);
-    }
+    throw BadRequestException(code: code, message: message);
   }
 }
