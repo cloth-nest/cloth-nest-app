@@ -59,9 +59,18 @@ class _AccountScreenState extends State<AccountScreen> {
                 BRoundButton(
                   minimumSize: const Size(200, 45),
                   maximumSize: const Size(200, 45),
-                  buttonName: 'Logout',
+                  buttonName: 'Test Logout',
                   onClick: () {
                     _presenter.logout();
+                  },
+                ),
+                const SizedBox(height: 20),
+                BRoundButton(
+                  minimumSize: const Size(300, 45),
+                  maximumSize: const Size(300, 45),
+                  buttonName: 'Test auto login',
+                  onClick: () {
+                    _presenter.testAutoLogin();
                   },
                 ),
               ],

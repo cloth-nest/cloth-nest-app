@@ -1,3 +1,4 @@
+import 'package:ecommerce/app/factories/usecases/profile/profile_factory.dart';
 import 'package:ecommerce/data/usecases/token/constants.dart';
 import 'package:ecommerce/domain/entities/token/token_entity.dart';
 import 'package:ecommerce/domain/usecases/authentication/logout/fetch_logout.dart';
@@ -61,4 +62,12 @@ class ProviderAccountPresenter with ChangeNotifier implements AccountPresenter {
 
   @override
   String? get navigateTo => _state.navigateTo;
+
+  @override
+  void testAutoLogin() async {
+    try {
+      final fetchProfile = makeFetchProfile();
+      await fetchProfile.call();
+    } catch (_) {}
+  }
 }
