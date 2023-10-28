@@ -2,7 +2,7 @@ import 'package:ecommerce/presentation/presenters/verify_email/verify_email_stat
 import 'package:flutter/material.dart';
 
 abstract class VerifyEmailPresenter with ChangeNotifier {
-  void verifyEmail(String email);
+  void verifyEmail(String email, bool isFromForgetPassword);
   void resendCode(String emaill);
   void setOtpCode(String value);
   void resetState();

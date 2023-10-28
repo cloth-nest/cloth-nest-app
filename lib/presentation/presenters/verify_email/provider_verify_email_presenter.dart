@@ -14,6 +14,7 @@ class ProviderVerifyEmailPresenter
   VerifyEmailState _state;
   final FetchVerifyEmail _fetchVerifyEmail;
   final FetchResendCode _fetchResendCode;
+  final FetchVerifyEmail _fetchVerifyEmailForgetPassword;
   final SaveToken _saveToken;
 
   ProviderVerifyEmailPresenter({
@@ -21,10 +22,12 @@ class ProviderVerifyEmailPresenter
     required FetchVerifyEmail fetchVerifyEmail,
     required FetchResendCode fetchResendCode,
     required SaveToken saveToken,
+    required FetchVerifyEmail fetchVerifyEmailForgetPassword,
   })  : _state = state,
         _fetchVerifyEmail = fetchVerifyEmail,
         _fetchResendCode = fetchResendCode,
-        _saveToken = saveToken;
+        _saveToken = saveToken,
+        _fetchVerifyEmailForgetPassword = fetchVerifyEmailForgetPassword;
 
   @override
   String? get errorMessage => _state.errorMessage;
@@ -33,7 +36,7 @@ class ProviderVerifyEmailPresenter
   bool get isLoading => _state.isLoading;
 
   @override
-  void verifyEmail(String email) async {
+  void verifyEmail(String email, bool isFromForgetPassword) async {
     if (_state.isFormValid == false) return;
 
     _state = _state.copyWith(isLoading: true);
@@ -45,15 +48,25 @@ class ProviderVerifyEmailPresenter
         code: _state.otpCode,
       );
 
-      final tokenEntity = await _fetchVerifyEmail.call(params: params);
+      if (isFromForgetPassword) {
+        await _fetchVerifyEmailForgetPassword.call(params: params);
 
-      await _saveToken.call(tokenEntity: tokenEntity);
+        _state = _state.copyWith(
+          navigateTo: VerifyEmailRedirect.resetPassword,
+          isLoading: false,
+        );
+        notifyListeners();
+      } else {
+        final tokenEntity = await _fetchVerifyEmail.call(params: params);
 
-      _state = _state.copyWith(
-        isLoading: false,
-        navigateTo: VerifyEmailRedirect.homeAuth,
-      );
-      notifyListeners();
+        await _saveToken.call(tokenEntity: tokenEntity!);
+
+        _state = _state.copyWith(
+          navigateTo: VerifyEmailRedirect.homeAuth,
+          isLoading: false,
+        );
+        notifyListeners();
+      }
     } on HttpException catch (_) {
       _state = _state.copyWith(
         isLoading: false,

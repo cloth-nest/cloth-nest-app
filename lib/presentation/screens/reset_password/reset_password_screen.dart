@@ -6,29 +6,36 @@ import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/app/utils/utils.dart';
-import 'package:ecommerce/presentation/screens/forget_password/forget_password_presenter.dart';
-import 'package:ecommerce/presentation/screens/verify_email/verify_email_screen.dart';
+import 'package:ecommerce/presentation/screens/reset_password/reset_password_presenter.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
-import 'package:ecommerce/presentation/widgets/text_field/normal_text_field.dart';
+import 'package:ecommerce/presentation/widgets/text_field/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-class ForgetPasswordScreen extends StatefulWidget {
-  const ForgetPasswordScreen({super.key});
+class ResetPasswordScreen extends StatefulWidget {
+  final String email;
+
+  const ResetPasswordScreen({
+    super.key,
+    required this.email,
+  });
 
   @override
-  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-  final TextEditingController emailController = TextEditingController();
-  late ForgetPasswordPresenter _presenter;
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  late ResetPasswordPresenter _presenter;
 
   @override
   void initState() {
     super.initState();
-    _presenter = context.read<ForgetPasswordPresenter>();
+    _presenter = context.read<ResetPasswordPresenter>();
     _presenter.addListener(_onListener);
   }
 
@@ -37,28 +44,19 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     String? navigateTo = _presenter.navigateTo;
 
     if (errorMessage != null) {
-      showErrorDialog(context, 'Forget Password Failed', errorMessage);
+      showErrorDialog(context, 'Reset Password Failed', errorMessage);
     }
 
     if (navigateTo != null) {
-      showRoundedBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: false,
-        radius: 10,
-        backgroundColor: Colors.transparent,
-        child: VerifyEmailScreen(
-          email: _presenter.email,
-          isFromForgetPassword: true,
-        ),
-      );
+      context.beamToReplacementNamed(navigateTo);
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
     _presenter.removeListener(_onListener);
   }
 
@@ -84,7 +82,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           ),
         ),
         title: const Text(
-          'Forget Password',
+          'Reset Password',
           style: TextStyle(
             fontSize: 17,
             color: AppColors.textLightBasic,
@@ -120,25 +118,72 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Please enter your email address to reset password',
+                        'Please enter your new password to reset password',
                         style: Theme.of(context).textTheme.headlineSmall,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 15),
                       SizedBox(
                         height: heightInputField,
-                        child: NormalTextField(
-                          controller: emailController,
-                          placeHolder: LocaleKeys.emailInputText.tr(),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(left: 12, right: 10),
-                            child: SvgPicture.asset(
-                              SvgPaths.iconUserId,
+                        child: Selector<ResetPasswordPresenter, bool>(
+                          selector: (_, presenter) => presenter.isShowPassword,
+                          builder: (_, isShowPassword, __) => PasswordTextField(
+                            controller: passwordController,
+                            placeHolder: LocaleKeys.passwordInputText.tr(),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 12,
+                                right: 10,
+                              ),
+                              child: SvgPicture.asset(
+                                SvgPaths.iconPassword,
+                              ),
                             ),
+                            onChanged: (String? value) {
+                              _presenter.setPassword(value);
+                            },
+                            isObscureText: !isShowPassword,
+                            suffixIconPath: isShowPassword
+                                ? SvgPaths.iconEyeOpen
+                                : SvgPaths.iconEyeCrossed,
+                            onSuffixIconClicked: () {
+                              _presenter.toggleShowPassword();
+                            },
+                            textInputAction: TextInputAction.done,
                           ),
-                          onChanged: (String? value) {
-                            _presenter.setEmail(value);
-                          },
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        height: heightInputField,
+                        child: Selector<ResetPasswordPresenter, bool>(
+                          selector: (_, presenter) =>
+                              presenter.isShowConfirmPassword,
+                          builder: (_, isShowConfirmPassword, __) =>
+                              PasswordTextField(
+                            controller: confirmPasswordController,
+                            placeHolder: LocaleKeys.passwordInputText.tr(),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 12,
+                                right: 10,
+                              ),
+                              child: SvgPicture.asset(
+                                SvgPaths.iconPassword,
+                              ),
+                            ),
+                            onChanged: (String? value) {
+                              _presenter.setConfirmPassword(value);
+                            },
+                            isObscureText: !isShowConfirmPassword,
+                            suffixIconPath: isShowConfirmPassword
+                                ? SvgPaths.iconEyeOpen
+                                : SvgPaths.iconEyeCrossed,
+                            onSuffixIconClicked: () {
+                              _presenter.toggleShowConfirmPassword();
+                            },
+                            textInputAction: TextInputAction.done,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -149,15 +194,17 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           right: horizontalPaddingSubmitButton,
                           bottom: 0,
                         ),
-                        child: Selector<ForgetPasswordPresenter, bool>(
-                          selector: (_, presenter) => presenter.isFormValid,
+                        child: Selector<ResetPasswordPresenter, bool>(
+                          selector: (_, presenter) => presenter.isValidForm,
                           builder: (_, isFormValid, __) => BRoundButton(
                             contentPadding:
                                 const EdgeInsets.symmetric(vertical: 11),
-                            buttonName: 'Send',
+                            buttonName: 'Reset Password',
                             onClick: () {
                               FocusScope.of(context).requestFocus(FocusNode());
-                              _presenter.send();
+                              _presenter.resetPassword(
+                                email: widget.email,
+                              );
                             },
                             customTextStyle: const TextStyle(
                               fontSize: 15,
@@ -172,7 +219,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ),
                 ),
               ),
-              Selector<ForgetPasswordPresenter, bool>(
+              Selector<ResetPasswordPresenter, bool>(
                 selector: (context, presenter) => presenter.isLoading,
                 builder: (context, isLoading, _) {
                   if (isLoading) {

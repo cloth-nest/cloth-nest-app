@@ -16,7 +16,7 @@ class RemoteFetchVerifyEmail implements FetchVerifyEmail {
   });
 
   @override
-  Future<TokenEntity> call({required VerifyEmailParams params}) async {
+  Future<TokenEntity?> call({required VerifyEmailParams params}) async {
     RemoteVerifyEmailParams verifyEmailParams =
         RemoteVerifyEmailParams.fromDomain(params);
 
@@ -27,6 +27,8 @@ class RemoteFetchVerifyEmail implements FetchVerifyEmail {
         body: verifyEmailParams.toJson(),
       );
       final jsonResponse = ResponseHandler.handle(httpResponse);
+      if (jsonResponse['data'] == null) return null;
+
       final tokenModel = TokenModel.fromMap(jsonResponse['data']);
       final tokenEntity = tokenModel.toEntity();
       return tokenEntity;

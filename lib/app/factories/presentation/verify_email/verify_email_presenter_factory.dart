@@ -4,12 +4,11 @@ import 'package:ecommerce/app/factories/usecases/token/token_factory.dart';
 import 'package:ecommerce/presentation/presenters/verify_email/provider_verify_email_presenter.dart';
 import 'package:ecommerce/presentation/presenters/verify_email/verify_email_state.dart';
 import 'package:ecommerce/presentation/screens/verify_email/verify_email_presenter.dart';
-import 'package:flutter/material.dart';
 
-VerifyEmailPresenter makeVerifyEmailPresenter(BuildContext context) =>
-    ProviderVerifyEmailPresenter(
+VerifyEmailPresenter makeVerifyEmailPresenter() => ProviderVerifyEmailPresenter(
       state: VerifyEmailState.initial(),
       fetchVerifyEmail: makeFetchVerifyEmail(),
       fetchResendCode: makeFetchResendCode(),
       saveToken: makeSaveLocalToken(),
+      fetchVerifyEmailForgetPassword: makeFetchVerifyEmailForgetPassword(),
     );

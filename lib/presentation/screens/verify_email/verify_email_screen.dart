@@ -12,9 +12,12 @@ import 'package:provider/provider.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   final String? email;
+  final bool? isFromForgetPassword;
+
   const VerifyEmailScreen({
     super.key,
     this.email,
+    this.isFromForgetPassword = false,
   });
 
   @override
@@ -67,7 +70,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     }
 
     if (navigateTo != null) {
-      context.beamToReplacementNamed('/home');
+      switch (navigateTo) {
+        case VerifyEmailRedirect.homeAuth:
+          context.beamToReplacementNamed('/home');
+          break;
+        case VerifyEmailRedirect.resetPassword:
+          context.beamToNamed('/reset_password?email=${widget.email}');
+          break;
+        default:
+      }
     }
   }
 
@@ -129,7 +140,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           FocusScope.of(context).nextFocus();
                         }
                         _presenter.setOtpCode(value ?? '');
-                        _presenter.verifyEmail(widget.email ?? '');
+                        _presenter.verifyEmail(
+                          widget.email ?? '',
+                          widget.isFromForgetPassword ?? false,
+                        );
                       },
                     ),
                   ),
@@ -145,7 +159,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           FocusScope.of(context).nextFocus();
                         }
                         _presenter.setOtpCode(value ?? '');
-                        _presenter.verifyEmail(widget.email ?? '');
+                        _presenter.verifyEmail(
+                          widget.email ?? '',
+                          widget.isFromForgetPassword ?? false,
+                        );
                       },
                     ),
                   ),
@@ -161,7 +178,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           FocusScope.of(context).nextFocus();
                         }
                         _presenter.setOtpCode(value ?? '');
-                        _presenter.verifyEmail(widget.email ?? '');
+                        _presenter.verifyEmail(
+                          widget.email ?? '',
+                          widget.isFromForgetPassword ?? false,
+                        );
                       },
                     ),
                   ),
@@ -177,7 +197,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           FocusScope.of(context).nextFocus();
                         }
                         _presenter.setOtpCode(value ?? '');
-                        _presenter.verifyEmail(widget.email ?? '');
+                        _presenter.verifyEmail(
+                          widget.email ?? '',
+                          widget.isFromForgetPassword ?? false,
+                        );
                       },
                     ),
                   ),

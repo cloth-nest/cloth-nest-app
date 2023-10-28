@@ -20,7 +20,7 @@ List<SingleChildWidget> makeMainPresenters() {
       create: (_) => makeContentMasterPresenter(),
     ),
     ChangeNotifierProvider<VerifyEmailPresenter>(
-      create: (context) => makeVerifyEmailPresenter(context),
+      create: (context) => makeVerifyEmailPresenter(),
     ),
     ChangeNotifierProvider<AccountPresenter>(
       create: (_) => makeAccountPresenter(),

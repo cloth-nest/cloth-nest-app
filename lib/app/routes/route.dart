@@ -3,6 +3,7 @@ import 'package:ecommerce/app/routes/forget_password_location.dart';
 import 'package:ecommerce/app/routes/home_location.dart';
 import 'package:ecommerce/app/routes/login_location.dart';
 import 'package:ecommerce/app/routes/onboarding/onboarding_location.dart';
+import 'package:ecommerce/app/routes/reset_password_location.dart';
 import 'package:ecommerce/app/routes/sign_up_location.dart';
 import 'package:ecommerce/app/routes/splash_location.dart';
 
@@ -19,6 +20,7 @@ Future<BeamerDelegate> makeRootRouteDelegate() async {
         LoginLocation(),
         SignUpLocation(),
         ForgetPasswordLocation(),
+        ResetPasswordLocation(),
         HomeLocation(),
       ],
     ),
