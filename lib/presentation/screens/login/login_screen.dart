@@ -123,10 +123,11 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
             SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               reverse: true,
               child: Container(
                 height: size.height,

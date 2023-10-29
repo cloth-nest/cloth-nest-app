@@ -21,7 +21,7 @@ class LoginButton extends StatelessWidget {
                         .extension<ExtensionColors>()
                         ?.outlineButtonTextColor,
                   ),
-              text: 'Don\'t have an account ? '),
+              text: 'Already have an account ? '),
           TextSpan(
             text: 'Login',
             style: Theme.of(context).textTheme.labelMedium!.copyWith(

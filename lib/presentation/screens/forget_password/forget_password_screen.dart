@@ -100,7 +100,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           body: Stack(
             children: [
               SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 reverse: true,
                 child: Container(
                   height: size.height,
