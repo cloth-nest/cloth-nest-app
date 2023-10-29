@@ -5,13 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
-import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
-import 'package:ecommerce/presentation/screens/login/widgets/auto_login_button.dart';
-import 'package:ecommerce/presentation/screens/login/widgets/forget_password_button.dart';
-import 'package:ecommerce/presentation/screens/login/widgets/sign_up_button.dart';
-import 'package:ecommerce/presentation/screens/verify_email/verify_email_screen.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
 import 'package:ecommerce/presentation/widgets/text_field/normal_text_field.dart';
 import 'package:ecommerce/presentation/widgets/text_field/password_text_field.dart';
@@ -37,35 +32,10 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void _onListener() {
-    LoginRedirect? navigateTo = _presenter.navigateTo;
-    String? errorMessage = _presenter.errorMessage;
-
-    if (errorMessage != null) {
-      showErrorDialog(context, 'Login Failed', errorMessage);
-    }
-
-    if (navigateTo != null) {
+    if (_presenter.navigateTo != null) {
       switch (_presenter.navigateTo) {
         case LoginRedirect.homeAuth:
           context.beamToReplacementNamed('/home');
-          break;
-        case LoginRedirect.signUp:
-          context.beamToReplacementNamed('/sign_up');
-          break;
-        case LoginRedirect.forgetPassword:
-          context.beamToNamed('/forget_password');
-          break;
-        case LoginRedirect.verifyEmail:
-          showRoundedBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            useSafeArea: false,
-            radius: 10,
-            backgroundColor: Colors.transparent,
-            child: VerifyEmailScreen(
-              email: _presenter.loginId,
-            ),
-          );
           break;
         default:
       }
@@ -74,9 +44,9 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void dispose() {
-    _presenter.removeListener(_onListener);
-    _presenter.resetState();
     super.dispose();
+    _presenter.removeListener(_onListener);
+    _presenter.dispose();
   }
 
   @override
@@ -123,11 +93,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
             SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               reverse: true,
               child: Container(
                 height: size.height,
@@ -163,63 +132,37 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onChanged: (String? value) {
-                          widget.presenter.setLoginId(value!);
+                          /// TODO: add logic
                         },
                       ),
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
                       height: heightInputField,
-                      child: Selector<LoginPresenter, bool>(
-                        selector: (_, presenter) => presenter.isShowPassword,
-                        builder: (_, isShowPassword, __) => PasswordTextField(
-                          controller: passwordController,
-                          focusNode: passwordFocusNode,
-                          placeHolder: LocaleKeys.passwordInputText.tr(),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 12,
-                              right: 10,
-                            ),
-                            child: SvgPicture.asset(
-                              SvgPaths.iconPassword,
-                            ),
+                      child: PasswordTextField(
+                        controller: passwordController,
+                        focusNode: passwordFocusNode,
+                        placeHolder: LocaleKeys.passwordInputText.tr(),
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 12,
+                            right: 10,
                           ),
-                          onChanged: (String? value) {
-                            widget.presenter.setPassword(value!);
-                          },
-                          isObscureText: !isShowPassword,
-                          suffixIconPath: isShowPassword
-                              ? SvgPaths.iconEyeOpen
-                              : SvgPaths.iconEyeCrossed,
-                          onSuffixIconClicked: () {
-                            widget.presenter.toggleShowPassword();
-                          },
-                          textInputAction: TextInputAction.done,
+                          child: SvgPicture.asset(
+                            SvgPaths.iconPassword,
+                          ),
                         ),
+                        onChanged: (String? value) {
+                          /// TODO: add logic
+                        },
+                        isObscureText: false,
+                        suffixIconPath: SvgPaths.iconEyeOpen,
+                        onSuffixIconClicked: () {
+                          /// TODO: widget.presenter.toggleShowPassword
+                        },
+                        textInputAction: TextInputAction.done,
                       ),
                     ),
-                    SizedBox(height: Platform.isIOS ? 2 : 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Selector<LoginPresenter, RememberChoice>(
-                          selector: (_, presenter) => presenter.rememberChoice,
-                          builder: (context, value, _) {
-                            return AutoLoginButton(
-                              iconPath: value == RememberChoice.remember
-                                  ? SvgPaths.iconSelect
-                                  : SvgPaths.iconUnselect,
-                              onClick: widget.presenter.toggleAutoLogin,
-                            );
-                          },
-                        ),
-                        ForgetPasswordButton(onClick: () {
-                          widget.presenter.navigateToForgetPasswordScreen();
-                        }),
-                      ],
-                    ),
-                    SizedBox(height: Platform.isIOS ? 13 : 17),
                     Padding(
                       padding: EdgeInsets.only(
                         top: 18,
@@ -227,30 +170,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         right: horizontalPaddingSubmitButton,
                         bottom: 0,
                       ),
-                      child: Selector<LoginPresenter, bool>(
-                        selector: (_, presenter) => presenter.isFormValid,
-                        builder: (_, isActive, __) => BRoundButton(
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 11),
-                          buttonName: LocaleKeys.loginButtonText.tr(),
-                          onClick: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            widget.presenter.login();
-                          },
-                          customTextStyle: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.white,
-                          ),
-                          isActive: isActive,
+                      child: BRoundButton(
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 11),
+                        buttonName: LocaleKeys.loginButtonText.tr(),
+                        onClick: () {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          widget.presenter.login(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
+                          );
+                        },
+                        customTextStyle: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.white,
                         ),
+                        isActive: true,
                       ),
-                    ),
-                    SizedBox(height: Platform.isIOS ? 20 : 23),
-                    SignUpButton(
-                      onClick: () async {
-                        widget.presenter.navigateToSignUpScreen();
-                      },
                     ),
                   ],
                 ),

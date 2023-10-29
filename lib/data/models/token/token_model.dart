@@ -16,32 +16,28 @@ class TokenModel extends HiveObject {
   final String refreshToken;
 
   @HiveField(2)
-  final UserModel? userModel;
-
-  @HiveField(3)
-  final bool isRemember;
+  final UserModel userModel;
 
   TokenModel({
     required this.accessToken,
     required this.refreshToken,
-    this.userModel,
-    required this.isRemember,
+    required this.userModel,
   });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'accessToken': accessToken,
       'refreshToken': refreshToken,
-      'userModel': userModel!.toJson(),
+      'userModel': userModel.toJson(),
     };
   }
 
   factory TokenModel.fromMap(Map<String, dynamic> map) {
+    print(map);
     return TokenModel(
       accessToken: map['accessToken'] as String,
       refreshToken: map['refreshToken'] as String,
-      userModel: map['user'] != null ? UserModel.fromJson(map['user']) : null,
-      isRemember: map['isRemember'] ?? false,
+      userModel: UserModel.fromJson(map['user']),
     );
   }
 
@@ -49,8 +45,7 @@ class TokenModel extends HiveObject {
     return TokenEntity(
       accessToken: accessToken,
       refreshToken: refreshToken,
-      user: userModel?.toEntity(),
-      isRemember: isRemember,
+      user: userModel.toEntity(),
     );
   }
 }

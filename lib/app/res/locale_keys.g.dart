@@ -9,11 +9,7 @@ abstract class  LocaleKeys {
   static const navProfileButtonText = 'navProfileButtonText';
   static const emailInputText = 'emailInputText';
   static const passwordInputText = 'passwordInputText';
-  static const firstNameInputText = 'firstNameInputText';
-  static const lastNameInputText = 'lastNameInputText';
   static const loginButtonText = 'loginButtonText';
-  static const signUpButtonText = 'signUpButtonText';
-  static const verifyEmailButtonText = 'verifyEmailButtonText';
   static const searchInputText = 'searchInputText';
   static const historySearch = 'historySearch';
   static const featureCategory = 'featureCategory';
@@ -49,7 +45,5 @@ abstract class  LocaleKeys {
   static const babyCategories_newBorn2 = 'babyCategories.newBorn2';
   static const babyCategories_toddler = 'babyCategories.toddler';
   static const babyCategories = 'babyCategories';
-  static const autoLoginButtonText = 'autoLoginButtonText';
-  static const forgetPasswordButtonText = 'forgetPasswordButtonText';
 
 }

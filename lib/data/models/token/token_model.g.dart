@@ -19,23 +19,20 @@ class TokenModelAdapter extends TypeAdapter<TokenModel> {
     return TokenModel(
       accessToken: fields[0] as String,
       refreshToken: fields[1] as String,
-      userModel: fields[2] as UserModel?,
-      isRemember: fields[3] as bool,
+      userModel: fields[2] as UserModel,
     );
   }
 
   @override
   void write(BinaryWriter writer, TokenModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.accessToken)
       ..writeByte(1)
       ..write(obj.refreshToken)
       ..writeByte(2)
-      ..write(obj.userModel)
-      ..writeByte(3)
-      ..write(obj.isRemember);
+      ..write(obj.userModel);
   }
 
   @override
