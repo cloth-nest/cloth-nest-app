@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/presentation/screens/my_list/my_list_presenter.dart';
@@ -26,6 +27,13 @@ class _MyListScreenState extends State<MyListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _presenter.getData();
     });
+  }
+
+  void _onProductTap() {
+    final String currentLocation =
+        context.currentBeamLocation.state.routeInformation.location ?? '/';
+    final uri = Uri.parse(currentLocation);
+    context.beamToNamed('${uri.path}/product');
   }
 
   @override
@@ -83,7 +91,9 @@ class _MyListScreenState extends State<MyListScreen> {
             slivers: [
               isLoading
                   ? const MyListSliverListLoading()
-                  : const MyListSliverList()
+                  : MyListSliverList(
+                      onTap: _onProductTap,
+                    )
             ],
           ),
         ),

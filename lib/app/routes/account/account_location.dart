@@ -3,6 +3,8 @@ import 'package:ecommerce/app/factories/presentation/account/account_view_factor
 import 'package:flutter/material.dart';
 
 class AccountLocation extends BeamLocation<BeamState> {
+  AccountLocation([super.routeInformation]);
+
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     return [
@@ -15,5 +17,5 @@ class AccountLocation extends BeamLocation<BeamState> {
   }
 
   @override
-  List<Pattern> get pathPatterns => ['/*'];
+  List<Pattern> get pathPatterns => ['/account*'];
 }

@@ -236,158 +236,124 @@ class _MainScreenState extends State<MainScreen> {
         },
       ),
       // the usual BottomNavigationBar
-      bottomNavigationBar: OrientationBuilder(
-        builder: (BuildContext context, Orientation orientation) {
-          return orientation == Orientation.landscape
-              ? const SizedBox.shrink()
-              : Theme(
-                  data: Theme.of(context).copyWith(
-                    splashFactory: NoSplash.splashFactory,
-                    highlightColor: Colors.transparent,
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+        ),
+        child: Selector<MainPresenter, int>(
+          selector: (_, notifier) => notifier.currentIndex,
+          builder: (context, currentIndex, _) {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: Platform.isIOS
+                  ? EdgeInsets.only(
+                      top: 10,
+                      bottom: MediaQuery.of(context).size.height < 700 ? 15 : 0)
+                  : const EdgeInsets.only(top: 10, bottom: 15),
+              child: BottomNavigationBar(
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                selectedFontSize: 0,
+                unselectedFontSize: 0,
+                currentIndex: currentIndex,
+                elevation: 0,
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: const Color(0x00ffffff),
+                items: [
+                  BottomNavigationBarItem(
+                      label: 'Home',
+                      icon: BtnNavItem(
+                        btnName: LocaleKeys.navHomeButtonText.tr(),
+                        isActive: false,
+                        iconPath: SvgPaths.iconHome,
+                      ),
+                      activeIcon: BtnNavItem(
+                        btnName: LocaleKeys.navHomeButtonText.tr(),
+                        isActive: true,
+                        iconPath: SvgPaths.iconHome,
+                      )),
+                  BottomNavigationBarItem(
+                      label: 'Search',
+                      icon: BtnNavItem(
+                        btnName: LocaleKeys.navSearchButtonText.tr(),
+                        isActive: false,
+                        iconPath: SvgPaths.iconSearch,
+                      ),
+                      activeIcon: BtnNavItem(
+                        btnName: LocaleKeys.navSearchButtonText.tr(),
+                        isActive: true,
+                        iconPath: SvgPaths.iconSearch,
+                      )),
+                  BottomNavigationBarItem(
+                      label: 'My List',
+                      icon: BtnNavItem(
+                        btnName: LocaleKeys.navListButtonText.tr(),
+                        isActive: false,
+                        iconPath: SvgPaths.iconList,
+                      ),
+                      activeIcon: BtnNavItem(
+                        btnName: LocaleKeys.navListButtonText.tr(),
+                        isActive: true,
+                        iconPath: SvgPaths.iconList,
+                      )),
+                  BottomNavigationBarItem(
+                    label: 'Movie',
+                    icon: BtnNavItem(
+                      btnName: LocaleKeys.navNotificationButtonText.tr(),
+                      isActive: false,
+                      iconPath: SvgPaths.iconNotification,
+                    ),
+                    activeIcon: BtnNavItem(
+                      btnName: LocaleKeys.navNotificationButtonText.tr(),
+                      isActive: true,
+                      iconPath: SvgPaths.iconNotification,
+                    ),
                   ),
-                  child: Selector<MainPresenter, int>(
-                    selector: (_, notifier) => notifier.currentIndex,
-                    builder: (context, currentIndex, _) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        padding: Platform.isIOS
-                            ? EdgeInsets.only(
-                                top: 10,
-                                bottom: MediaQuery.of(context).size.height < 700
-                                    ? 15
-                                    : 0)
-                            : const EdgeInsets.only(top: 10, bottom: 15),
-                        child: BottomNavigationBar(
-                          showSelectedLabels: false,
-                          showUnselectedLabels: false,
-                          selectedFontSize: 0,
-                          unselectedFontSize: 0,
-                          currentIndex: currentIndex,
-                          elevation: 0,
-                          type: BottomNavigationBarType.fixed,
-                          backgroundColor: const Color(0x00ffffff),
-                          items: [
-                            BottomNavigationBarItem(
-                                label: 'Home',
-                                icon: BtnNavItem(
-                                  btnName: LocaleKeys.navHomeButtonText.tr(),
-                                  isActive: false,
-                                  iconPath: SvgPaths.iconHome,
-                                ),
-                                activeIcon: BtnNavItem(
-                                  btnName: LocaleKeys.navHomeButtonText.tr(),
-                                  isActive: true,
-                                  iconPath: SvgPaths.iconHome,
-                                )),
-                            BottomNavigationBarItem(
-                                label: 'Search',
-                                icon: BtnNavItem(
-                                  btnName: LocaleKeys.navSearchButtonText.tr(),
-                                  isActive: false,
-                                  iconPath: SvgPaths.iconSearch,
-                                ),
-                                activeIcon: BtnNavItem(
-                                  btnName: LocaleKeys.navSearchButtonText.tr(),
-                                  isActive: true,
-                                  iconPath: SvgPaths.iconSearch,
-                                )),
-                            BottomNavigationBarItem(
-                                label: 'My List',
-                                icon: BtnNavItem(
-                                  btnName: LocaleKeys.navListButtonText.tr(),
-                                  isActive: false,
-                                  iconPath: SvgPaths.iconList,
-                                ),
-                                activeIcon: BtnNavItem(
-                                  btnName: LocaleKeys.navListButtonText.tr(),
-                                  isActive: true,
-                                  iconPath: SvgPaths.iconList,
-                                )),
-                            BottomNavigationBarItem(
-                              label: 'Movie',
-                              icon: BtnNavItem(
-                                btnName:
-                                    LocaleKeys.navNotificationButtonText.tr(),
-                                isActive: false,
-                                iconPath: SvgPaths.iconNotification,
-                              ),
-                              activeIcon: BtnNavItem(
-                                btnName:
-                                    LocaleKeys.navNotificationButtonText.tr(),
-                                isActive: true,
-                                iconPath: SvgPaths.iconNotification,
-                              ),
-                            ),
-                            BottomNavigationBarItem(
-                              label: 'Account',
-                              icon: BtnNavItem(
-                                btnName: LocaleKeys.navProfileButtonText.tr(),
-                                isActive: false,
-                                iconPath: SvgPaths.iconProfile,
-                              ),
-                              activeIcon: BtnNavItem(
-                                btnName: LocaleKeys.navProfileButtonText.tr(),
-                                isActive: true,
-                                iconPath: SvgPaths.iconProfile,
-                              ),
-                              // icon: Stack(
-                              //     alignment: Alignment.topRight,
-                              //     children: [
-                              //       BtnNavItem(
-                              //         btnName: LocaleKeys.navProfileButtonText
-                              //             .tr(),
-                              //         isActive: false,
-                              //         iconPath: isAuthenticated
-                              //             ? SvgPaths.iconProfile
-                              //             : SvgPaths.iconNoAuthenticated,
-                              //       ),
-                              //       Selector<NotificationPresenter, bool>(
-                              //           selector: (_, notifier) {
-                              //         return notifier.haveNewNotifications;
-                              //       }, builder: (_, isHave, __) {
-                              //         return isHave
-                              //             ? const Padding(
-                              //                 padding:
-                              //                     EdgeInsets.only(right: 10),
-                              //                 child: NotificationDot())
-                              //             : const SizedBox.shrink();
-                              //       })
-                              //     ]),
-                            ),
-                          ],
-                          onTap: (index) {
-                            if (index == MainTab.myList.index) {
-                              // if (!isAuthenticated) {
-                              //   dialogOneButton(context,
-                              //       title: 'ログインをしてお気に入り番組を登録しよう！',
-                              //       content:
-                              //           'Myスカパー!にログインすると、マイリストにお気に入り番組リストを作成することができます！',
-                              //       buttonOne: 'ログイン', buttonOneTap: () {
-                              //     Beamer.of(context, root: true)
-                              //         .beamToReplacementNamed('/login');
-                              //   });
-                              //   return;
-                              // } else {
-                              //   context.read<MyListPresenter>()
-                              //     ..fetchBroadcastEpisode()
-                              //     ..fetchWebcastEpisode();
-                              // }
-                            }
-                            if (index == currentIndex) {
-                              _handleTapItemActive(index, context);
-                            }
-                            if (index != currentIndex) {
-                              BottomNavigationManager()
-                                  .addHistoryByIndexBottom(index);
-                              context.read<MainPresenter>().changeIndex(index);
-                            }
-                          },
-                        ),
-                      );
-                    },
+                  BottomNavigationBarItem(
+                    label: 'Account',
+                    icon: BtnNavItem(
+                      btnName: LocaleKeys.navProfileButtonText.tr(),
+                      isActive: false,
+                      iconPath: SvgPaths.iconProfile,
+                    ),
+                    activeIcon: BtnNavItem(
+                      btnName: LocaleKeys.navProfileButtonText.tr(),
+                      isActive: true,
+                      iconPath: SvgPaths.iconProfile,
+                    ),
                   ),
-                );
-        },
+                ],
+                onTap: (index) {
+                  if (index == MainTab.myList.index) {
+                    // if (!isAuthenticated) {
+                    //   dialogOneButton(context,
+                    //       title: 'ログインをしてお気に入り番組を登録しよう！',
+                    //       content:
+                    //           'Myスカパー!にログインすると、マイリストにお気に入り番組リストを作成することができます！',
+                    //       buttonOne: 'ログイン', buttonOneTap: () {
+                    //     Beamer.of(context, root: true)
+                    //         .beamToReplacementNamed('/login');
+                    //   });
+                    //   return;
+                    // } else {
+                    //   context.read<MyListPresenter>()
+                    //     ..fetchBroadcastEpisode()
+                    //     ..fetchWebcastEpisode();
+                    // }
+                  }
+                  if (index == currentIndex) {
+                    _handleTapItemActive(index, context);
+                  }
+                  if (index != currentIndex) {
+                    BottomNavigationManager().addHistoryByIndexBottom(index);
+                    context.read<MainPresenter>().changeIndex(index);
+                  }
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
