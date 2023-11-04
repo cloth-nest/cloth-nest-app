@@ -109,7 +109,7 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
       );
 
       await _saveToken.call(tokenEntity: tokenEntity);
-      await _fetchProfile.call();
+      //await _fetchProfile.call();
       _state = _state.copyWith(
         isLoading: false,
         navigateTo: LoginRedirect.homeAuth,
