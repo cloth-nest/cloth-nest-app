@@ -3,7 +3,6 @@ import 'package:ecommerce/app/factories/usecases/authentication/logout/logout_fa
 import 'package:ecommerce/app/factories/usecases/token/token_factory.dart';
 import 'package:ecommerce/data/http/http_client.dart';
 import 'package:ecommerce/infra/http/authorization_interceptor.dart';
-import 'package:ecommerce/infra/http/cancelable_interceptor.dart';
 import 'package:ecommerce/infra/http/expired_token_retry_policy.dart';
 import 'package:ecommerce/infra/http/http_adapter.dart';
 import 'package:ecommerce/infra/http/logger_interceptor.dart';

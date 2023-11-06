@@ -6,10 +6,13 @@ import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/app/utils/utils.dart';
+import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
+import 'package:ecommerce/presentation/screens/authentication/authentication_presenter.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
 import 'package:ecommerce/presentation/screens/login/widgets/auto_login_button.dart';
 import 'package:ecommerce/presentation/screens/login/widgets/forget_password_button.dart';
+import 'package:ecommerce/presentation/screens/login/widgets/login_guest_button.dart';
 import 'package:ecommerce/presentation/screens/login/widgets/sign_up_button.dart';
 import 'package:ecommerce/presentation/screens/verify_email/verify_email_screen.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
@@ -47,6 +50,15 @@ class _LoginViewState extends State<LoginView> {
     if (navigateTo != null) {
       switch (_presenter.navigateTo) {
         case LoginRedirect.homeAuth:
+          context
+              .read<AuthenticationPresenter>()
+              .changeAuthenticatedState(AuthenticatedState.authorized);
+          context.beamToReplacementNamed('/home');
+          break;
+        case LoginRedirect.home:
+          context
+              .read<AuthenticationPresenter>()
+              .changeAuthenticatedState(AuthenticatedState.guest);
           context.beamToReplacementNamed('/home');
           break;
         case LoginRedirect.signUp:
@@ -251,6 +263,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       onClick: () async {
                         widget.presenter.navigateToSignUpScreen();
                       },
+                    ),
+                    SizedBox(
+                      height: Platform.isIOS ? 20 : 23,
+                    ),
+                    LoginGuestButton(
+                      onClick: widget.presenter.loginAsGuest,
                     ),
                   ],
                 ),

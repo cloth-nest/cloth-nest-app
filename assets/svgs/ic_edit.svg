@@ -1,0 +1,12 @@
+<svg id="ic_edit" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="linear-gradient" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffcd02"/>
+      <stop offset="1" stop-color="#ffdb4c"/>
+    </linearGradient>
+  </defs>
+  <g id="ic_edit-2" data-name="ic_edit">
+    <rect id="Rectangle" width="24" height="24" fill="#fff" opacity="0"/>
+    <path id="Shape" d="M18.035,21H.965a1,1,0,0,1,0-2h17.07a1,1,0,0,1,0,2Zm-16.3-2.831H.6V17.033l3.089-3.088L14.229,3.407,3.057,12.6a4.525,4.525,0,0,1-.184-1.245C2.873,8.831,15.148,0,17.635,0c1.137,0,1.137,0,1.137,1.136C18.771,3.622,9.94,15.9,7.416,15.9a4.515,4.515,0,0,1-2.59-.816L1.738,18.168Z" transform="translate(2.313 1.524)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

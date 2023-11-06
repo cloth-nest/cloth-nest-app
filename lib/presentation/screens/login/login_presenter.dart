@@ -10,6 +10,7 @@ abstract class LoginPresenter implements ChangeNotifier {
   void navigateToForgetPasswordScreen();
   void toggleShowPassword();
   void resetState();
+  void loginAsGuest();
 
   bool get isShowPassword;
   bool get isLoading;

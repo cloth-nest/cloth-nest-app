@@ -44,4 +44,10 @@ class AppColors {
   static const Color iconGray = Color(0xff999999);
 
   static const Color iconActive = Color(0xff0099FF);
+
+  static const Color backgroundAccountList = Color(0xFFF5F5F5);
+
+  static const Color accentCTA = Color(0xffFF6869);
+
+  static const Color trackSwitch = Color(0xFF787880);
 }
