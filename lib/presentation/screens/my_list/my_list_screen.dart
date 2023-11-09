@@ -93,6 +93,7 @@ class _MyListScreenState extends State<MyListScreen> {
                   ? const MyListSliverListLoading()
                   : MyListSliverList(
                       onTap: _onProductTap,
+                      myListProducts: [],
                     )
             ],
           ),

@@ -3,7 +3,12 @@ import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ImgWishlist extends StatelessWidget {
-  const ImgWishlist({super.key});
+  final VoidCallback callback;
+
+  const ImgWishlist({
+    super.key,
+    required this.callback,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +30,15 @@ class ImgWishlist extends StatelessWidget {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 5, right: 5),
-          child: Icon(
-            Icons.favorite_rounded,
-            color: Colors.red,
-            size: 20,
+        GestureDetector(
+          onTap: () => callback.call(),
+          child: const Padding(
+            padding: EdgeInsets.only(top: 5, right: 5),
+            child: Icon(
+              Icons.favorite_rounded,
+              color: Colors.red,
+              size: 20,
+            ),
           ),
         ),
       ],

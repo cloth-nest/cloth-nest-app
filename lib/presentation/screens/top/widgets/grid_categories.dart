@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/domain/entities/category/sub_category_entity.dart';
 import 'package:ecommerce/presentation/screens/top/widgets/item_vertical_category.dart';
+import 'package:ecommerce/presentation/widgets/sliver_grid_delegate.dart';
 import 'package:flutter/material.dart';
 
 class GridCategories extends StatelessWidget {
@@ -41,10 +42,12 @@ class GridCategories extends StatelessWidget {
           Expanded(
             child: GridView.builder(
               itemCount: categories.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                 crossAxisCount: 4,
                 crossAxisSpacing: 10.0,
-                childAspectRatio: size.width / (size.height / 1.4),
+                height: 130,
+                //childAspectRatio: ((size.width - 50) / 2) / 108,
               ),
               itemBuilder: (BuildContext context, int index) {
                 final SubCategoryEntity category = categories[index];

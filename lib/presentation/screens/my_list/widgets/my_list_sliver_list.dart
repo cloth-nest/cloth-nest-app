@@ -1,12 +1,15 @@
+import 'package:ecommerce/domain/entities/my_list/my_list_entity.dart';
 import 'package:ecommerce/presentation/screens/my_list/widgets/item_my_list.dart';
 import 'package:flutter/material.dart';
 
 class MyListSliverList extends StatelessWidget {
   final VoidCallback onTap;
+  final List<MyListEntity> myListProducts;
 
   const MyListSliverList({
     super.key,
     required this.onTap,
+    required this.myListProducts,
   });
 
   @override

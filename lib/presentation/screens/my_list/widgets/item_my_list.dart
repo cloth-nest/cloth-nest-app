@@ -16,8 +16,8 @@ class ItemMyList extends StatelessWidget {
       onTap: () {
         onTap.call();
       },
-      child: const Padding(
-        padding: EdgeInsets.only(
+      child: Padding(
+        padding: const EdgeInsets.only(
           left: 20.0,
           bottom: 10,
           top: 10,
@@ -25,9 +25,11 @@ class ItemMyList extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ImgWishlist(),
-            SizedBox(width: 20),
-            InfoWishlist(),
+            ImgWishlist(
+              callback: () => onTap.call(),
+            ),
+            const SizedBox(width: 20),
+            const InfoWishlist(),
           ],
         ),
       ),

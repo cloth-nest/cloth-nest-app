@@ -1,6 +1,8 @@
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/domain/entities/my_list/my_list_entity.dart';
 import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
+import 'package:ecommerce/presentation/screens/my_list/widgets/my_list_sliver_list.dart';
 import 'package:ecommerce/presentation/screens/top/top_presenter.dart';
 import 'package:ecommerce/presentation/screens/top/widgets/grid_categories.dart';
 import 'package:ecommerce/presentation/widgets/text_field/search_text_field.dart';
@@ -105,6 +107,25 @@ class _TopScreenState extends State<TopScreen>
                   final subCategories = contentMasterPresenter
                       .topCategories[tabIndex].subCategory;
 
+                  // TODO: test my list
+                  if (tabIndex == 0) {
+                    return CustomScrollView(
+                      clipBehavior: Clip.none,
+                      shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        Selector<TopPresenter, List<MyListEntity>>(
+                          selector: (_, presenter) => presenter.products,
+                          builder: (_, products, __) => MyListSliverList(
+                            onTap: () {
+                              //context.read<>()
+                            },
+                            myListProducts: products,
+                          ),
+                        )
+                      ],
+                    );
+                  }
                   return GridCategories(
                     categories: subCategories,
                     index: tabIndex,

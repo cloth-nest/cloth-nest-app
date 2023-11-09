@@ -1,3 +1,4 @@
+import 'package:ecommerce/domain/entities/my_list/my_list_entity.dart';
 import 'package:ecommerce/presentation/presenters/top/top_state.dart';
 import 'package:ecommerce/presentation/screens/top/top_presenter.dart';
 import 'package:flutter/material.dart';
@@ -87,4 +88,10 @@ class ProviderTopPresenter with ChangeNotifier implements TopPresenter {
   void fetchHistorySearch() {
     // TODO: implement fetchHistorySearch
   }
+
+  @override
+  List<MyListEntity> get myListProducts => _state.myListProducts;
+
+  @override
+  List<MyListEntity> get products => _state.products;
 }
