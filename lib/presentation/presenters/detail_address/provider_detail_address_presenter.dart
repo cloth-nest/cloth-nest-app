@@ -1,6 +1,9 @@
 import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/domain/entities/place/place_entity.dart';
+import 'package:ecommerce/domain/usecases/default_address/fetch_default_address.dart';
 import 'package:ecommerce/domain/usecases/detail_address/fetch_detail_address.dart';
+import 'package:ecommerce/domain/usecases/edit_address/edit_address_params.dart';
+import 'package:ecommerce/domain/usecases/edit_address/fetch_edit_address.dart';
 import 'package:ecommerce/domain/usecases/place/fetch_districts.dart';
 import 'package:ecommerce/domain/usecases/place/fetch_provinces.dart';
 import 'package:ecommerce/domain/usecases/place/fetch_wards.dart';
@@ -17,6 +20,8 @@ class ProviderDetailAddressPresenter
   final FetchDistricts _fetchDistricts;
   final FetchWards _fetchWards;
   final FetchProvinces _fetchProvinces;
+  final FetchEditAddress _fetchEditAddress;
+  final FetchDefaultAddress _fetchDefaultAddress;
 
   ProviderDetailAddressPresenter({
     required DetailAddressState state,
@@ -24,14 +29,20 @@ class ProviderDetailAddressPresenter
     required FetchDistricts fetchDistricts,
     required FetchWards fetchWards,
     required FetchProvinces fetchProvinces,
+    required FetchEditAddress fetchEditAddress,
+    required FetchDefaultAddress fetchDefaultAddress,
   })  : _state = state,
         _fetchDetailAddress = fetchDetailAddress,
         _fetchDistricts = fetchDistricts,
         _fetchProvinces = fetchProvinces,
-        _fetchWards = fetchWards;
+        _fetchWards = fetchWards,
+        _fetchEditAddress = fetchEditAddress,
+        _fetchDefaultAddress = fetchDefaultAddress;
 
   @override
   bool get isLoading => _state.isLoading;
+
+  PlaceEntity? districtTmp, provinceTmp, wardTmp;
 
   @override
   void initData({required int idAddress}) async {
@@ -40,11 +51,35 @@ class ProviderDetailAddressPresenter
       notifyListeners();
 
       AddressEntity entity = await _fetchDetailAddress.call(id: idAddress);
-      List<PlaceEntity> provinces = await _getProvinces();
-      List<PlaceEntity> wards = await _getWards(entity.wardCode);
-      List<PlaceEntity> districts = await _getDistricts(entity.districtCode);
 
+      List<PlaceEntity> provinces = await _getProvinces();
+      List<PlaceEntity> wards = await _getWards(entity.districtCode);
+      List<PlaceEntity> districts = await _getDistricts(entity.provinceCode);
+
+      for (var district in districts) {
+        if (district.code == entity.districtCode &&
+            district.name == entity.districtName) {
+          districtTmp = district;
+        }
+      }
+
+      for (var ward in wards) {
+        if (ward.code == entity.wardCode && ward.name == entity.wardName) {
+          wardTmp = ward;
+        }
+      }
+
+      for (var province in provinces) {
+        if (province.code == entity.provinceCode &&
+            province.name == entity.provinceName) {
+          provinceTmp = province;
+        }
+      }
       _state = _state.copyWith(
+        id: idAddress,
+        selectedDistrict: districtTmp,
+        selectedProvince: provinceTmp,
+        selectedWard: wardTmp,
         address: entity,
         isLoading: false,
         provinces: provinces,
@@ -55,6 +90,12 @@ class ProviderDetailAddressPresenter
         firstName: entity.firstName,
         lastName: entity.lastName,
         detailAddress: entity.detail,
+        firstNameController: TextEditingController(text: entity.firstName),
+        lastNameController: TextEditingController(text: entity.lastName),
+        phoneController: TextEditingController(text: entity.phone),
+        mailController: TextEditingController(text: entity.email),
+        detailController: TextEditingController(text: entity.detail),
+        isDefault: entity.isDefault,
       );
 
       notifyListeners();
@@ -94,6 +135,10 @@ class ProviderDetailAddressPresenter
   @override
   void setProvince({required PlaceEntity newProvince}) async {
     if (_state.selectedProvince != newProvince) {
+      provinceTmp = newProvince;
+      districtTmp = null;
+      wardTmp = null;
+
       List<PlaceEntity> districts = await _getDistricts(newProvince.code);
 
       _state = _state.copyWith(
@@ -141,6 +186,9 @@ class ProviderDetailAddressPresenter
   @override
   void setDistrict({required PlaceEntity newDistrict}) async {
     if (_state.selectedDistrict != newDistrict) {
+      districtTmp = newDistrict;
+      wardTmp = null;
+
       List<PlaceEntity> wards = await _getWards(newDistrict.code);
 
       _state = _state.copyWith(
@@ -157,6 +205,8 @@ class ProviderDetailAddressPresenter
   @override
   void setWard({required PlaceEntity newWard}) {
     if (_state.selectedWard != newWard) {
+      wardTmp = newWard;
+
       _state = _state.copyWith(
         selectedWard: newWard,
       );
@@ -171,6 +221,9 @@ class ProviderDetailAddressPresenter
     if (_state.email != newEmail) {
       _state = _state.copyWith(
         email: newEmail,
+        selectedProvince: provinceTmp,
+        selectedDistrict: districtTmp,
+        selectedWard: wardTmp,
       );
       _validateForm();
 
@@ -183,6 +236,9 @@ class ProviderDetailAddressPresenter
     if (_state.firstName != firstName) {
       _state = _state.copyWith(
         firstName: firstName,
+        selectedProvince: provinceTmp,
+        selectedDistrict: districtTmp,
+        selectedWard: wardTmp,
       );
       _validateForm();
 
@@ -195,6 +251,9 @@ class ProviderDetailAddressPresenter
     if (_state.lastName != lastName) {
       _state = _state.copyWith(
         lastName: lastName,
+        selectedProvince: provinceTmp,
+        selectedDistrict: districtTmp,
+        selectedWard: wardTmp,
       );
       _validateForm();
 
@@ -207,6 +266,9 @@ class ProviderDetailAddressPresenter
     if (_state.phone != phone) {
       _state = _state.copyWith(
         phone: phone,
+        selectedProvince: provinceTmp,
+        selectedDistrict: districtTmp,
+        selectedWard: wardTmp,
       );
       _validateForm();
 
@@ -226,9 +288,12 @@ class ProviderDetailAddressPresenter
           _state.phone!.isNotEmpty &&
           _state.detailAddress != null &&
           _state.detailAddress!.isNotEmpty &&
-          _state.selectedProvince != null &&
-          _state.selectedDistrict != null &&
-          _state.selectedWard != null,
+          provinceTmp != null &&
+          districtTmp != null &&
+          wardTmp != null,
+      selectedProvince: provinceTmp,
+      selectedDistrict: districtTmp,
+      selectedWard: wardTmp,
     );
   }
 
@@ -237,6 +302,9 @@ class ProviderDetailAddressPresenter
     if (_state.detailAddress != detail) {
       _state = _state.copyWith(
         detailAddress: detail,
+        selectedProvince: provinceTmp,
+        selectedDistrict: districtTmp,
+        selectedWard: wardTmp,
       );
       _validateForm();
 
@@ -247,31 +315,42 @@ class ProviderDetailAddressPresenter
   @override
   void editAddress() async {
     try {
-      // _state = _state.copyWith(isLoading: true);
-      // notifyListeners();
-
-      // await _fetchCreateAddress.call(
-      //   params: CreateAddressParams(
-      //     email: _state.email!,
-      //     firstName: _state.firstName!,
-      //     lastName: _state.lastName!,
-      //     provinceCode: _state.selectedProvince!.code,
-      //     provinceName: _state.selectedProvince!.name,
-      //     districtCode: _state.selectedDistrict!.code,
-      //     districtName: _state.selectedDistrict!.name,
-      //     wardCode: _state.selectedWard!.code,
-      //     wardName: _state.selectedWard!.name,
-      //     detail: _state.detailAddress!,
-      //     phone: _state.phone!,
-      //   ),
-      // );
-
-      // _state = _state.copyWith(isLoading: false, navigateTo: 'address');
-      // notifyListeners();
-    } catch (e) {
-      _state = _state.copyWith(isLoading: false);
+      _state = _state.copyWith(
+        isLoading: true,
+      );
       notifyListeners();
-      debugPrint('error create address: $e');
+
+      await Future.wait([
+        _fetchEditAddress.call(
+          params: EditAddressParams(
+            email: _state.email!,
+            firstName: _state.firstName!,
+            lastName: _state.lastName!,
+            provinceCode: provinceTmp!.code,
+            provinceName: provinceTmp!.name,
+            districtCode: districtTmp!.code,
+            districtName: districtTmp!.name,
+            wardCode: wardTmp!.code,
+            wardName: wardTmp!.name,
+            detail: _state.detailAddress!,
+            phone: _state.phone!,
+            id: _state.id!,
+          ),
+        ),
+        if (_state.isDefault) _fetchDefaultAddress.call(id: _state.id!),
+      ]);
+
+      _state = _state.copyWith(isLoading: false, navigateTo: 'address');
+      notifyListeners();
+    } catch (e) {
+      _state = _state.copyWith(
+        isLoading: false,
+        selectedDistrict: districtTmp,
+        selectedProvince: provinceTmp,
+        selectedWard: wardTmp,
+      );
+      notifyListeners();
+      debugPrint('error edit address: $e');
     }
   }
 
@@ -289,4 +368,20 @@ class ProviderDetailAddressPresenter
 
   @override
   List<PlaceEntity> get wards => _state.wards;
+
+  @override
+  bool get isDefault => _state.isDefault;
+
+  @override
+  void setDefaultAddress({required bool isDefault}) {
+    if (_state.isDefault != isDefault) {
+      _state = _state.copyWith(
+        isDefault: isDefault,
+        selectedProvince: provinceTmp,
+        selectedDistrict: districtTmp,
+        selectedWard: wardTmp,
+      );
+      notifyListeners();
+    }
+  }
 }

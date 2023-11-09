@@ -1,3 +1,3 @@
-abstract class FetchDeleteAddress {
+abstract class FetchDefaultAddress {
   Future<void> call({required int id});
 }

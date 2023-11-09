@@ -12,6 +12,12 @@ abstract class DetailAddressPresenter implements ChangeNotifier {
   PlaceEntity? get selectedProvince;
   PlaceEntity? get selectedWard;
   PlaceEntity? get selectedDistrict;
+  bool get isFormValid;
+  List<PlaceEntity> get provinces;
+  List<PlaceEntity> get districts;
+  List<PlaceEntity> get wards;
+  String? get navigateTo;
+  bool get isDefault;
 
   void initData({required int idAddress});
   void setProvince({required PlaceEntity newProvince});
@@ -22,9 +28,6 @@ abstract class DetailAddressPresenter implements ChangeNotifier {
   void setLastName({required String lastName});
   void setPhone({required String phone});
   void setDetailAddress({required String detail});
-  bool get isFormValid;
-  List<PlaceEntity> get provinces;
-  List<PlaceEntity> get districts;
-  List<PlaceEntity> get wards;
-  String? get navigateTo;
+  void editAddress();
+  void setDefaultAddress({required bool isDefault});
 }

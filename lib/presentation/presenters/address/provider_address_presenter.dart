@@ -1,4 +1,5 @@
 import 'package:ecommerce/domain/entities/address/address_entity.dart';
+import 'package:ecommerce/domain/usecases/delete_address/fetch_delete_address.dart';
 import 'package:ecommerce/domain/usecases/fetch_address/fetch_address.dart';
 import 'package:ecommerce/presentation/presenters/address/address_state.dart';
 import 'package:ecommerce/presentation/screens/address/address_presenter.dart';
@@ -8,12 +9,15 @@ class ProviderAddressPresenter with ChangeNotifier implements AddressPresenter {
   AddressState _state;
 
   final FetchAddress _fetchAddress;
+  final FetchDeleteAddress _fetchDeleteAddress;
 
   ProviderAddressPresenter({
     required AddressState state,
     required FetchAddress fetchAddress,
+    required FetchDeleteAddress fetchDeleteAddress,
   })  : _state = state,
-        _fetchAddress = fetchAddress;
+        _fetchAddress = fetchAddress,
+        _fetchDeleteAddress = fetchDeleteAddress;
 
   @override
   void navigateToAddAddressScreen() {
@@ -49,4 +53,16 @@ class ProviderAddressPresenter with ChangeNotifier implements AddressPresenter {
 
   @override
   AddressEntity? get selectedAddress => _state.selectedAddress;
+
+  @override
+  void deleteAddress({required int idAddress}) async {
+    try {
+      await _fetchDeleteAddress.call(id: idAddress);
+    } catch (e) {
+      debugPrint('error delete address: $e');
+    }
+  }
+
+  @override
+  bool get isDefault => true;
 }

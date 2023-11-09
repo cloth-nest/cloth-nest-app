@@ -25,6 +25,8 @@ class DetailAddressState {
   final String? phone;
   final String? detailAddress;
   final String? navigateTo;
+  final int? id;
+  final bool isDefault;
 
   const DetailAddressState({
     required this.isLoading,
@@ -46,7 +48,9 @@ class DetailAddressState {
     this.phone,
     this.detailAddress,
     this.navigateTo,
+    this.id,
     required this.isFormValid,
+    required this.isDefault,
   });
 
   factory DetailAddressState.initial() {
@@ -61,6 +65,8 @@ class DetailAddressState {
       wards: [],
       provinces: [],
       isFormValid: false,
+      id: null,
+      isDefault: false,
     );
   }
 
@@ -85,6 +91,8 @@ class DetailAddressState {
     String? phone,
     String? detailAddress,
     String? navigateTo,
+    int? id,
+    bool? isDefault,
   }) {
     return DetailAddressState(
       isLoading: isLoading ?? this.isLoading,
@@ -93,9 +101,9 @@ class DetailAddressState {
       phoneController: phoneController ?? this.phoneController,
       mailController: mailController ?? this.mailController,
       detailController: detailController ?? this.detailController,
-      selectedProvince: selectedProvince ?? this.selectedProvince,
-      selectedDistrict: selectedDistrict ?? this.selectedDistrict,
-      selectedWard: selectedWard ?? this.selectedWard,
+      selectedProvince: selectedProvince,
+      selectedDistrict: selectedDistrict,
+      selectedWard: selectedWard,
       address: address ?? this.address,
       districts: districts ?? this.districts,
       wards: wards ?? this.wards,
@@ -107,6 +115,8 @@ class DetailAddressState {
       phone: phone ?? this.phone,
       detailAddress: detailAddress ?? this.detailAddress,
       navigateTo: navigateTo ?? this.navigateTo,
+      id: id ?? this.id,
+      isDefault: isDefault ?? this.isDefault,
     );
   }
 }

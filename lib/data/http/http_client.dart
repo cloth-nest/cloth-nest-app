@@ -25,4 +25,16 @@ abstract class HttpClient {
     Map<String, String>? headers,
     String? body,
   });
+
+  Future<http.Response> delete(
+    Uri uri, {
+    Map<String, String>? headers,
+    String? body,
+  });
+
+  Future<http.Response> patch(
+    Uri uri, {
+    Map<String, String>? headers,
+    String? body,
+  });
 }

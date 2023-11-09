@@ -20,7 +20,7 @@ class RemoteFetchEditAddress implements FetchEditAddress {
 
     try {
       final httpResponse = await client.makeRequest(
-        uri: Uri.parse(url),
+        uri: Uri.parse('$url/${editAddressParams.id}'),
         method: HttpMethod.patch,
         body: editAddressParams.toJson(),
       );

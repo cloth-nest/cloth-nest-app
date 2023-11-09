@@ -1,12 +1,12 @@
 import 'package:ecommerce/data/helper/response_handler.dart';
 import 'package:ecommerce/data/http/http_client.dart';
-import 'package:ecommerce/domain/usecases/delete_address/fetch_delete_address.dart';
+import 'package:ecommerce/domain/usecases/default_address/fetch_default_address.dart';
 
-class RemoteFetchDeleteAddress implements FetchDeleteAddress {
+class RemoteFetchDefaultAddress implements FetchDefaultAddress {
   final HttpClient client;
   final String url;
 
-  const RemoteFetchDeleteAddress({
+  RemoteFetchDefaultAddress({
     required this.client,
     required this.url,
   });
@@ -16,7 +16,7 @@ class RemoteFetchDeleteAddress implements FetchDeleteAddress {
     try {
       final httpResponse = await client.makeRequest(
         uri: Uri.parse('$url/$id'),
-        method: HttpMethod.delete,
+        method: HttpMethod.patch,
       );
       ResponseHandler.handle(httpResponse);
     } catch (e) {

@@ -26,7 +26,7 @@ class AddressState {
     AddressEntity? selectedAddress,
   }) {
     return AddressState(
-      navigateTo: navigateTo ?? this.navigateTo,
+      navigateTo: navigateTo,
       addresses: addresses ?? this.addresses,
       selectedAddress: selectedAddress ?? this.selectedAddress,
     );

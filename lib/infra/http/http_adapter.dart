@@ -59,6 +59,18 @@ class HttpAdapter implements HttpClient {
           headers: request.headers,
           body: request.body,
         );
+      case 'delete':
+        return delete(
+          request.url,
+          headers: request.headers,
+          body: request.body,
+        );
+      case 'patch':
+        return patch(
+          request.url,
+          headers: request.headers,
+          body: request.body,
+        );
       default:
         throw UnimplementedError();
     }
@@ -94,6 +106,48 @@ class HttpAdapter implements HttpClient {
 
     if (customHeaders != null) {
       requestHeaders.addAll(customHeaders);
+    }
+  }
+
+  @override
+  Future<http.Response> delete(Uri uri,
+      {Map<String, String>? headers, String? body}) async {
+    try {
+      final response = await _client.delete(
+        uri,
+        headers: headers,
+        body: body,
+      );
+      return response;
+    } on NetworkException catch (e) {
+      throw NetworkException(message: e.message);
+    } on TimeoutException catch (e) {
+      throw TimeoutException(message: e.message);
+    } on SocketException catch (e) {
+      throw SocketException(message: e.message);
+    } catch (e) {
+      throw UnknownException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<http.Response> patch(Uri uri,
+      {Map<String, String>? headers, String? body}) async {
+    try {
+      final response = await _client.patch(
+        uri,
+        headers: headers,
+        body: body,
+      );
+      return response;
+    } on NetworkException catch (e) {
+      throw NetworkException(message: e.message);
+    } on TimeoutException catch (e) {
+      throw TimeoutException(message: e.message);
+    } on SocketException catch (e) {
+      throw SocketException(message: e.message);
+    } catch (e) {
+      throw UnknownException(message: e.toString());
     }
   }
 }

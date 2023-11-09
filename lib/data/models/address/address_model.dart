@@ -15,6 +15,7 @@ class AddressModel {
   final String detail;
   final String phone;
   final bool? isAddressProfile;
+  final bool? isDefault;
 
   AddressModel({
     required this.id,
@@ -30,9 +31,11 @@ class AddressModel {
     required this.detail,
     required this.phone,
     this.isAddressProfile,
+    this.isDefault,
   });
 
   AddressModel copyWith({
+    int? id,
     String? email,
     String? firstName,
     String? lastName,
@@ -45,7 +48,7 @@ class AddressModel {
     String? detail,
     String? phone,
     bool? isAddressProfile,
-    int? id,
+    bool? isDefault,
   }) {
     return AddressModel(
       id: id ?? this.id,
@@ -61,6 +64,7 @@ class AddressModel {
       detail: detail ?? this.detail,
       phone: phone ?? this.phone,
       isAddressProfile: isAddressProfile ?? this.isAddressProfile,
+      isDefault: isDefault ?? this.isDefault,
     );
   }
 
@@ -79,6 +83,7 @@ class AddressModel {
       'phone': phone,
       'isAddressProfile': isAddressProfile,
       'id': id,
+      'isDefault': isDefault,
     };
   }
 
@@ -99,6 +104,7 @@ class AddressModel {
       isAddressProfile: map['isAddressProfile'] != null
           ? map['isAddressProfile'] as bool
           : null,
+      isDefault: map['isDefault'],
     );
   }
 
@@ -115,5 +121,6 @@ class AddressModel {
         wardName: wardName,
         detail: detail,
         phone: phone,
+        isDefault: isDefault,
       );
 }

@@ -13,6 +13,7 @@ class AddressEntity {
   final String phone;
   final bool? isAddressProfile;
   final int id;
+  final bool? isDefault;
 
   AddressEntity({
     required this.email,
@@ -27,6 +28,7 @@ class AddressEntity {
     required this.detail,
     required this.phone,
     this.isAddressProfile,
+    this.isDefault,
     required this.id,
   });
 
@@ -44,6 +46,7 @@ class AddressEntity {
     String? phone,
     bool? isAddressProfile,
     int? id,
+    bool? isDefault,
   }) {
     return AddressEntity(
       email: email ?? this.email,
@@ -59,6 +62,7 @@ class AddressEntity {
       phone: phone ?? this.phone,
       isAddressProfile: isAddressProfile ?? this.isAddressProfile,
       id: id ?? this.id,
+      isDefault: isDefault ?? this.isDefault,
     );
   }
 }

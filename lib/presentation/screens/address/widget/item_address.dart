@@ -29,9 +29,13 @@ class ItemAddress extends StatelessWidget {
         ),
         child: ListTile(
           dense: true,
-          leading: const Icon(
-            Icons.bookmark_border_outlined,
-          ),
+          leading: address.isDefault!
+              ? SvgPicture.asset(
+                  SvgPaths.iconAddressSelected,
+                  width: 20,
+                  height: 20,
+                )
+              : const SizedBox.shrink(),
           contentPadding: const EdgeInsets.symmetric(horizontal: 5),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,11 +55,6 @@ class ItemAddress extends StatelessWidget {
                     ),
               ),
             ],
-          ),
-          trailing: SvgPicture.asset(
-            SvgPaths.iconEdit,
-            width: 20,
-            height: 20,
           ),
         ),
       ),

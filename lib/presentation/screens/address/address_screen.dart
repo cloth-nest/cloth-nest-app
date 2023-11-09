@@ -81,46 +81,54 @@ class _AddressScreenState extends State<AddressScreen> {
           style: Theme.of(context).textTheme.displaySmall,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: SizedBox(
-            height: size.height,
-            child: Column(
-              children: [
-                ItemTypeAddress(
-                  typeAddress: 'Add home address',
-                  leading: const Icon(Icons.home),
-                  onTap: () {},
-                ),
-                ItemTypeAddress(
-                  typeAddress: 'Add company address',
-                  leading: const Icon(Icons.business),
-                  onTap: () {},
-                ),
-                ItemTypeAddress(
-                  typeAddress: 'Add new address',
-                  leading: const Icon(Icons.add),
-                  onTap: () {
-                    _presenter.navigateToAddAddressScreen();
-                  },
-                ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: Selector<AddressPresenter, List<AddressEntity>>(
-                    selector: (_, presenter) => presenter.addresses,
-                    builder: (_, addresses, __) {
-                      return VerticalListAddresses(
-                        addresses: addresses,
-                        callback: (address) {
-                          _presenter.navigateToDetailAddressScreen(
-                              address: address);
-                        },
-                      );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _presenter.initData();
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: SizedBox(
+              height: size.height,
+              child: Column(
+                children: [
+                  ItemTypeAddress(
+                    typeAddress: 'Add home address',
+                    leading: const Icon(Icons.home),
+                    onTap: () {},
+                  ),
+                  ItemTypeAddress(
+                    typeAddress: 'Add company address',
+                    leading: const Icon(Icons.business),
+                    onTap: () {},
+                  ),
+                  ItemTypeAddress(
+                    typeAddress: 'Add new address',
+                    leading: const Icon(Icons.add),
+                    onTap: () {
+                      _presenter.navigateToAddAddressScreen();
                     },
                   ),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: Selector<AddressPresenter, List<AddressEntity>>(
+                      selector: (_, presenter) => presenter.addresses,
+                      builder: (_, addresses, __) {
+                        return VerticalListAddresses(
+                          addresses: addresses,
+                          callback: (address) {
+                            _presenter.navigateToDetailAddressScreen(
+                                address: address);
+                          },
+                          onDeleted: (address) {
+                            _presenter.deleteAddress(idAddress: address.id);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
