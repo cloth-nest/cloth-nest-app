@@ -1,3 +1,5 @@
+import 'package:ecommerce/domain/entities/user/user_entity.dart';
+
 abstract class FetchProfile {
-  Future<void> call();
+  Future<UserEntity> call();
 }

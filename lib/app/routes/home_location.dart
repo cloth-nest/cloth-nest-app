@@ -1,4 +1,7 @@
 import 'package:beamer/beamer.dart';
+import 'package:ecommerce/app/routes/account/account_add_address_location.dart';
+import 'package:ecommerce/app/routes/account/account_address_location.dart';
+import 'package:ecommerce/app/routes/account/account_detail_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_product_location.dart';
@@ -78,7 +81,13 @@ final notificationTabHomeRouteDelegate = BeamerDelegate(
 final accountTabHomeRouteDelegate = BeamerDelegate(
   initialPath: '/account',
   locationBuilder: (routeInformation, _) {
-    if (routeInformation.location!.contains('/account')) {
+    if (routeInformation.location!.contains('/account/address/detail')) {
+      return AccountDetailAddressLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/account/address/add')) {
+      return AccountAddAddressLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/account/address')) {
+      return AccountAddressLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/account')) {
       return AccountLocation(routeInformation);
     }
     return NotFound();

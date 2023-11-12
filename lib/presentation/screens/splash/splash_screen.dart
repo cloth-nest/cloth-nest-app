@@ -1,5 +1,8 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:beamer/beamer.dart';
+import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
+import 'package:ecommerce/presentation/presenters/splash/provider_splash_presenter.dart';
+import 'package:ecommerce/presentation/screens/authentication/authentication_presenter.dart';
 import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
 import 'package:ecommerce/presentation/screens/splash/splash_presenter.dart';
 import 'package:flutter/material.dart';
@@ -36,10 +39,18 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _onListener() {
-    String nextRoute = splashPresenter.navigateTo;
+    SplashRedirectTo? nextRoute = splashPresenter.navigateTo;
 
-    if (nextRoute.isNotEmpty) {
-      context.beamToReplacementNamed(nextRoute);
+    switch (nextRoute) {
+      case SplashRedirectTo.home:
+        context
+            .read<AuthenticationPresenter>()
+            .changeAuthenticatedState(AuthenticatedState.authorized);
+        context.beamToReplacementNamed('/home');
+        break;
+      default:
+        context.beamToReplacementNamed('/login');
+        break;
     }
   }
 

@@ -4,27 +4,28 @@ import 'package:ecommerce/domain/usecases/token/fetch_token.dart';
 import 'package:ecommerce/presentation/screens/splash/splash_presenter.dart';
 import 'package:flutter/material.dart';
 
+enum SplashRedirectTo { home, login }
+
 class ProviderSplashPresenter extends SplashPresenter with ChangeNotifier {
   final FetchToken _fetchToken;
 
   ProviderSplashPresenter({required FetchToken fetchToken})
       : _fetchToken = fetchToken;
 
-  String _navigateTo = '';
+  SplashRedirectTo? _navigateTo;
 
   @override
   void findNextRoute() async {
-    /// TODO: check authorized or not here
     final TokenEntity? tokenEntity =
         await _fetchToken.call(key: uniqueUserTokenKey);
     if (tokenEntity == null) {
-      _navigateTo = '/login';
+      _navigateTo = SplashRedirectTo.login;
     } else {
-      _navigateTo = '/home';
+      _navigateTo = SplashRedirectTo.home;
     }
     notifyListeners();
   }
 
   @override
-  String get navigateTo => _navigateTo;
+  SplashRedirectTo? get navigateTo => _navigateTo;
 }

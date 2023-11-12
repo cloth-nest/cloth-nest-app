@@ -2,10 +2,11 @@ import 'package:ecommerce/data/http/exceptions/http_exception.dart';
 import 'package:ecommerce/domain/entities/token/token_entity.dart';
 import 'package:ecommerce/domain/usecases/authentication/login/fetch_login.dart';
 import 'package:ecommerce/domain/usecases/authentication/login/login_params.dart';
-import 'package:ecommerce/domain/usecases/profile/fetch_profile.dart';
 import 'package:ecommerce/domain/usecases/token/save_token.dart';
+import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/protocols/validation.dart';
+import 'package:ecommerce/presentation/screens/authentication/authentication_presenter.dart';
 import 'package:ecommerce/presentation/screens/login/login_presenter.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
   final FetchLogin _fetchLogin;
   final SaveToken _saveToken;
   final Validation _validation;
-  final FetchProfile _fetchProfile;
+  final AuthenticationPresenter _authenticationPresenter;
 
   void _validateEmail() {
     final exceptions = _validation.validate(
@@ -109,11 +110,12 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
       );
 
       await _saveToken.call(tokenEntity: tokenEntity);
-      //await _fetchProfile.call();
+
       _state = _state.copyWith(
         isLoading: false,
         navigateTo: LoginRedirect.homeAuth,
       );
+
       notifyListeners();
     } on HttpException catch (e) {
       LoginRedirect? navigateTo;
@@ -144,12 +146,12 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
     required FetchLogin fetchLogin,
     required SaveToken saveToken,
     required Validation validation,
-    required FetchProfile fetchProfile,
+    required AuthenticationPresenter authenticationPresenter,
   })  : _state = state,
         _fetchLogin = fetchLogin,
         _saveToken = saveToken,
         _validation = validation,
-        _fetchProfile = fetchProfile;
+        _authenticationPresenter = authenticationPresenter;
 
   @override
   bool get isLoading => _state.isLoading;
@@ -204,4 +206,13 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
 
   @override
   String get loginId => _state.loginId ?? '';
+
+  @override
+  void loginAsGuest() {
+    _authenticationPresenter.changeAuthenticatedState(AuthenticatedState.guest);
+    _state = _state.copyWith(
+      navigateTo: LoginRedirect.home,
+    );
+    notifyListeners();
+  }
 }

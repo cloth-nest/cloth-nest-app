@@ -1,84 +1,50 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'dart:io';
-
 import 'package:ecommerce/data/models/account/setting_account_model.dart';
 import 'package:equatable/equatable.dart';
 
 class SettingAccountEntity extends Equatable {
-  final bool isAllowAvailableProgram;
-  final bool isAllowChasing;
-  final bool isAllowContinuousPlay;
   final bool isAllowSendNotification;
-  final bool isAllowAddToMyList;
-  final String ageLimit;
-  final String timeReceiveInformation;
+  final bool isDarkMode;
+  final String language;
 
   factory SettingAccountEntity.initial() {
-    return SettingAccountEntity(
-      isAllowAvailableProgram: false,
-      isAllowChasing: true,
-      isAllowContinuousPlay: true,
+    return const SettingAccountEntity(
       isAllowSendNotification: true,
-      isAllowAddToMyList: true,
-      ageLimit: Platform.isIOS ? 'PG-12以上の番組を非表示' : 'R-15以上の番組を非表示',
-      timeReceiveInformation: '10分',
+      isDarkMode: false,
+      language: 'English',
     );
   }
 
   const SettingAccountEntity({
-    required this.isAllowAvailableProgram,
-    required this.isAllowChasing,
-    required this.isAllowContinuousPlay,
     required this.isAllowSendNotification,
-    required this.isAllowAddToMyList,
-    required this.ageLimit,
-    required this.timeReceiveInformation,
+    required this.isDarkMode,
+    required this.language,
   });
 
   SettingAccountModel toModel() => SettingAccountModel(
-        ageLimit: ageLimit,
-        isAllowAddToMyList: isAllowAddToMyList,
-        isAllowAvailableProgram: isAllowAvailableProgram,
-        isAllowChasing: isAllowChasing,
-        isAllowContinuousPlay: isAllowContinuousPlay,
+        language: language,
+        isDarkMode: isDarkMode,
         isAllowSendNotification: isAllowSendNotification,
-        timeReceiveInformation: timeReceiveInformation,
       );
 
   @override
   List<Object?> get props => [
-        isAllowAddToMyList,
-        isAllowAvailableProgram,
-        isAllowChasing,
-        ageLimit,
-        isAllowContinuousPlay,
+        isDarkMode,
         isAllowSendNotification,
-        timeReceiveInformation,
+        language,
       ];
 
   SettingAccountEntity copyWith({
-    bool? isAllowAvailableProgram,
-    bool? isAllowChasing,
-    bool? isAllowContinuousPlay,
     bool? isAllowSendNotification,
-    bool? isAllowAddToMyList,
-    String? ageLimit,
-    String? timeReceiveInformation,
-    String? userId,
+    bool? isDarkMode,
+    String? language,
   }) {
     return SettingAccountEntity(
-      isAllowAvailableProgram:
-          isAllowAvailableProgram ?? this.isAllowAvailableProgram,
-      isAllowChasing: isAllowChasing ?? this.isAllowChasing,
-      isAllowContinuousPlay:
-          isAllowContinuousPlay ?? this.isAllowContinuousPlay,
+      isDarkMode: isDarkMode ?? this.isDarkMode,
+      language: language ?? this.language,
       isAllowSendNotification:
           isAllowSendNotification ?? this.isAllowSendNotification,
-      isAllowAddToMyList: isAllowAddToMyList ?? this.isAllowAddToMyList,
-      ageLimit: ageLimit ?? this.ageLimit,
-      timeReceiveInformation:
-          timeReceiveInformation ?? this.timeReceiveInformation,
     );
   }
 }

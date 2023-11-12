@@ -14,6 +14,7 @@ abstract class BaseTextField extends StatefulWidget {
   final Function(String?)? onChanged;
   final Function(String?)? onSubmitted;
   final Function(bool?)? onFocusChanged;
+  final TextInputType? keyboardType;
 
   const BaseTextField({
     super.key,
@@ -28,5 +29,6 @@ abstract class BaseTextField extends StatefulWidget {
     this.onChanged,
     this.onSubmitted,
     this.onFocusChanged,
+    this.keyboardType,
   });
 }

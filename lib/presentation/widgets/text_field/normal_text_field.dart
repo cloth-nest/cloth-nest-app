@@ -19,6 +19,7 @@ class NormalTextField extends BaseTextField {
     super.onSubmitted,
     super.prefixIcon,
     super.textInputAction = TextInputAction.done,
+    super.keyboardType = TextInputType.emailAddress,
   });
 
   @override
@@ -29,6 +30,8 @@ class BTextFieldState extends State<NormalTextField> {
   String get _placeholder => widget.placeHolder;
 
   Widget? get _iconPrefixWidget => widget.prefixIcon;
+
+  TextInputType? get _keyboardType => widget.keyboardType;
 
   bool get _autoFocus => widget.autoFocus;
 
@@ -89,7 +92,7 @@ class BTextFieldState extends State<NormalTextField> {
             builder: (context, isEmpty, child) {
               return TextField(
                 controller: _controller,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: _keyboardType,
                 autocorrect: false,
                 focusNode: _focusNode,
                 onChanged: _onChanged,

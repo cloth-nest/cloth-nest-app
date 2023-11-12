@@ -19,4 +19,10 @@ class SvgPaths {
   static const String iconCart = '$_svgPath/ic_cart.svg';
   static const String iconSelect = '$_svgPath/ic_selected.svg';
   static const String iconUnselect = '$_svgPath/ic_unselect.svg';
+  static const String iconLogout = '$_svgPath/ic_logout.svg';
+  static const String iconEdit = '$_svgPath/ic_edit.svg';
+  static const String iconAddressSelected = '$_svgPath/ic_address_selected.svg';
+  static const String iconAddressUnSelected =
+      '$_svgPath/ic_address_un_selected.svg';
+  static const String iconDelete = '$_svgPath/ic_delete.svg';
 }

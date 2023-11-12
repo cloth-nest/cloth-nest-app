@@ -5,5 +5,5 @@ import 'package:ecommerce/domain/usecases/profile/fetch_profile.dart';
 
 FetchProfile makeFetchProfile() => RemoteFetchProfile(
       httpClient: makeHttpAuthorizedAdapter(),
-      url: makeApiUrl('profile'),
+      url: makeApiUrl('user/profile'),
     );

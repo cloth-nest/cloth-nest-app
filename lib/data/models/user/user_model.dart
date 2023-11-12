@@ -7,7 +7,7 @@ part 'user_model.g.dart';
 @HiveType(typeId: kUserModelTypeId)
 class UserModel extends HiveObject {
   @HiveField(0)
-  final String mail;
+  final String email;
 
   @HiveField(1)
   final String firstName;
@@ -18,44 +18,37 @@ class UserModel extends HiveObject {
   @HiveField(3)
   final String avatar;
 
-  @HiveField(4)
-  final String phoneNum;
-
   UserModel({
-    required this.mail,
+    required this.email,
     required this.firstName,
     required this.lastName,
     required this.avatar,
-    required this.phoneNum,
   });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'mail': mail,
+      'email': email,
       'firstName': firstName,
       'lastName': lastName,
       'avatar': avatar,
-      'phoneNum': phoneNum,
     };
   }
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      mail: json['mail'] as String,
+      email: json['email'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      avatar: json['avatar'] as String,
-      phoneNum: json['phoneNum'] as String,
+      avatar: json['avatar'] ?? '',
     );
   }
 
   UserEntity toEntity() {
     return UserEntity(
-      mail: mail,
+      email: email,
       firstName: firstName,
       lastName: lastName,
       avatar: avatar,
-      phoneNum: phoneNum,
     );
   }
 }

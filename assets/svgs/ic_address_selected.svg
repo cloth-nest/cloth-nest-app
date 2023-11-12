@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <g id="ic_checked" transform="translate(-1 -1)">
+    <path id="Shape" d="M12,1A11,11,0,1,0,23,12,11.013,11.013,0,0,0,12,1Z" fill="#fe9870" fill-rule="evenodd"/>
+    <path id="Path" d="M16.85,10.831l-4.71,4.71a1.678,1.678,0,0,1-2.373,0L7.151,12.925a1.678,1.678,0,0,1,2.373-2.372l1.43,1.43,3.524-3.524a1.678,1.678,0,0,1,2.372,2.373Z" fill="#fff" fill-rule="evenodd"/>
+  </g>
+</svg>

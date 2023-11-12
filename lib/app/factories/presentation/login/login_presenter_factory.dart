@@ -1,7 +1,7 @@
 import 'package:ecommerce/app/builders/validation_builder.dart';
 import 'package:ecommerce/app/composites/validation_composite.dart';
+import 'package:ecommerce/app/factories/presentation/authentication/authentication_presenter_factory.dart';
 import 'package:ecommerce/app/factories/usecases/authentication/login/login_factory.dart';
-import 'package:ecommerce/app/factories/usecases/profile/profile_factory.dart';
 import 'package:ecommerce/app/factories/usecases/token/token_factory.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/presenters/login/provider_login_presenter.dart';
@@ -30,6 +30,6 @@ LoginPresenter makeLoginPresenter() {
     fetchLogin: makeFetchLogin(),
     saveToken: makeSaveLocalToken(),
     validation: validation,
-    fetchProfile: makeFetchProfile(),
+    authenticationPresenter: makeAuthenticationPresenter(),
   );
 }

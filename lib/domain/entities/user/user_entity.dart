@@ -2,36 +2,41 @@ import 'package:ecommerce/data/models/user/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 class UserEntity extends Equatable {
-  final String mail;
+  final String email;
   final String firstName;
   final String lastName;
   final String avatar;
-  final String phoneNum;
 
   const UserEntity({
-    required this.mail,
+    required this.email,
     required this.firstName,
     required this.lastName,
     required this.avatar,
-    required this.phoneNum,
   });
+
+  factory UserEntity.inital() {
+    return const UserEntity(
+      email: '',
+      firstName: '',
+      lastName: '',
+      avatar: '',
+    );
+  }
 
   @override
   List<Object?> get props => [
-        mail,
+        email,
         firstName,
         lastName,
         avatar,
-        phoneNum,
       ];
 
   UserModel toModel() {
     return UserModel(
-      mail: mail,
+      email: email,
       firstName: firstName,
       lastName: lastName,
       avatar: avatar,
-      phoneNum: phoneNum,
     );
   }
 }
