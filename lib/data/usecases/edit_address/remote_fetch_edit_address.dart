@@ -1,6 +1,8 @@
 import 'package:ecommerce/data/helper/response_handler.dart';
 import 'package:ecommerce/data/http/http_client.dart';
+import 'package:ecommerce/data/models/address/address_model.dart';
 import 'package:ecommerce/data/usecases/edit_address/remote_edit_address_params.dart';
+import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/domain/usecases/edit_address/edit_address_params.dart';
 import 'package:ecommerce/domain/usecases/edit_address/fetch_edit_address.dart';
 
@@ -14,7 +16,7 @@ class RemoteFetchEditAddress implements FetchEditAddress {
   });
 
   @override
-  Future<void> call({required EditAddressParams params}) async {
+  Future<AddressEntity> call({required EditAddressParams params}) async {
     final RemoteEditAddressParams editAddressParams =
         RemoteEditAddressParams.fromDomain(params);
 
@@ -24,7 +26,9 @@ class RemoteFetchEditAddress implements FetchEditAddress {
         method: HttpMethod.patch,
         body: editAddressParams.toJson(),
       );
-      ResponseHandler.handle(httpResponse);
+      final json = ResponseHandler.handle(httpResponse);
+      AddressEntity entity = AddressModel.fromMap(json['data']).toEntity();
+      return entity;
     } catch (e) {
       rethrow;
     }

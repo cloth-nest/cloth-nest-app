@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/domain/entities/place/place_entity.dart';
 
 class AddAddressState {
@@ -16,6 +17,7 @@ class AddAddressState {
   final String? phone;
   final String? detailAddress;
   final String? navigateTo;
+  final AddressEntity? newAddress;
 
   const AddAddressState({
     required this.isFormValid,
@@ -32,6 +34,7 @@ class AddAddressState {
     this.phone,
     this.detailAddress,
     this.navigateTo,
+    this.newAddress,
   });
 
   factory AddAddressState.initial() {
@@ -59,6 +62,7 @@ class AddAddressState {
     String? phone,
     String? detailAddress,
     String? navigateTo,
+    AddressEntity? newAddress,
   }) {
     return AddAddressState(
       isLoading: isLoading ?? this.isLoading,
@@ -75,6 +79,7 @@ class AddAddressState {
       phone: phone ?? this.phone,
       detailAddress: detailAddress ?? this.detailAddress,
       navigateTo: navigateTo ?? this.navigateTo,
+      newAddress: newAddress ?? this.newAddress,
     );
   }
 }

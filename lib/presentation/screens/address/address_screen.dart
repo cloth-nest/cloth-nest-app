@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/presentation/presenters/address/address_state.dart';
 import 'package:ecommerce/presentation/screens/address/address_presenter.dart';
@@ -10,7 +11,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class AddressScreen extends StatefulWidget {
-  const AddressScreen({super.key});
+  final AddressEntity? newAddress;
+
+  const AddressScreen({super.key, this.newAddress});
 
   @override
   State<AddressScreen> createState() => _AddressScreenState();
@@ -27,7 +30,7 @@ class _AddressScreenState extends State<AddressScreen> {
     _presenter.initData();
   }
 
-  void _onListener() {
+  void _onListener() async {
     if (_presenter.navigateTo != null) {
       switch (_presenter.navigateTo) {
         case AddressDirection.add:
@@ -42,11 +45,16 @@ class _AddressScreenState extends State<AddressScreen> {
               context.currentBeamLocation.state.routeInformation.location ??
                   '/';
           final uri = Uri.parse(currentLocation);
+
           context.beamToNamed(
               '${uri.path}/detail?idAddress=${_presenter.selectedAddress?.id}');
           break;
         default:
       }
+    }
+
+    if (_presenter.errorMessage != null) {
+      showErrorDialog(context, 'Delete Failed', _presenter.errorMessage!);
     }
   }
 

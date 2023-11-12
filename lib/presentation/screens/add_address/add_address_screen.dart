@@ -5,6 +5,7 @@ import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/domain/entities/place/place_entity.dart';
 import 'package:ecommerce/presentation/screens/add_address/add_address_presenter.dart';
 import 'package:ecommerce/presentation/screens/add_address/widgets/w_combo_box.dart';
+import 'package:ecommerce/presentation/screens/address/address_presenter.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
 import 'package:ecommerce/presentation/widgets/text_field/normal_text_field.dart';
 import 'package:ecommerce/presentation/widgets/w_app_bar.dart';
@@ -43,7 +44,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   void _onListener() {
     if (_presenter.navigateTo != null) {
       if (context.canPopBeamLocation) {
-        context.popBeamLocation();
+        context
+            .read<AddressPresenter>()
+            .addAddress(addressEntity: _presenter.newAddress!);
+        Beamer.of(context).beamBack(data: _presenter.newAddress);
       }
     }
   }
@@ -146,6 +150,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           },
                           source: provinces,
                           value: selectedProvince,
+                          hint: 'Please enter a province',
                         ),
                       ),
                     ),
@@ -164,6 +169,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           },
                           source: districts,
                           value: selectedDistrict,
+                          hint: 'Please enter a district',
                         ),
                       ),
                     ),
@@ -182,6 +188,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           },
                           source: wards,
                           value: selectedWard,
+                          hint: 'Please enter a ward',
                         ),
                       ),
                     ),

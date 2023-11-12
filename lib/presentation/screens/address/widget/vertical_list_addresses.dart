@@ -35,6 +35,7 @@ class VerticalListAddresses extends StatelessWidget {
           children: addresses.map(
             (address) {
               return Slidable(
+                key: ValueKey(address.id),
                 // The start action pane is the one at the left or the top side.
                 endActionPane: ActionPane(
                   // A motion is a widget used to control how the pane animates.

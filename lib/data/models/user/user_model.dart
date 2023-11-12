@@ -39,8 +39,7 @@ class UserModel extends HiveObject {
       email: json['email'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      avatar: json['avatar'] ??
-          'https://cloth-nest-1.s3.ap-southeast-1.amazonaws.com/DSC00611+(2).jpg',
+      avatar: json['avatar'] ?? '',
     );
   }
 

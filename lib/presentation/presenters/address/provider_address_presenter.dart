@@ -1,3 +1,4 @@
+import 'package:ecommerce/data/http/exceptions/http_exception.dart';
 import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/domain/usecases/delete_address/fetch_delete_address.dart';
 import 'package:ecommerce/domain/usecases/fetch_address/fetch_address.dart';
@@ -58,6 +59,19 @@ class ProviderAddressPresenter with ChangeNotifier implements AddressPresenter {
   void deleteAddress({required int idAddress}) async {
     try {
       await _fetchDeleteAddress.call(id: idAddress);
+      List<AddressEntity> tmp = [...addresses];
+      tmp.removeWhere((element) => element.id == idAddress);
+      _state = _state.copyWith(addresses: tmp);
+      notifyListeners();
+    } on HttpException catch (e) {
+      switch (e.code) {
+        case 'A0002':
+          _state =
+              _state.copyWith(errorMessage: 'Can\'t delete default address');
+          notifyListeners();
+          break;
+        default:
+      }
     } catch (e) {
       debugPrint('error delete address: $e');
     }
@@ -65,4 +79,28 @@ class ProviderAddressPresenter with ChangeNotifier implements AddressPresenter {
 
   @override
   bool get isDefault => true;
+
+  @override
+  String? get errorMessage => _state.errorMessage;
+
+  @override
+  void addAddress({required AddressEntity addressEntity}) {
+    _state = _state.copyWith(addresses: [...addresses, addressEntity]);
+    notifyListeners();
+  }
+
+  @override
+  void editAddress({required AddressEntity addressEntity}) {
+    List<AddressEntity> tmp = [...addresses];
+
+    for (var entity in tmp) {
+      if (entity.id == addressEntity.id) {
+        tmp.remove(entity);
+        break;
+      }
+    }
+
+    _state = _state.copyWith(addresses: [...tmp, addressEntity]);
+    notifyListeners();
+  }
 }

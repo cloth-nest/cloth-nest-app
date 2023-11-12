@@ -320,27 +320,32 @@ class ProviderDetailAddressPresenter
       );
       notifyListeners();
 
-      await Future.wait([
-        _fetchEditAddress.call(
-          params: EditAddressParams(
-            email: _state.email!,
-            firstName: _state.firstName!,
-            lastName: _state.lastName!,
-            provinceCode: provinceTmp!.code,
-            provinceName: provinceTmp!.name,
-            districtCode: districtTmp!.code,
-            districtName: districtTmp!.name,
-            wardCode: wardTmp!.code,
-            wardName: wardTmp!.name,
-            detail: _state.detailAddress!,
-            phone: _state.phone!,
-            id: _state.id!,
-          ),
+      AddressEntity entity = await _fetchEditAddress.call(
+        params: EditAddressParams(
+          email: _state.email!,
+          firstName: _state.firstName!,
+          lastName: _state.lastName!,
+          provinceCode: provinceTmp!.code,
+          provinceName: provinceTmp!.name,
+          districtCode: districtTmp!.code,
+          districtName: districtTmp!.name,
+          wardCode: wardTmp!.code,
+          wardName: wardTmp!.name,
+          detail: _state.detailAddress!,
+          phone: _state.phone!,
+          id: _state.id!,
         ),
-        if (_state.isDefault) _fetchDefaultAddress.call(id: _state.id!),
-      ]);
+      );
+      if (_state.isDefault) {
+        await _fetchDefaultAddress.call(id: _state.id!);
+        entity = entity.copyWith(isDefault: true);
+      }
 
-      _state = _state.copyWith(isLoading: false, navigateTo: 'address');
+      _state = _state.copyWith(
+        isLoading: false,
+        navigateTo: 'address',
+        newAddress: entity,
+      );
       notifyListeners();
     } catch (e) {
       _state = _state.copyWith(
@@ -384,4 +389,7 @@ class ProviderDetailAddressPresenter
       notifyListeners();
     }
   }
+
+  @override
+  AddressEntity? get newAddress => _state.newAddress;
 }

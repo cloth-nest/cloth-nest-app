@@ -6,6 +6,7 @@ import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/app/resources/app_themes.dart';
 import 'package:ecommerce/domain/entities/place/place_entity.dart';
 import 'package:ecommerce/presentation/screens/add_address/widgets/w_combo_box.dart';
+import 'package:ecommerce/presentation/screens/address/address_presenter.dart';
 import 'package:ecommerce/presentation/screens/detail_address/detail_address_presenter.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
 import 'package:ecommerce/presentation/widgets/text_field/normal_text_field.dart';
@@ -47,6 +48,7 @@ class _DetailAddressScreenState extends State<DetailAddressScreen> {
 
   void _onListener() {
     if (_presenter.navigateTo != null) {
+      context.read<AddressPresenter>().initData();
       if (context.canPopBeamLocation) {
         context.popBeamLocation();
       }
@@ -165,6 +167,7 @@ class _DetailAddressScreenState extends State<DetailAddressScreen> {
                                   },
                                   source: provinces,
                                   value: selectedProvince,
+                                  hint: 'Please enter a province',
                                 );
                               });
                         }),
@@ -186,6 +189,7 @@ class _DetailAddressScreenState extends State<DetailAddressScreen> {
                                 },
                                 source: districts,
                                 value: selectedDistrict,
+                                hint: 'Please enter a district',
                               );
                             },
                           );
@@ -205,6 +209,7 @@ class _DetailAddressScreenState extends State<DetailAddressScreen> {
                           },
                           source: wards,
                           value: selectedWard,
+                          hint: 'Please enter a ward',
                         ),
                       ),
                     ),

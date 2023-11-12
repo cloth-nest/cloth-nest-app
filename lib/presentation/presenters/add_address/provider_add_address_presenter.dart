@@ -1,3 +1,4 @@
+import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/domain/entities/place/place_entity.dart';
 import 'package:ecommerce/domain/usecases/create_address/create_address_params.dart';
 import 'package:ecommerce/domain/usecases/create_address/fetch_create_address.dart';
@@ -217,7 +218,7 @@ class ProviderAddAddressPresenter
       _state = _state.copyWith(isLoading: true);
       notifyListeners();
 
-      await _fetchCreateAddress.call(
+      AddressEntity entity = await _fetchCreateAddress.call(
         params: CreateAddressParams(
           email: _state.email!,
           firstName: _state.firstName!,
@@ -233,7 +234,11 @@ class ProviderAddAddressPresenter
         ),
       );
 
-      _state = _state.copyWith(isLoading: false, navigateTo: 'address');
+      _state = _state.copyWith(
+        isLoading: false,
+        navigateTo: 'address',
+        newAddress: entity,
+      );
       notifyListeners();
     } catch (e) {
       _state = _state.copyWith(isLoading: false);
@@ -244,4 +249,7 @@ class ProviderAddAddressPresenter
 
   @override
   String? get navigateTo => _state.navigateTo;
+
+  @override
+  AddressEntity? get newAddress => _state.newAddress;
 }

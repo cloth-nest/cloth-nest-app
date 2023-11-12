@@ -27,6 +27,7 @@ class DetailAddressState {
   final String? navigateTo;
   final int? id;
   final bool isDefault;
+  final AddressEntity? newAddress;
 
   const DetailAddressState({
     required this.isLoading,
@@ -51,6 +52,7 @@ class DetailAddressState {
     this.id,
     required this.isFormValid,
     required this.isDefault,
+    this.newAddress,
   });
 
   factory DetailAddressState.initial() {
@@ -93,6 +95,7 @@ class DetailAddressState {
     String? navigateTo,
     int? id,
     bool? isDefault,
+    AddressEntity? newAddress,
   }) {
     return DetailAddressState(
       isLoading: isLoading ?? this.isLoading,
@@ -117,6 +120,7 @@ class DetailAddressState {
       navigateTo: navigateTo ?? this.navigateTo,
       id: id ?? this.id,
       isDefault: isDefault ?? this.isDefault,
+      newAddress: newAddress ?? this.newAddress,
     );
   }
 }

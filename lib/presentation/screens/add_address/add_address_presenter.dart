@@ -1,3 +1,4 @@
+import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/domain/entities/place/place_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -23,4 +24,5 @@ abstract class AddAddressPresenter implements ChangeNotifier {
   List<PlaceEntity> get districts;
   List<PlaceEntity> get wards;
   String? get navigateTo;
+  AddressEntity? get newAddress;
 }

@@ -29,7 +29,7 @@ class ItemAddress extends StatelessWidget {
         ),
         child: ListTile(
           dense: true,
-          leading: address.isDefault!
+          leading: address.isDefault ?? false
               ? SvgPicture.asset(
                   SvgPaths.iconAddressSelected,
                   width: 20,
