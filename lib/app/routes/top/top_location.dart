@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TopLocation extends BeamLocation<BeamState> {
+  TopLocation([super.routeInformation]);
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     return [

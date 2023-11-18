@@ -1,6 +1,7 @@
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:beamer/beamer.dart';
 
 Future<void> showErrorDialog(
     BuildContext context, String title, String message) async {
@@ -55,4 +56,11 @@ Future<T?> showRoundedBottomSheet<T>({
     // await SystemChrome.setPreferredOrientations(
     //     [DeviceOrientation.portraitUp]);
   });
+}
+
+void beamTo(BuildContext context, {required String path}) {
+  final String currentLocation =
+      context.currentBeamLocation.state.routeInformation.location ?? '/';
+  final uri = Uri.parse(currentLocation);
+  context.beamToNamed('${uri.path}/$path');
 }

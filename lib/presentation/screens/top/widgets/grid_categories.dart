@@ -3,20 +3,23 @@ import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/domain/entities/category/sub_category_entity.dart';
 import 'package:ecommerce/presentation/screens/top/widgets/item_vertical_category.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 
 class GridCategories extends StatelessWidget {
   final List<SubCategoryEntity> categories;
   final int index;
+  final Function(String) callback;
 
   const GridCategories({
     super.key,
     required this.categories,
     required this.index,
+    required this.callback,
   });
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    final rowSizes = List.generate(categories.length ~/ 0.5, (_) => auto);
 
     return TweenAnimationBuilder<double>(
       key: Key(index.toString()),
@@ -39,24 +42,22 @@ class GridCategories extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Expanded(
-            child: GridView.builder(
-              itemCount: categories.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 10.0,
-                childAspectRatio: size.width / (size.height / 1.4),
+            child: LayoutGrid(
+              columnSizes: [1.fr, 1.fr, 1.fr, 1.fr],
+              rowSizes: rowSizes,
+              children: List<Widget>.generate(
+                categories.length,
+                (index) {
+                  final SubCategoryEntity category = categories[index];
+                  return ItemVerticalCategory(
+                    onTap: () {
+                      callback.call(category.name);
+                    },
+                    category: category.name,
+                    categoryThumbUrl: category.categoryThumbUrl,
+                  );
+                },
               ),
-              itemBuilder: (BuildContext context, int index) {
-                final SubCategoryEntity category = categories[index];
-
-                return ItemVerticalCategory(
-                  onTap: () {
-                    /// TODO: navigate to detail category
-                  },
-                  category: category.name,
-                  categoryThumbUrl: category.categoryThumbUrl,
-                );
-              },
             ),
           ),
         ],

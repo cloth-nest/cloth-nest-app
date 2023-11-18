@@ -1,5 +1,6 @@
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
 import 'package:ecommerce/presentation/screens/top/top_presenter.dart';
 import 'package:ecommerce/presentation/screens/top/widgets/grid_categories.dart';
@@ -105,10 +106,16 @@ class _TopScreenState extends State<TopScreen>
                   final subCategories = contentMasterPresenter
                       .topCategories[tabIndex].subCategory;
 
-                  return GridCategories(
-                    categories: subCategories,
-                    index: tabIndex,
-                  );
+                  return tabIndex == 0
+                      ? const SizedBox.shrink()
+                      : GridCategories(
+                          categories: subCategories,
+                          index: tabIndex,
+                          callback: (titleCategory) {
+                            beamTo(context,
+                                path: 'detail?title=$titleCategory');
+                          },
+                        );
                 },
               ),
             ),
