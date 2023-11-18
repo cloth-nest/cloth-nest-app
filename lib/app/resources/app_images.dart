@@ -12,6 +12,7 @@ class SvgPaths {
   static const String iconEyeCrossed = '$_svgPath/ic_eye_crossed.svg';
   static const String iconEyeOpen = '$_svgPath/ic_eye_open.svg';
   static const String iconLogo = '$_svgPath/ic_logo.svg';
+  static const String iconArrowDown = '$_svgPath/ic_arrow_down.svg';
   static const String iconArrowLeft = '$_svgPath/ic_arrow_left.svg';
   static const String iconArrowRight = '$_svgPath/ic_arrow_right.svg';
   static const String iconSearchTransfer = '$_svgPath/ic_search_transfer.svg';
@@ -20,6 +21,9 @@ class SvgPaths {
   static const String iconSelect = '$_svgPath/ic_selected.svg';
   static const String iconUnselect = '$_svgPath/ic_unselect.svg';
   static const String iconLogout = '$_svgPath/ic_logout.svg';
+  static const String iconClose = '$_svgPath/ic_close.svg';
+  static const String iconFilter = '$_svgPath/ic_filter.svg';
+  static const String iconFilter2 = '$_svgPath/ic_filter2.svg';
   static const String iconEdit = '$_svgPath/ic_edit.svg';
   static const String iconAddressSelected = '$_svgPath/ic_address_selected.svg';
   static const String iconAddressUnSelected =
