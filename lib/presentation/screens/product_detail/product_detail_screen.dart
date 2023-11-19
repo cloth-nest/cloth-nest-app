@@ -125,7 +125,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       ),
                     ),
 
-                    const SliverToBoxAdapter(child: SizedBox(height: 60)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 230)),
                   ],
                 ),
               ),

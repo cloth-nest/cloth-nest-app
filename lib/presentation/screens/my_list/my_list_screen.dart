@@ -1,11 +1,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
-import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/presentation/screens/my_list/my_list_presenter.dart';
 import 'package:ecommerce/presentation/screens/my_list/widgets/my_list_sliver_list.dart';
 import 'package:ecommerce/presentation/screens/my_list/widgets/my_list_sliver_list_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class MyListScreen extends StatefulWidget {
@@ -50,16 +48,6 @@ class _MyListScreenState extends State<MyListScreen> {
         ),
         centerTitle: true,
         elevation: 0.3,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: SvgPicture.asset(
-              SvgPaths.iconCart,
-              width: 30,
-              height: 30,
-            ),
-          ),
-        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(32),
           child: Align(
