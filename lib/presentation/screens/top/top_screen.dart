@@ -6,7 +6,6 @@ import 'package:ecommerce/presentation/screens/top/top_presenter.dart';
 import 'package:ecommerce/presentation/screens/top/widgets/grid_categories.dart';
 import 'package:ecommerce/presentation/widgets/text_field/search_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class TopScreen extends StatefulWidget {
@@ -69,7 +68,7 @@ class _TopScreenState extends State<TopScreen>
               ),
             ),
             const SizedBox(width: 20),
-            SvgPicture.asset(
+            Image.asset(
               SvgPaths.iconCart,
               width: 30,
               height: 30,
@@ -84,8 +83,8 @@ class _TopScreenState extends State<TopScreen>
           children: [
             const SizedBox(height: 15),
             TabBar(
-              indicatorPadding: const EdgeInsets.symmetric(horizontal: 15),
               controller: _tabController,
+              indicatorPadding: const EdgeInsets.symmetric(horizontal: 15),
               indicatorColor: AppColors.black,
               labelColor: AppColors.textLightBasic,
               labelStyle: Theme.of(context).textTheme.headlineMedium?.copyWith(
