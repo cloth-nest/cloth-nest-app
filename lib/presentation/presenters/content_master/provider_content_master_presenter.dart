@@ -7,28 +7,40 @@ import 'package:flutter/widgets.dart';
 class ProviderContentMasterPresenter
     with ChangeNotifier
     implements ContentMasterPresenter {
-  final FetchMasterCategory _fetchMasterCategory;
+  final FetchCategory _fetchCategory;
 
   ContentMasterState _state = ContentMasterState.initial();
 
   ProviderContentMasterPresenter({
-    required FetchMasterCategory fetchMasterCategory,
-  }) : _fetchMasterCategory = fetchMasterCategory;
+    required FetchCategory fetchCategory,
+  }) : _fetchCategory = fetchCategory;
+
+  Map<String, dynamic> secondCategoriesTmp = {};
 
   @override
-  Future<void> fetchMasterCategory() async {
+  Future<void> fetchCategories() async {
     try {
-      final masterCategoryEntity = await _fetchMasterCategory.call();
-      _state = _state.copyWith(masterCategoryEntity: masterCategoryEntity);
+      final categories = await _fetchCategory.call();
+
+      for (var rootCategory in categories) {
+        for (var firstCategory in rootCategory.subCategory) {
+          secondCategoriesTmp['${firstCategory.id}'] =
+              firstCategory.subCategory;
+        }
+      }
+
+      _state = _state.copyWith(
+        secondCategories: secondCategoriesTmp,
+        categories: categories,
+      );
     } catch (e) {
       debugPrint('error fetch master category: $e');
     }
   }
 
   @override
-  List<CategoryEntity> get searchCategories =>
-      _state.masterCategoryEntity!.search;
+  List<CategoryEntity> get rootCategories => _state.categories ?? [];
 
   @override
-  List<CategoryEntity> get topCategories => _state.masterCategoryEntity!.top;
+  Map<String, dynamic> get secondCategories => secondCategoriesTmp;
 }

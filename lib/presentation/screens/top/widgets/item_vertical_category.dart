@@ -29,7 +29,8 @@ class ItemVerticalCategory extends StatelessWidget {
             ),
             clipBehavior: Clip.antiAlias,
             child: CachedNetworkImage(
-              imageUrl: categoryThumbUrl!,
+              imageUrl: categoryThumbUrl ??
+                  'https://im.uniqlo.com/global-cms/spa/resfdbc5fee0d30385f4c2394e5d5aebac3fr.jpg',
               fit: BoxFit.fitHeight,
               placeholder: (context, url) => Container(
                 width: 100,

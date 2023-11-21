@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     splashPresenter.addListener(_onListener);
     Future.delayed(const Duration(milliseconds: 1000), () async {
       //await loadApi();
-      await contentMasterPresenter.fetchMasterCategory();
+      await contentMasterPresenter.fetchCategories();
 
       splashPresenter.findNextRoute();
     });

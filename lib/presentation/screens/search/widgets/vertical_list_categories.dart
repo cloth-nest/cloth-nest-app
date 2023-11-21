@@ -1,9 +1,9 @@
-import 'package:ecommerce/domain/entities/category/sub_category_entity.dart';
+import 'package:ecommerce/domain/entities/category/category_entity.dart';
 import 'package:ecommerce/presentation/screens/search/widgets/item_horizontal_category.dart';
 import 'package:flutter/material.dart';
 
 class VerticalListCategories extends StatelessWidget {
-  final List<SubCategoryEntity> categories;
+  final List<CategoryEntity> categories;
   final int index;
 
   const VerticalListCategories({
