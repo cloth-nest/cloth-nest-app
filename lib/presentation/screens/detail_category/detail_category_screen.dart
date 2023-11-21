@@ -1,6 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/domain/entities/category/category_entity.dart';
+import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
 import 'package:ecommerce/presentation/screens/detail_category/detail_category_presenter.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/grid_detail_category.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/grid_detail_category_loading.dart';
@@ -12,9 +14,12 @@ import 'package:provider/provider.dart';
 
 class DetailCategoryScreen extends StatefulWidget {
   final String title;
+  final List<CategoryEntity> categories;
+
   const DetailCategoryScreen({
     super.key,
     required this.title,
+    required this.categories,
   });
 
   @override
@@ -25,15 +30,17 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   late TabController _tabController;
   late DetailCategoryPresenter _presenter;
+  late ContentMasterPresenter contentMasterPresenter;
 
   @override
   void initState() {
     super.initState();
 
     _tabController = TabController(
-      length: 6,
+      length: widget.categories.length,
       vsync: this,
     );
+    contentMasterPresenter = context.read<ContentMasterPresenter>();
     _presenter = context.read<DetailCategoryPresenter>();
     _tabController.addListener(onChangeTabListener);
   }
@@ -105,14 +112,9 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
                   right: 15,
                 ),
                 unselectedLabelColor: AppColors.textGray999,
-                tabs: [
-                  'All Outerwear',
-                  'Ultra Light Down & PUFFTECH',
-                  'Blousons & Parkas',
-                  'AirSense Jackets',
-                  'Jackets & Blazers',
-                  'Coats',
-                ].map((e) => Text(e.toUpperCase())).toList(),
+                tabs: widget.categories
+                    .map((e) => Text(e.name.toUpperCase()))
+                    .toList(),
               ),
             ),
           ),

@@ -64,7 +64,7 @@ class _SearchScreenState extends State<SearchScreen>
     });
 
     _tabController = TabController(
-      length: contentMasterPresenter.searchCategories.length,
+      length: contentMasterPresenter.rootCategories.length,
       vsync: this,
     );
     _tabController.addListener(onChangeTabListener);
@@ -142,7 +142,7 @@ class _SearchScreenState extends State<SearchScreen>
                   ),
               labelPadding: const EdgeInsets.only(bottom: 10),
               unselectedLabelColor: AppColors.textGray999,
-              tabs: contentMasterPresenter.searchCategories
+              tabs: contentMasterPresenter.rootCategories
                   .map((e) => Text(e.name.toUpperCase()))
                   .toList(),
             ),
@@ -152,7 +152,7 @@ class _SearchScreenState extends State<SearchScreen>
                 selector: (_, searchPresenter) => searchPresenter.tabIndex,
                 builder: (_, tabIndex, __) {
                   final subCategories = contentMasterPresenter
-                      .searchCategories[tabIndex].subCategory;
+                      .rootCategories[tabIndex].subCategory;
 
                   return VerticalListCategories(
                     categories: subCategories,

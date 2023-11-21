@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
-import 'package:ecommerce/domain/entities/category/sub_category_entity.dart';
+import 'package:ecommerce/domain/entities/category/category_entity.dart';
 import 'package:ecommerce/presentation/screens/top/widgets/item_vertical_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 
 class GridCategories extends StatelessWidget {
-  final List<SubCategoryEntity> categories;
+  final List<CategoryEntity> categories;
   final int index;
-  final Function(String) callback;
+  final Function(String, int) callback;
 
   const GridCategories({
     super.key,
@@ -48,10 +48,10 @@ class GridCategories extends StatelessWidget {
               children: List<Widget>.generate(
                 categories.length,
                 (index) {
-                  final SubCategoryEntity category = categories[index];
+                  final CategoryEntity category = categories[index];
                   return ItemVerticalCategory(
                     onTap: () {
-                      callback.call(category.name);
+                      callback.call(category.name, category.id);
                     },
                     category: category.name,
                     categoryThumbUrl: category.categoryThumbUrl,

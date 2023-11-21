@@ -1,22 +1,26 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:ecommerce/domain/entities/category/master_category_entity.dart';
+import 'package:ecommerce/domain/entities/category/category_entity.dart';
 
 class ContentMasterState {
-  final MasterCategoryEntity? masterCategoryEntity;
+  final List<CategoryEntity>? categories;
+  final Map<String, dynamic>? secondCategories;
 
   ContentMasterState({
-    required this.masterCategoryEntity,
+    required this.categories,
+    required this.secondCategories,
   });
 
   ContentMasterState copyWith({
-    MasterCategoryEntity? masterCategoryEntity,
+    List<CategoryEntity>? categories,
+    Map<String, dynamic>? secondCategories,
   }) {
     return ContentMasterState(
-      masterCategoryEntity: masterCategoryEntity ?? this.masterCategoryEntity,
+      categories: categories ?? this.categories,
+      secondCategories: secondCategories ?? this.secondCategories,
     );
   }
 
   factory ContentMasterState.initial() {
-    return ContentMasterState(masterCategoryEntity: null);
+    return ContentMasterState(categories: null, secondCategories: null);
   }
 }
