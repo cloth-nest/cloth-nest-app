@@ -3,6 +3,7 @@ import 'package:ecommerce/app/routes/account/account_add_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_detail_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_location.dart';
+import 'package:ecommerce/app/routes/account/account_profile_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_product_location.dart';
 import 'package:ecommerce/app/routes/search/search_detail_location.dart';
@@ -90,6 +91,8 @@ final accountTabHomeRouteDelegate = BeamerDelegate(
       return AccountAddAddressLocation(routeInformation);
     } else if (routeInformation.location!.contains('/account/address')) {
       return AccountAddressLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/account/profile')) {
+      return AccountProfileLocation(routeInformation);
     } else if (routeInformation.location!.contains('/account')) {
       return AccountLocation(routeInformation);
     }

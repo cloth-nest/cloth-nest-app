@@ -105,6 +105,10 @@ class _TopScreenState extends State<TopScreen>
                   final subCategories = contentMasterPresenter
                       .rootCategories[tabIndex].subCategory;
 
+                  if (subCategories.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+
                   return GridCategories(
                     categories: subCategories,
                     index: tabIndex,
