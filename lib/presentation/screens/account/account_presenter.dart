@@ -10,6 +10,8 @@ abstract class AccountPresenter implements ChangeNotifier {
   void getAppVersion();
   void openNotificationSetting();
   void navigateToAddressScreen();
+  void navigateToProfileScreen();
+  void setNewUser(UserEntity? userEntity);
 
   UserEntity get user;
   SettingAccountEntity get settingAccount;

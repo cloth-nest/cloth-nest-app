@@ -2,7 +2,7 @@
 import 'package:ecommerce/domain/entities/account/setting_account_entity.dart';
 import 'package:ecommerce/domain/entities/user/user_entity.dart';
 
-enum Destination { setting, login, address }
+enum Destination { setting, login, address, profile }
 
 class AccountState {
   final bool isLoading;

@@ -51,6 +51,9 @@ class _AccountScreenState extends State<AccountScreen> {
         case Destination.address:
           _beamTo('address');
           break;
+        case Destination.profile:
+          _beamTo('profile');
+          break;
         default:
           openAppSettings();
           break;
@@ -129,9 +132,11 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    _presenter.navigateToProfileScreen();
+                  },
                   child: ItemAccount(
-                    content: 'Personal Information',
+                    content: 'Edit Profile',
                     trailing: SvgPicture.asset(SvgPaths.iconArrowRight),
                   ),
                 ),
