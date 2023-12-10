@@ -14,12 +14,14 @@ import 'package:provider/provider.dart';
 
 class DetailCategoryScreen extends StatefulWidget {
   final String title;
+  final int id;
   final List<CategoryEntity> categories;
 
   const DetailCategoryScreen({
     super.key,
     required this.title,
     required this.categories,
+    required this.id,
   });
 
   @override
@@ -43,11 +45,17 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
     contentMasterPresenter = context.read<ContentMasterPresenter>();
     _presenter = context.read<DetailCategoryPresenter>();
     _tabController.addListener(onChangeTabListener);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _presenter.initData(id: widget.categories[0].id, page: 1, limit: 6);
+    });
   }
 
   void onChangeTabListener() {
     _presenter.changeTab(
       _tabController.index,
+      limit: 6,
+      page: 1,
+      id: widget.categories[_tabController.index].id,
     );
   }
 
@@ -119,7 +127,7 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
             ),
           ),
           const SizedBox(height: 5),
-          const WSort(total: 36),
+          const WSort(),
           const SizedBox(height: 10),
           const WFilter(),
           const SizedBox(height: 15),
@@ -133,9 +141,13 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
                 builder: (_, tabIndex, __) =>
                     Selector<DetailCategoryPresenter, bool>(
                         selector: (_, presenter) => presenter.isLoading,
-                        builder: (_, isLoading, __) => isLoading
-                            ? const GridDetailCategoryLoading()
-                            : GridDetailCategory(index: tabIndex)),
+                        builder: (_, isLoading, __) {
+                          return isLoading
+                              ? const GridDetailCategoryLoading()
+                              : GridDetailCategory(
+                                  index: tabIndex,
+                                );
+                        }),
               ),
             ),
           ),

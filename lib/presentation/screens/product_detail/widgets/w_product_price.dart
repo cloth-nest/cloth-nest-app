@@ -1,4 +1,7 @@
+import 'package:ecommerce/app/utils/extensions/double_extension.dart';
+import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WProductPrice extends StatelessWidget {
   const WProductPrice({super.key, required this.marginSide});
@@ -7,6 +10,8 @@ class WProductPrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final presenter = context.read<ProductDetailPresenter>();
+
     return Padding(
       padding: EdgeInsets.only(
         left: marginSide,
@@ -14,7 +19,7 @@ class WProductPrice extends StatelessWidget {
         bottom: 10,
       ),
       child: Text(
-        '390.000₫',
+        presenter.price.toMoney(),
         style: Theme.of(context)
             .textTheme
             .headlineSmall

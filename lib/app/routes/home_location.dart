@@ -10,6 +10,7 @@ import 'package:ecommerce/app/routes/search/search_detail_location.dart';
 import 'package:ecommerce/app/routes/search/search_location.dart';
 import 'package:ecommerce/app/routes/top/top_category_location.dart';
 import 'package:ecommerce/app/routes/top/top_location.dart';
+import 'package:ecommerce/app/routes/top/top_product_location.dart';
 import 'package:ecommerce/presentation/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,9 @@ final homeRouteDelegate = [
 final topTabHomeRouteDelegate = BeamerDelegate(
   initialPath: '/top',
   locationBuilder: (routeInformation, _) {
-    if (routeInformation.location!.contains('/top/detail')) {
+    if (routeInformation.location!.contains('/top/detail/product')) {
+      return TopProductLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/top/detail')) {
       return TopCategoryLocation(routeInformation);
     } else if (routeInformation.location!.contains('/top')) {
       return TopLocation(routeInformation);

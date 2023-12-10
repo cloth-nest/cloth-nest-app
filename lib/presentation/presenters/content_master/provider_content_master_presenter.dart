@@ -1,5 +1,7 @@
 import 'package:ecommerce/domain/entities/category/category_entity.dart';
+import 'package:ecommerce/domain/entities/product_type/product_type_entity.dart';
 import 'package:ecommerce/domain/usecases/category/fetch_master_category.dart';
+import 'package:ecommerce/domain/usecases/product_type/fetch_product_type.dart';
 import 'package:ecommerce/presentation/presenters/content_master/content_master_state.dart';
 import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
 import 'package:flutter/widgets.dart';
@@ -8,12 +10,15 @@ class ProviderContentMasterPresenter
     with ChangeNotifier
     implements ContentMasterPresenter {
   final FetchCategory _fetchCategory;
+  final FetchProductType _fetchProductType;
 
   ContentMasterState _state = ContentMasterState.initial();
 
   ProviderContentMasterPresenter({
     required FetchCategory fetchCategory,
-  }) : _fetchCategory = fetchCategory;
+    required FetchProductType fetchProductType,
+  })  : _fetchCategory = fetchCategory,
+        _fetchProductType = fetchProductType;
 
   Map<String, dynamic> secondCategoriesTmp = {};
 
@@ -43,4 +48,17 @@ class ProviderContentMasterPresenter
 
   @override
   Map<String, dynamic> get secondCategories => secondCategoriesTmp;
+
+  @override
+  Future<void> fetchProductTypes() async {
+    try {
+      List<ProductTypeEntity> result = await _fetchProductType.call();
+      _state = _state.copyWith(productTypes: result);
+    } catch (e) {
+      debugPrint('error fetch product types: $e');
+    }
+  }
+
+  @override
+  List<ProductTypeEntity> get productTypes => _state.productTypes;
 }

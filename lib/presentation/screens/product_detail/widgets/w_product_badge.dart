@@ -10,6 +10,8 @@ class WProductBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final presenter = context.read<ProductDetailPresenter>();
+
     return Selector<ProductDetailPresenter, int>(
       selector: (_, presenter) => presenter.tabIndex,
       builder: (_, tabIndex, __) => Container(
@@ -24,7 +26,7 @@ class WProductBadge extends StatelessWidget {
           borderRadius: BorderRadius.circular(36),
         ),
         child: Text(
-          '10',
+          presenter.recommendationProducts.length.toString(),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                 height: Platform.isIOS ? 1.3 : 1,
