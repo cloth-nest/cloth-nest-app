@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:beamer/beamer.dart';
+import 'package:ecommerce/app/routes/home_location.dart';
 import 'package:ecommerce/presentation/screens/main/main_presenter.dart';
 import 'package:ecommerce/presentation/screens/main/main_screen.dart';
 import 'package:ecommerce/presentation/widgets/bottom_navigation_manager.dart';
@@ -63,20 +66,15 @@ class CustomBackButtonDispatcher extends RootBackButtonDispatcher {
       }
     }
     if (isNestedTopBottomNavigation()) {
-      final lastTopContext = BottomNavigationManager().getLastTopContext();
-      // ignore: use_build_context_synchronously
-      if (lastTopContext.canPopBeamLocation) {
-        // ignore: use_build_context_synchronously
-        return lastTopContext.popBeamLocation();
+      if (topTabHomeRouteDelegate.canPopBeamLocation) {
+        return topTabHomeRouteDelegate.popBeamLocation();
       }
     }
     if (isNestedSearchBottomNavigation()) {
       final lastSearchContext =
           BottomNavigationManager().getLastSearchContext();
-      // ignore: use_build_context_synchronously
       return lastSearchContext.beamBack();
     }
-    // ignore: use_build_context_synchronously
     return context.beamBack();
   }
 
@@ -129,25 +127,13 @@ class CustomBackButtonDispatcher extends RootBackButtonDispatcher {
     return navigationHistoryCount == 2;
   }
 
-  bool animateToTopAndReturnTrue() {
-    BottomNavigationManager().getTopScrollController().animateTo(
-          0,
-          duration: const Duration(milliseconds: animationDuration),
-          curve: Curves.easeOut,
-        );
-    return true;
-  }
-
-  bool resetScreenIfOffsetGreaterZero(double offset) {
-    if (offset > 0) {
-      return animateToTopAndReturnTrue();
-    }
-    return false;
-  }
-
   Future<bool> popAppToBackground() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      if (Platform.isAndroid) {
+        exit(0);
+      } else {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      }
     });
     return true;
   }
@@ -157,48 +143,35 @@ class CustomBackButtonDispatcher extends RootBackButtonDispatcher {
     final lastHistory = BottomNavigationManager().getLastHistory();
 
     if (lastHistory == '/initial' && isSingleHistoryLocation()) {
-      final offset = BottomNavigationManager().getTopScrollController().offset;
-
-      if (resetScreenIfOffsetGreaterZero(offset)) {
-        return true;
-      }
-
       return popAppToBackground();
     }
     return false;
   }
 
   Future<bool> handleDoubleHistoryLocation() async {
-    // get last item in history from NavigationManager histories
-    final lastHistory = BottomNavigationManager().getLastHistory();
-    final firstBeamingHistory = context.beamingHistory.first;
-    final lastLocationHistory =
-        firstBeamingHistory.history.last.routeInformation.location ?? '';
-    final offset = BottomNavigationManager().getTopScrollController().offset;
-    if (isDoubleHistoryLocation() && lastLocationHistory == '/top') {
-      // remove last item in history from NavigationManager histories
-      BottomNavigationManager().removeLastHistory();
-      if (resetScreenIfOffsetGreaterZero(offset)) {
-        return true;
-      }
-      return popAppToBackground();
-    }
-    if (isDoubleHistoryLocation()) {
-      // remove last item in history from NavigationManager histories
-      BottomNavigationManager().removeLastHistory();
+    try {
+      // get last item in history from NavigationManager histories
+      final firstBeamingHistory = context.beamingHistory.first;
+      final lastLocationHistory =
+          firstBeamingHistory.history.last.routeInformation.location;
+      if (isDoubleHistoryLocation() && lastLocationHistory == '/top') {
+        // remove last item in history from NavigationManager histories
+        BottomNavigationManager().removeLastHistory();
 
-      if (BottomNavigationManager().isLocationTopNavigator(lastHistory)) {
-        BottomNavigationManager().getTopScrollController().animateTo(
-              0,
-              duration: const Duration(milliseconds: 750),
-              curve: Curves.easeOut,
-            );
+        return popAppToBackground();
+      }
+      if (isDoubleHistoryLocation()) {
+        // remove last item in history from NavigationManager histories
+        BottomNavigationManager().removeLastHistory();
+
+        // go to top screen because only 1 item in history
+        context.read<MainPresenter>().changeIndex(MainTab.top.index);
         return true;
       }
-      // go to top screen because only 1 item in history
-      context.read<MainPresenter>().changeIndex(MainTab.top.index);
-      return true;
+    } catch (e) {
+      debugPrint(e.toString());
     }
+
     return false;
   }
 
@@ -217,7 +190,7 @@ class CustomBackButtonDispatcher extends RootBackButtonDispatcher {
       index = MainTab.myList.index;
     } else if (lastHistory == '/notification') {
       index = MainTab.notification.index;
-    } else if (lastHistory == '/account') {
+    } else if (lastHistory == '/e') {
       index = MainTab.account.index;
     }
     return index;
