@@ -118,7 +118,7 @@ class _WDetailProductState extends State<WDetailProduct>
                 ),
               ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 60)),
+              const SliverToBoxAdapter(child: SizedBox(height: 230)),
             ],
           ),
         ),
