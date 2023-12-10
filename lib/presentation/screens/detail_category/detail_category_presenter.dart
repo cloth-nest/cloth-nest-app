@@ -1,3 +1,4 @@
+import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:flutter/material.dart';
 
 abstract class DetailCategoryPresenter implements ChangeNotifier {
@@ -11,11 +12,18 @@ abstract class DetailCategoryPresenter implements ChangeNotifier {
   List<Map<String, dynamic>> get selectedPrices;
   bool get hasFilter;
   String get sort;
+  List<ProductEntity> get products;
+  ScrollController get controller;
+  bool get canGetMore;
+  bool get isGetMore;
 
-  void changeTab(int newIndex);
+  void changeTab(int newIndex,
+      {required int id, required int page, required int limit});
   Future pullToRefresh();
   void setSelectedSizes(List<Map<String, dynamic>> value);
   void setSelectedColors(List<Map<String, dynamic>> value);
   void setSelectedPrices(List<Map<String, dynamic>> value);
   void setSort(String value);
+  void initData({required int id, required int page, required int limit});
+  void scrollListener();
 }

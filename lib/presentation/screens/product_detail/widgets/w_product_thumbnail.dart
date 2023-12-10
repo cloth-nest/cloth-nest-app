@@ -41,11 +41,6 @@ class _WProductThumbNailState extends State<WProductThumbNail>
   Future<void> setAutoSlide() async {
     _animationController.reset();
 
-    _presenter.pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.linear,
-    );
-
     await _animationController.forward();
   }
 
@@ -57,14 +52,6 @@ class _WProductThumbNailState extends State<WProductThumbNail>
 
   @override
   Widget build(BuildContext context) {
-    final imageUrls = [
-      'https://bizweb.dktcdn.net/100/369/010/products/2-c7489656-f1cb-4b10-ac93-a6af49cd3617.jpg?v=1698056890097',
-      'https://bizweb.dktcdn.net/100/369/010/products/1-d78cb512-6469-4bb7-9c85-1385ec64b833.jpg?v=1698056890097',
-      'https://bizweb.dktcdn.net/100/369/010/products/1-2e90e381-0e8d-4b00-b266-91c065eb2123.jpg?v=1697719183130',
-      'https://bizweb.dktcdn.net/100/369/010/products/artboard-1-copy-2-aed65ebb-0e0c-434b-b477-50eecf3acca2.jpg?v=1697719183130',
-      'https://bizweb.dktcdn.net/100/369/010/products/artboard-1-copy-552d3a63-656a-492c-be16-2091b2ae9cd6.jpg?v=1697719181600',
-      'https://bizweb.dktcdn.net/100/369/010/products/artboard-1-96438371-b209-4454-97b5-e694a4829002.jpg?v=1697719181600',
-    ];
     final themeColor = Theme.of(context);
 
     return AspectRatio(
@@ -84,28 +71,34 @@ class _WProductThumbNailState extends State<WProductThumbNail>
                   onPointerUp: (_) {
                     _animationController.forward();
                   },
-                  child: PageView.builder(
-                    allowImplicitScrolling: true,
-                    physics: const ClampingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    controller: _presenter.pageController,
-                    onPageChanged: (value) {
-                      _presenter.setActivePage(value % imageUrls.length);
-                      _animationController.reset();
-                      _animationController.forward();
-                    },
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          color: AppColors.white,
-                          child: CachedNetworkImage(
-                            imageUrl: imageUrls[index % imageUrls.length],
-                            fit: BoxFit.contain,
+                  child: Selector<ProductDetailPresenter, int>(
+                    selector: (_, presenter) => presenter.activePage,
+                    builder: (_, activePage, __) => PageView.builder(
+                      allowImplicitScrolling: true,
+                      physics: const ClampingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      controller: _presenter.pageController,
+                      onPageChanged: (value) {
+                        _presenter
+                            .setActivePage(value % _presenter.images.length);
+                        _animationController.reset();
+                        _animationController.forward();
+                      },
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            color: AppColors.white,
+                            child: CachedNetworkImage(
+                              imageUrl: _presenter
+                                  .images[index % _presenter.images.length]
+                                  .image,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
                 Positioned(
@@ -117,7 +110,7 @@ class _WProductThumbNailState extends State<WProductThumbNail>
                       color: themeColor.scaffoldBackgroundColor,
                     ),
                     child: Center(
-                      child: _customLoadingIndicator(imageUrls.length),
+                      child: _customLoadingIndicator(_presenter.images.length),
                     ),
                   ),
                 )

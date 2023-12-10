@@ -1,3 +1,6 @@
 import 'package:ecommerce/presentation/screens/product_detail/product_detail_screen.dart';
 
-ProductDetailScreen makeProductDetailView() => const ProductDetailScreen();
+ProductDetailScreen makeProductDetailView({required int idProduct}) =>
+    ProductDetailScreen(
+      idProduct: idProduct,
+    );

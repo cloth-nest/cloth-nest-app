@@ -14,7 +14,7 @@ class TopCategoryLocation extends BeamLocation<BeamState> {
     final topLocation = TopLocation();
     final pages = topLocation.buildPages(context, state);
     final title = state.queryParameters['title'] ?? '';
-    final id = state.queryParameters['id'] ?? -1;
+    final int id = int.parse(state.queryParameters['id'].toString());
     final contentMasterPresenter = context.read<ContentMasterPresenter>();
     final List<CategoryEntity> categories =
         contentMasterPresenter.secondCategories['$id'];
@@ -27,6 +27,7 @@ class TopCategoryLocation extends BeamLocation<BeamState> {
             child: makeDetailCategoryView(
               title: title,
               categories: categories,
+              id: id,
             ),
           ),
         ),

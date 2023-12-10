@@ -4,5 +4,10 @@ import 'package:ecommerce/presentation/screens/detail_category/detail_category_s
 DetailCategoryScreen makeDetailCategoryView({
   required String title,
   required List<CategoryEntity> categories,
+  required int id,
 }) =>
-    DetailCategoryScreen(title: title, categories: categories);
+    DetailCategoryScreen(
+      title: title,
+      categories: categories,
+      id: id,
+    );

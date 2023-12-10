@@ -1,4 +1,6 @@
+import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WProductName extends StatelessWidget {
   const WProductName({super.key, required this.marginSide});
@@ -7,41 +9,14 @@ class WProductName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final presenter = context.read<ProductDetailPresenter>();
+
     return Padding(
         padding:
             EdgeInsets.only(left: marginSide, right: marginSide, bottom: 10),
         child: Text(
-          'DC x BR Mate T-shirt - Cream',
+          presenter.name,
           style: Theme.of(context).textTheme.displayMedium,
         ));
-    // return Selector<EpisodeDetailPresenter, bool>(
-    //   selector: (_, presenter) => presenter.isLoading,
-    //   builder: (_, isLoading, __) => isLoading
-    //       ? Padding(
-    //           padding: EdgeInsets.only(
-    //               left: marginSide, right: marginSide, bottom: 10),
-    //           child: Row(
-    //             children: [
-    //               const Skeleton(
-    //                 height: 20,
-    //                 width: 180,
-    //               )
-    //             ],
-    //           ),
-    //         )
-    //       : Selector<EpisodeDetailPresenter, String>(
-    //           selector: (_, presenter) => presenter.episodeName,
-    //           builder: (_, episodeName, __) => Padding(
-    //             padding: EdgeInsets.only(
-    //                 left: marginSide, right: marginSide, bottom: 10),
-    //             child: episodeName.isNotEmpty
-    //                 ? Text(
-    //                     episodeName,
-    //                     style: Theme.of(context).textTheme.displayMedium,
-    //                   )
-    //                 : const SizedBox.shrink(),
-    //           ),
-    //         ),
-    // );
   }
 }
