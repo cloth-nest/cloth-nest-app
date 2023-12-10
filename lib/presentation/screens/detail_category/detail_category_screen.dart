@@ -1,6 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/domain/entities/category/category_entity.dart';
+import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
 import 'package:ecommerce/presentation/screens/detail_category/detail_category_presenter.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/grid_detail_category.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/grid_detail_category_loading.dart';
@@ -12,9 +14,14 @@ import 'package:provider/provider.dart';
 
 class DetailCategoryScreen extends StatefulWidget {
   final String title;
+  final int id;
+  final List<CategoryEntity> categories;
+
   const DetailCategoryScreen({
     super.key,
     required this.title,
+    required this.categories,
+    required this.id,
   });
 
   @override
@@ -25,22 +32,30 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   late TabController _tabController;
   late DetailCategoryPresenter _presenter;
+  late ContentMasterPresenter contentMasterPresenter;
 
   @override
   void initState() {
     super.initState();
 
     _tabController = TabController(
-      length: 6,
+      length: widget.categories.length,
       vsync: this,
     );
+    contentMasterPresenter = context.read<ContentMasterPresenter>();
     _presenter = context.read<DetailCategoryPresenter>();
     _tabController.addListener(onChangeTabListener);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _presenter.initData(id: widget.categories[0].id, page: 1, limit: 6);
+    });
   }
 
   void onChangeTabListener() {
     _presenter.changeTab(
       _tabController.index,
+      limit: 6,
+      page: 1,
+      id: widget.categories[_tabController.index].id,
     );
   }
 
@@ -105,19 +120,14 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
                   right: 15,
                 ),
                 unselectedLabelColor: AppColors.textGray999,
-                tabs: [
-                  'All Outerwear',
-                  'Ultra Light Down & PUFFTECH',
-                  'Blousons & Parkas',
-                  'AirSense Jackets',
-                  'Jackets & Blazers',
-                  'Coats',
-                ].map((e) => Text(e.toUpperCase())).toList(),
+                tabs: widget.categories
+                    .map((e) => Text(e.name.toUpperCase()))
+                    .toList(),
               ),
             ),
           ),
           const SizedBox(height: 5),
-          const WSort(total: 36),
+          const WSort(),
           const SizedBox(height: 10),
           const WFilter(),
           const SizedBox(height: 15),
@@ -131,9 +141,13 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
                 builder: (_, tabIndex, __) =>
                     Selector<DetailCategoryPresenter, bool>(
                         selector: (_, presenter) => presenter.isLoading,
-                        builder: (_, isLoading, __) => isLoading
-                            ? const GridDetailCategoryLoading()
-                            : GridDetailCategory(index: tabIndex)),
+                        builder: (_, isLoading, __) {
+                          return isLoading
+                              ? const GridDetailCategoryLoading()
+                              : GridDetailCategory(
+                                  index: tabIndex,
+                                );
+                        }),
               ),
             ),
           ),

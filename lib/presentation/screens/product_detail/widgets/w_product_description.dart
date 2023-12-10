@@ -1,4 +1,6 @@
+import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WProductDescription extends StatelessWidget {
   const WProductDescription({super.key, required this.marginSide});
@@ -7,6 +9,8 @@ class WProductDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final presenter = context.read<ProductDetailPresenter>();
+
     return Padding(
       padding: EdgeInsets.only(
         left: marginSide,
@@ -23,18 +27,12 @@ class WProductDescription extends StatelessWidget {
               style: Theme.of(context).textTheme.displaySmall,
             ),
           ),
-          Text(
-            '• Chất liệu: Cotton 2 chiều.',
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-          Text(
-            '• Regular Fit.',
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-          Text(
-            '• Hình in trên mặt trước và sau áp áp dụng công nghệ in kéo lụa.',
-            style: Theme.of(context).textTheme.labelMedium,
-          )
+          ...presenter.attributes
+              .map((attribute) => Text(
+                    '• ${attribute.attributeName}: ${attribute.value}.',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ))
+              .toList(),
         ],
       ),
     );

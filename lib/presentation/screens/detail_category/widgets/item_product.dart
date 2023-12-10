@@ -1,20 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
+import 'package:ecommerce/app/utils/extensions/color_extension.dart';
+import 'package:ecommerce/app/utils/extensions/double_extension.dart';
+import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/horizontal_list_color.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/w_gender_size.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/w_reviews.dart';
 import 'package:flutter/material.dart';
 
 class ItemProduct extends StatelessWidget {
-  // final String category;
-  // final VoidCallback onTap;
-  // final String? categoryThumbUrl;
+  final Function(int) callback;
+  final ProductEntity entity;
 
   const ItemProduct({
     super.key,
-    // required this.category,
-    // required this.onTap,
-    // required this.categoryThumbUrl,
+    required this.entity,
+    required this.callback,
   });
 
   @override
@@ -23,15 +24,16 @@ class ItemProduct extends StatelessWidget {
     const horizontalPadding = 10.0;
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        callback.call(entity.id);
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CachedNetworkImage(
             width: size.width / 2,
             height: size.width / 2,
-            imageUrl:
-                'https://image.uniqlo.com/UQ/ST3/vn/imagesgoods/464022/item/vngoods_03_464022.jpg?width=320',
+            imageUrl: entity.image,
             fit: BoxFit.fitHeight,
             placeholder: (context, url) => Container(
               width: 100,
@@ -41,19 +43,19 @@ class ItemProduct extends StatelessWidget {
                 color: AppColors.placeholderLightMode,
               ),
             ),
+            errorWidget: (context, url, error) {
+              return Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.placeholderLightMode,
+                ),
+              );
+            },
           ),
           const SizedBox(height: 5),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: HorizontalListColor(
-              colors: [
-                Colors.red,
-                Colors.blue,
-                Colors.green,
-                Colors.yellow,
-                Colors.cyan,
-                Colors.orange,
-              ],
+              colors: entity.colors?.toListColor() ?? [],
             ),
           ),
           const SizedBox(height: 5),
@@ -65,7 +67,7 @@ class ItemProduct extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Text(
-              'Pocketable UV Protection Parka',
+              entity.name,
               style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     fontSize: 14,
                     height: 19.6 / 14,
@@ -77,7 +79,7 @@ class ItemProduct extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Text(
-              '489.000 VND',
+              entity.price.toMoney(),
               style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     fontSize: 14,
                     height: 19.6 / 14,

@@ -3,12 +3,14 @@ import 'package:ecommerce/app/routes/account/account_add_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_detail_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_location.dart';
+import 'package:ecommerce/app/routes/account/account_profile_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_product_location.dart';
 import 'package:ecommerce/app/routes/search/search_detail_location.dart';
 import 'package:ecommerce/app/routes/search/search_location.dart';
 import 'package:ecommerce/app/routes/top/top_category_location.dart';
 import 'package:ecommerce/app/routes/top/top_location.dart';
+import 'package:ecommerce/app/routes/top/top_product_location.dart';
 import 'package:ecommerce/presentation/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +41,9 @@ final homeRouteDelegate = [
 final topTabHomeRouteDelegate = BeamerDelegate(
   initialPath: '/top',
   locationBuilder: (routeInformation, _) {
-    if (routeInformation.location!.contains('/top/detail')) {
+    if (routeInformation.location!.contains('/top/detail/product')) {
+      return TopProductLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/top/detail')) {
       return TopCategoryLocation(routeInformation);
     } else if (routeInformation.location!.contains('/top')) {
       return TopLocation(routeInformation);
@@ -90,6 +94,8 @@ final accountTabHomeRouteDelegate = BeamerDelegate(
       return AccountAddAddressLocation(routeInformation);
     } else if (routeInformation.location!.contains('/account/address')) {
       return AccountAddressLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/account/profile')) {
+      return AccountProfileLocation(routeInformation);
     } else if (routeInformation.location!.contains('/account')) {
       return AccountLocation(routeInformation);
     }

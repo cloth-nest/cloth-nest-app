@@ -28,7 +28,7 @@ class _TopScreenState extends State<TopScreen>
     topPresenter = context.read<TopPresenter>();
 
     _tabController = TabController(
-      length: contentMasterPresenter.topCategories.length,
+      length: contentMasterPresenter.rootCategories.length,
       vsync: this,
     );
 
@@ -93,7 +93,7 @@ class _TopScreenState extends State<TopScreen>
                   ),
               labelPadding: const EdgeInsets.only(bottom: 10),
               unselectedLabelColor: AppColors.textGray999,
-              tabs: contentMasterPresenter.topCategories
+              tabs: contentMasterPresenter.rootCategories
                   .map((e) => Text(e.name.toUpperCase()))
                   .toList(),
             ),
@@ -103,18 +103,20 @@ class _TopScreenState extends State<TopScreen>
                 selector: (_, searchPresenter) => searchPresenter.tabIndex,
                 builder: (_, tabIndex, __) {
                   final subCategories = contentMasterPresenter
-                      .topCategories[tabIndex].subCategory;
+                      .rootCategories[tabIndex].subCategory;
 
-                  return tabIndex == 0
-                      ? const SizedBox.shrink()
-                      : GridCategories(
-                          categories: subCategories,
-                          index: tabIndex,
-                          callback: (titleCategory) {
-                            beamTo(context,
-                                path: 'detail?title=$titleCategory');
-                          },
-                        );
+                  if (subCategories.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return GridCategories(
+                    categories: subCategories,
+                    index: tabIndex,
+                    callback: (titleCategory, id) {
+                      beamTo(context,
+                          path: 'detail?title=$titleCategory&id=$id');
+                    },
+                  );
                 },
               ),
             ),

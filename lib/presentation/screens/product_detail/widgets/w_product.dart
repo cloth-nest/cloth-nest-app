@@ -1,11 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
+import 'package:ecommerce/app/utils/extensions/double_extension.dart';
 import 'package:ecommerce/app/utils/extensions/theme_extension.dart';
+import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:flutter/material.dart';
 
 class WProduct extends StatelessWidget {
-  const WProduct({super.key});
+  final ProductEntity entity;
+
+  const WProduct({
+    super.key,
+    required this.entity,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +41,7 @@ class WProduct extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: CachedNetworkImage(
-                          imageUrl:
-                              'https://bizweb.dktcdn.net/100/467/832/products/1-2f279636-9103-41d4-9762-62537cd8625b.jpg?v=1697874445763',
+                          imageUrl: entity.image,
                         ),
                       ),
                     ),
@@ -52,13 +58,13 @@ class WProduct extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AutoSizeText(
-                  'DC x BR Mate T-shirt - Black',
+                  entity.name,
                   style: Theme.of(context).textTheme.labelMedium,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '390.000₫',
+                  entity.price.toMoney(),
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         height: 16.71 / 14,
                         color: AppColors.textGray999,

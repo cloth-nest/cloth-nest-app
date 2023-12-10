@@ -127,4 +127,16 @@ class ProviderAccountPresenter with ChangeNotifier implements AccountPresenter {
     _state = _state.copyWith(navigateTo: Destination.address);
     notifyListeners();
   }
+
+  @override
+  void navigateToProfileScreen() {
+    _state = _state.copyWith(navigateTo: Destination.profile);
+    notifyListeners();
+  }
+
+  @override
+  void setNewUser(UserEntity? userEntity) {
+    _state = _state.copyWith(user: userEntity);
+    notifyListeners();
+  }
 }
