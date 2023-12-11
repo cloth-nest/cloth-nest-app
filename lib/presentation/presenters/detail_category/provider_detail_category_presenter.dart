@@ -1,6 +1,9 @@
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:ecommerce/domain/usecases/product/fetch_product.dart';
 import 'package:ecommerce/domain/usecases/product/fetch_product_params.dart';
+import 'package:ecommerce/domain/usecases/wishlist/delete_wishlist.dart';
+import 'package:ecommerce/domain/usecases/wishlist/fetch_wishlist.dart';
+import 'package:ecommerce/domain/usecases/wishlist/save_wishlist.dart';
 import 'package:ecommerce/presentation/presenters/detail_category/detail_category_state.dart';
 import 'package:ecommerce/presentation/screens/detail_category/detail_category_presenter.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +14,21 @@ class ProviderDetailCategoryPresenter
   DetailCategoryState _state;
 
   final FetchProduct _fetchProduct;
+  final SaveWishlist _saveWishlist;
+  final DeleteWishlist _deleteWishlist;
+  final FetchWishlist _fetchWishlist;
 
   ProviderDetailCategoryPresenter({
     required DetailCategoryState state,
     required FetchProduct fetchProduct,
+    required SaveWishlist saveWishlist,
+    required DeleteWishlist deleteWishlist,
+    required FetchWishlist fetchWishlist,
   })  : _state = state,
-        _fetchProduct = fetchProduct;
+        _fetchProduct = fetchProduct,
+        _saveWishlist = saveWishlist,
+        _deleteWishlist = deleteWishlist,
+        _fetchWishlist = fetchWishlist;
 
   // data filters
   String priceTmp = '';
@@ -250,6 +262,22 @@ class ProviderDetailCategoryPresenter
       List<ProductEntity> products =
           await fetchProducts(id: id, page: page, limit: limit);
 
+      List<ProductEntity> wishlistProduct = await _fetchWishlist.fetchLocal();
+
+      final result = [...products];
+
+      for (int i = 0; i < result.length; i++) {
+        final entity = result[i];
+        final index =
+            wishlistProduct.indexWhere((element) => element.id == entity.id);
+        debugPrint('index: $index');
+        if (index > -1) {
+          result[i] = entity.copyWith(isFavorite: true);
+        } else {
+          result[i] = entity.copyWith(isFavorite: false);
+        }
+      }
+
       _state = _state.copyWith(
         tabIndex: 0,
         isLoading: false,
@@ -257,7 +285,8 @@ class ProviderDetailCategoryPresenter
         selectedPrices: [],
         selectedSizes: [],
         sort: 'Created descending',
-        products: products,
+        products: result,
+        myListProducts: wishlistProduct,
       );
       notifyListeners();
     } catch (e) {
@@ -296,4 +325,69 @@ class ProviderDetailCategoryPresenter
 
   @override
   bool get isGetMore => _state.isGetMore;
+
+  @override
+  void addToWishList({required ProductEntity product}) async {
+    try {
+      _addProductWithoutFetch(product);
+      await _saveWishlist.saveLocal(product: product);
+      final result = [..._state.products];
+
+      for (int i = 0; i < result.length; i++) {
+        final entity = result[i];
+        final index = _state.myListProducts
+            .indexWhere((element) => element.id == entity.id);
+        debugPrint('index: $index');
+        if (index > -1) {
+          result[i] = entity.copyWith(isFavorite: true);
+        } else {
+          result[i] = entity.copyWith(isFavorite: false);
+        }
+      }
+      _state = _state.copyWith(
+        products: result,
+      );
+      notifyListeners();
+    } catch (e) {
+      debugPrint('error add to wishlist: $e');
+    }
+  }
+
+  void _addProductWithoutFetch(ProductEntity product) {
+    final myListProducts = _state.myListProducts;
+    myListProducts.add(product);
+    _state = _state.copyWith(myListProducts: myListProducts);
+  }
+
+  void _deleteProductWithoutFetch(ProductEntity product) {
+    final myListProducts = [..._state.myListProducts];
+    myListProducts.removeWhere((element) => element.id == product.id);
+    _state = _state.copyWith(myListProducts: myListProducts);
+  }
+
+  @override
+  void removeFromWishList({required ProductEntity product}) async {
+    try {
+      _deleteProductWithoutFetch(product);
+      await _deleteWishlist.deleteLocal(idProduct: product.id);
+      final result = [..._state.products];
+
+      for (int i = 0; i < result.length; i++) {
+        final entity = result[i];
+        final index = _state.myListProducts
+            .indexWhere((element) => element.id == entity.id);
+        if (index > -1) {
+          result[i] = entity.copyWith(isFavorite: true);
+        } else {
+          result[i] = entity.copyWith(isFavorite: false);
+        }
+      }
+      _state = _state.copyWith(
+        products: result,
+      );
+      notifyListeners();
+    } catch (e) {
+      debugPrint('error remove from wishlist: $e');
+    }
+  }
 }

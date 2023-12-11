@@ -1,12 +1,27 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:ecommerce/data/models/constant.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+part 'product_model.g.dart';
 
+@HiveType(typeId: kProductTypeId)
 class ProductModel {
+  @HiveField(0)
   final int id;
+
+  @HiveField(1)
   final String name;
+
+  @HiveField(2)
   final double price;
+
+  @HiveField(3)
   final String description;
+
+  @HiveField(4)
   final String image;
+
+  @HiveField(5)
   final List<String>? colors;
 
   ProductModel({
