@@ -13,6 +13,7 @@ class ProductDetailState {
   final List<ProductEntity> recommendationProducts;
   final String selectedColor;
   final String selectedSize;
+  final bool isFavorite;
 
   ProductDetailState({
     required this.activePage,
@@ -23,6 +24,7 @@ class ProductDetailState {
     required this.recommendationProducts,
     required this.selectedColor,
     required this.selectedSize,
+    required this.isFavorite,
   });
 
   factory ProductDetailState.initial() {
@@ -38,19 +40,20 @@ class ProductDetailState {
       recommendationProducts: [],
       selectedColor: '',
       selectedSize: '',
+      isFavorite: false,
     );
   }
 
-  ProductDetailState copyWith({
-    int? activePage,
-    PageController? pageController,
-    int? tabIndex,
-    DetailProductEntity? entity,
-    bool? isLoading,
-    List<ProductEntity>? recommendationProducts,
-    String? selectedColor,
-    String? selectedSize,
-  }) {
+  ProductDetailState copyWith(
+      {int? activePage,
+      PageController? pageController,
+      int? tabIndex,
+      DetailProductEntity? entity,
+      bool? isLoading,
+      List<ProductEntity>? recommendationProducts,
+      String? selectedColor,
+      String? selectedSize,
+      bool? isFavorite}) {
     return ProductDetailState(
       activePage: activePage ?? this.activePage,
       pageController: pageController ?? this.pageController,
@@ -61,6 +64,7 @@ class ProductDetailState {
           recommendationProducts ?? this.recommendationProducts,
       selectedColor: selectedColor ?? this.selectedColor,
       selectedSize: selectedSize ?? this.selectedSize,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 }

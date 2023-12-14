@@ -1,7 +1,14 @@
+import 'package:ecommerce/app/utils/extensions/double_extension.dart';
+import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:flutter/material.dart';
 
 class InfoWishlist extends StatelessWidget {
-  const InfoWishlist({super.key});
+  final ProductEntity entity;
+
+  const InfoWishlist({
+    super.key,
+    required this.entity,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,24 +17,16 @@ class InfoWishlist extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Reversible Stand Jacket',
+            entity.name,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           Text(
-            'Product ID: 462770',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          Text(
-            'Color: 56 OLIVE',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          Text(
-            'Size: Men',
+            'Product ID: ${entity.id}',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 10),
           Text(
-            '1.962.000 VND',
+            entity.price.toMoney(),
             style: Theme.of(context).textTheme.displaySmall,
           ),
         ],

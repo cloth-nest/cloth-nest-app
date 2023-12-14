@@ -13,4 +13,7 @@ DetailCategoryPresenter makeDetailCategoryPresenter() =>
       saveWishlist: makeSaveWishList(),
       deleteWishlist: makeDeleteWishlist(),
       fetchWishlist: makeFetchWishlist(),
+      saveRemoteWishlist: makeRemoteSaveWishList(),
+      fetchRemoteWishlist: makeRemoteFetchWishlist(),
+      deleteRemoteWishlist: makeRemoteDeleteWishList(),
     );

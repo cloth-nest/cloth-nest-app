@@ -14,6 +14,8 @@ class DetailProductModel {
   final List<ImageModel> images;
   final ProductTypeModel productType;
   final List<VariantModel> variants;
+  final bool? isFavorite;
+  final int defaultVariantId;
 
   DetailProductModel({
     required this.id,
@@ -24,6 +26,8 @@ class DetailProductModel {
     required this.images,
     required this.productType,
     required this.variants,
+    this.isFavorite,
+    required this.defaultVariantId,
   });
 
   Map<String, dynamic> toMap() {
@@ -64,6 +68,7 @@ class DetailProductModel {
           (x) => VariantModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
+      defaultVariantId: map['defaultVariant']['id'],
     );
   }
 
@@ -76,5 +81,7 @@ class DetailProductModel {
         images: images.map((e) => e.toEntity()).toList(),
         productType: productType.toEntity(),
         variants: variants.map((e) => e.toEntity()).toList(),
+        isFavorite: isFavorite,
+        defaultVariantId: defaultVariantId,
       );
 }

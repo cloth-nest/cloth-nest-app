@@ -5,8 +5,13 @@ import 'package:flutter/material.dart';
 
 class WProductButtons extends StatelessWidget {
   final double marginSide;
+  final VoidCallback onTapFavorite;
 
-  const WProductButtons({super.key, required this.marginSide});
+  const WProductButtons({
+    super.key,
+    required this.marginSide,
+    required this.onTapFavorite,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,9 @@ class WProductButtons extends StatelessWidget {
           /// FAVORITE
           WProductBookmarkButton(
             buttonName: 'buttonName',
-            onClick: () {},
+            onClick: () {
+              onTapFavorite.call();
+            },
           ),
 
           // Expanded(

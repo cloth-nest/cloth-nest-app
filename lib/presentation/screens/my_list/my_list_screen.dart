@@ -1,5 +1,5 @@
-import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
+import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:ecommerce/presentation/screens/my_list/my_list_presenter.dart';
 import 'package:ecommerce/presentation/screens/my_list/widgets/my_list_sliver_list.dart';
 import 'package:ecommerce/presentation/screens/my_list/widgets/my_list_sliver_list_loading.dart';
@@ -18,20 +18,12 @@ class _MyListScreenState extends State<MyListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _presenter = context.read<MyListPresenter>();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _presenter.getData();
     });
-  }
-
-  void _onProductTap() {
-    final String currentLocation =
-        context.currentBeamLocation.state.routeInformation.location ?? '/';
-    final uri = Uri.parse(currentLocation);
-    context.beamToNamed('${uri.path}/product');
   }
 
   @override
@@ -57,10 +49,13 @@ class _MyListScreenState extends State<MyListScreen> {
                 left: 20.0,
                 bottom: 10,
               ),
-              child: Text(
-                '0 Item(s)',
-                style: Theme.of(context).textTheme.headlineSmall,
-                textAlign: TextAlign.left,
+              child: Selector<MyListPresenter, List<ProductEntity>>(
+                selector: (_, presenter) => presenter.myListProducts,
+                builder: (_, myListProducts, __) => Text(
+                  '${myListProducts.length} Item(s)',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
           ),
@@ -79,9 +74,7 @@ class _MyListScreenState extends State<MyListScreen> {
             slivers: [
               isLoading
                   ? const MyListSliverListLoading()
-                  : MyListSliverList(
-                      onTap: _onProductTap,
-                    )
+                  : const MyListSliverList()
             ],
           ),
         ),

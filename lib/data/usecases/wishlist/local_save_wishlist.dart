@@ -3,7 +3,7 @@ import 'package:ecommerce/data/models/product/product_model.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:ecommerce/domain/usecases/wishlist/save_wishlist.dart';
 
-class LocalSaveWishlist implements SaveWishlist {
+class LocalSaveWishlist implements SaveLocalWishlist {
   final String boxKey;
   final SaveCacheStorage saveCacheStorage;
 
@@ -19,7 +19,7 @@ class LocalSaveWishlist implements SaveWishlist {
     try {
       await saveCacheStorage.put(
         boxKey: boxKey,
-        key: product.id.toString(),
+        key: product.defaultVariantId.toString(),
         value: model,
       );
     } catch (e) {

@@ -24,6 +24,9 @@ class ProductModel {
   @HiveField(5)
   final List<String>? colors;
 
+  @HiveField(6)
+  final int defautVariantId;
+
   ProductModel({
     required this.id,
     required this.name,
@@ -31,6 +34,7 @@ class ProductModel {
     required this.description,
     required this.image,
     this.colors,
+    required this.defautVariantId,
   });
 
   Map<String, dynamic> toMap() {
@@ -41,6 +45,7 @@ class ProductModel {
       'description': description,
       'image': image,
       'colors': colors,
+      'defautVariantId': defautVariantId,
     };
   }
 
@@ -54,6 +59,7 @@ class ProductModel {
       description: map['description'] as String,
       image: map['image'] as String,
       colors: map['colors'] != null ? List<String>.from((map['colors'])) : null,
+      defautVariantId: map['defautVariantId'] ?? map['defaultVariant'],
     );
   }
 
@@ -64,5 +70,6 @@ class ProductModel {
         description: description,
         image: image,
         colors: colors,
+        defaultVariantId: defautVariantId,
       );
 }

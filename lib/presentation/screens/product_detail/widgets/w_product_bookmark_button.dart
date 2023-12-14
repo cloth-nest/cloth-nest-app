@@ -1,6 +1,8 @@
 import 'package:ecommerce/app/resources/app_colors.dart';
+import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:ecommerce/presentation/widgets/button/base_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WProductBookmarkButton extends BaseButton {
   const WProductBookmarkButton({
@@ -26,13 +28,22 @@ class WProductBookmarkButton extends BaseButton {
           borderRadius: BorderRadius.circular(6),
         ),
       ),
-      child: const SizedBox(
+      child: SizedBox(
         width: buttonContainerSize,
         height: buttonContainerSize,
-        child: Icon(
-          Icons.favorite_outline_rounded,
-          size: iconButtonSize,
-          color: AppColors.textLightBasic,
+        child: Selector<ProductDetailPresenter, bool>(
+          selector: (_, presenter) => presenter.isFavorite,
+          builder: (_, isFavorite, __) => isFavorite
+              ? const Icon(
+                  Icons.favorite_rounded,
+                  size: iconButtonSize,
+                  color: Colors.red,
+                )
+              : const Icon(
+                  Icons.favorite_outline_rounded,
+                  size: iconButtonSize,
+                  color: AppColors.textLightBasic,
+                ),
         ),
       ),
     );

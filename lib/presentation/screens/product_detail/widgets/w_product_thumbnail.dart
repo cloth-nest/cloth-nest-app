@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
+import 'package:ecommerce/domain/entities/detail_product/image_entity.dart';
 import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,71 +55,78 @@ class _WProductThumbNailState extends State<WProductThumbNail>
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context);
 
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: LayoutBuilder(
-        builder: (_, constraints) {
-          return SizedBox(
-            height: constraints.maxHeight,
-            width: constraints.maxWidth,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Listener(
-                  onPointerDown: (event) {
-                    _animationController.stop();
-                  },
-                  onPointerUp: (_) {
-                    _animationController.forward();
-                  },
-                  child: Selector<ProductDetailPresenter, int>(
-                    selector: (_, presenter) => presenter.activePage,
-                    builder: (_, activePage, __) => PageView.builder(
-                      allowImplicitScrolling: true,
-                      physics: const ClampingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      controller: _presenter.pageController,
-                      onPageChanged: (value) {
-                        _presenter
-                            .setActivePage(value % _presenter.images.length);
-                        _animationController.reset();
-                        _animationController.forward();
-                      },
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            color: AppColors.white,
-                            child: CachedNetworkImage(
-                              imageUrl: _presenter
-                                  .images[index % _presenter.images.length]
-                                  .image,
-                              fit: BoxFit.contain,
+    return Selector<ProductDetailPresenter, List<ImageEntity>>(
+      selector: (_, presenter) => presenter.images,
+      builder: (_, images, __) => images.isEmpty
+          ? const SizedBox.shrink()
+          : AspectRatio(
+              aspectRatio: 16 / 9,
+              child: LayoutBuilder(
+                builder: (_, constraints) {
+                  return SizedBox(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Listener(
+                          onPointerDown: (event) {
+                            _animationController.stop();
+                          },
+                          onPointerUp: (_) {
+                            _animationController.forward();
+                          },
+                          child: Selector<ProductDetailPresenter, int>(
+                            selector: (_, presenter) => presenter.activePage,
+                            builder: (_, activePage, __) => PageView.builder(
+                              allowImplicitScrolling: true,
+                              physics: const ClampingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              controller: _presenter.pageController,
+                              onPageChanged: (value) {
+                                _presenter.setActivePage(
+                                    value % _presenter.images.length);
+                                _animationController.reset();
+                                _animationController.forward();
+                              },
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    color: AppColors.white,
+                                    child: CachedNetworkImage(
+                                      imageUrl: _presenter
+                                          .images[
+                                              index % _presenter.images.length]
+                                          .image,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                        );
-                      },
+                        ),
+                        Positioned(
+                          bottom: 13,
+                          child: Container(
+                            height: 20,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: themeColor.scaffoldBackgroundColor,
+                            ),
+                            child: Center(
+                              child: _customLoadingIndicator(
+                                  _presenter.images.length),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 13,
-                  child: Container(
-                    height: 20,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: themeColor.scaffoldBackgroundColor,
-                    ),
-                    child: Center(
-                      child: _customLoadingIndicator(_presenter.images.length),
-                    ),
-                  ),
-                )
-              ],
+                  );
+                },
+              ),
             ),
-          );
-        },
-      ),
     );
   }
 

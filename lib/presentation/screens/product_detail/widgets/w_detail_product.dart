@@ -86,9 +86,22 @@ class _WDetailProductState extends State<WDetailProduct>
               ),
 
               /// Buttons
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: WProductButtons(
                   marginSide: _marginSide,
+                  onTapFavorite: () {
+                    if (presenter.isFavorite) {
+                      if (presenter.entity != null) {
+                        presenter.removeFromWishList(
+                            product: presenter.entity!.toProductEntity());
+                      }
+                    } else {
+                      if (presenter.entity != null) {
+                        presenter.addToWishList(
+                            product: presenter.entity!.toProductEntity());
+                      }
+                    }
+                  },
                 ),
               ),
 

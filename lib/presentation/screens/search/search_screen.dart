@@ -5,6 +5,7 @@ import 'package:ecommerce/presentation/screens/content_master/content_master_pre
 import 'package:ecommerce/presentation/screens/search/search_presenter.dart';
 import 'package:ecommerce/presentation/screens/search/widgets/history_search_tags.dart';
 import 'package:ecommerce/presentation/screens/search/widgets/vertical_list_categories.dart';
+import 'package:ecommerce/presentation/screens/search_shared/search_shared_presenter.dart';
 import 'package:ecommerce/presentation/widgets/text_field/search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,15 +53,17 @@ class _SearchScreenState extends State<SearchScreen>
   late TabController _tabController;
   late final ContentMasterPresenter contentMasterPresenter;
   late final SearchPresenter searchPresenter;
+  late final SearchSharedPresenter searchSharedPresenter;
 
   @override
   void initState() {
     super.initState();
     contentMasterPresenter = context.read<ContentMasterPresenter>();
     searchPresenter = context.read<SearchPresenter>();
+    searchSharedPresenter = context.read<SearchSharedPresenter>();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      searchPresenter.fetchHistorySearch();
+      searchSharedPresenter.fetchHistorySearch();
     });
 
     _tabController = TabController(
@@ -79,13 +82,12 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   void dispose() {
     super.dispose();
-    widget.presenter.refreshState();
     _tabController.removeListener(onChangeTabListener);
   }
 
-  void _goToSearchResult(String keyword) {
-    if (searchPresenter.validateKeyWord(keyword)) {
-      searchPresenter.saveKeyword(keyword);
+  void _goToSearchResult(String keyword) async {
+    if (searchSharedPresenter.validateKeyWord(keyword)) {
+      searchSharedPresenter.saveKeyword(keyword);
       context.beamToNamed('search/result?keyword=$keyword');
     }
   }
@@ -95,11 +97,11 @@ class _SearchScreenState extends State<SearchScreen>
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Selector<SearchPresenter, bool>(
+        title: Selector<SearchSharedPresenter, bool>(
           selector: (_, presenter) => presenter.isShowButton,
           builder: (__, isShowButton, _) => SearchTextField(
-            searchController: widget.presenter.searchController,
-            onClearButton: widget.presenter.onClearText,
+            searchController: searchSharedPresenter.searchController,
+            onClearButton: searchSharedPresenter.onClearText,
             onSubmitSearch: (value) {
               _goToSearchResult(value);
             },
@@ -107,7 +109,7 @@ class _SearchScreenState extends State<SearchScreen>
               _goToSearchResult(value);
             },
             isShowButton: isShowButton,
-            onChanged: widget.presenter.onKeywordChanged,
+            onChanged: searchSharedPresenter.onKeywordChanged,
           ),
         ),
       ),
@@ -120,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen>
           children: [
             Align(
               alignment: Alignment.centerLeft,
-              child: Selector<SearchPresenter, HistorySearchEntity>(
+              child: Selector<SearchSharedPresenter, HistorySearchEntity>(
                 selector: (_, presenter) => presenter.historySearch,
                 builder: (_, historySearch, __) => HistorySearchTags(
                   tags: historySearch.keywords,

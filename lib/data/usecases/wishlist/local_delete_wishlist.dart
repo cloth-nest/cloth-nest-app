@@ -11,11 +11,11 @@ class LocalDeleteWishlist implements DeleteWishlist {
   });
 
   @override
-  Future<void> deleteLocal({required int idProduct}) async {
+  Future<void> deleteLocal({required int defautVariantId}) async {
     try {
       await deleteCacheStorage.deleteByKey(
         boxKey: boxKey,
-        key: idProduct.toString(),
+        key: defautVariantId.toString(),
       );
     } catch (e) {
       throw Exception('Failed to delete local wishlist');

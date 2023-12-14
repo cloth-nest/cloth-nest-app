@@ -7,6 +7,7 @@ import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/app/routes/home_location.dart';
 import 'package:ecommerce/presentation/screens/main/main_presenter.dart';
+import 'package:ecommerce/presentation/screens/my_list/my_list_presenter.dart';
 import 'package:ecommerce/presentation/widgets/bottom_navigation_manager.dart';
 import 'package:ecommerce/presentation/widgets/indexed_transition_switcher.dart';
 import 'package:ecommerce/presentation/widgets/nav_item/btn_nav_item.dart';
@@ -326,21 +327,7 @@ class _MainScreenState extends State<MainScreen> {
                 ],
                 onTap: (index) {
                   if (index == MainTab.myList.index) {
-                    // if (!isAuthenticated) {
-                    //   dialogOneButton(context,
-                    //       title: 'ログインをしてお気に入り番組を登録しよう！',
-                    //       content:
-                    //           'Myスカパー!にログインすると、マイリストにお気に入り番組リストを作成することができます！',
-                    //       buttonOne: 'ログイン', buttonOneTap: () {
-                    //     Beamer.of(context, root: true)
-                    //         .beamToReplacementNamed('/login');
-                    //   });
-                    //   return;
-                    // } else {
-                    //   context.read<MyListPresenter>()
-                    //     ..fetchBroadcastEpisode()
-                    //     ..fetchWebcastEpisode();
-                    // }
+                    context.read<MyListPresenter>().getData();
                   }
                   if (index == currentIndex) {
                     _handleTapItemActive(index, context);

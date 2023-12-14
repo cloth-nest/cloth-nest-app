@@ -23,13 +23,14 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
       description: fields[3] as String,
       image: fields[4] as String,
       colors: (fields[5] as List?)?.cast<String>(),
+      defautVariantId: fields[6] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProductModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
       ..writeByte(4)
       ..write(obj.image)
       ..writeByte(5)
-      ..write(obj.colors);
+      ..write(obj.colors)
+      ..writeByte(6)
+      ..write(obj.defautVariantId);
   }
 
   @override

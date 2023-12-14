@@ -3,7 +3,14 @@ import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ImgWishlist extends StatelessWidget {
-  const ImgWishlist({super.key});
+  final String imageUrl;
+  final VoidCallback onDelete;
+
+  const ImgWishlist({
+    super.key,
+    required this.imageUrl,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +20,7 @@ class ImgWishlist extends StatelessWidget {
         CachedNetworkImage(
           width: 120,
           height: 120,
-          imageUrl:
-              'https://image.uniqlo.com/UQ/ST3/vn/imagesgoods/462770/item/vngoods_56_462770.jpg?width=250',
+          imageUrl: imageUrl,
           fit: BoxFit.contain,
           placeholder: (context, url) => Container(
             width: 120,
@@ -24,13 +30,27 @@ class ImgWishlist extends StatelessWidget {
               color: AppColors.placeholderLightMode,
             ),
           ),
+          errorWidget: (context, url, error) {
+            return Container(
+              width: 120,
+              height: 120,
+              decoration: const BoxDecoration(
+                color: AppColors.placeholderLightMode,
+              ),
+            );
+          },
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 5, right: 5),
-          child: Icon(
-            Icons.favorite_rounded,
-            color: Colors.red,
-            size: 20,
+        Padding(
+          padding: const EdgeInsets.only(top: 5, right: 5),
+          child: InkWell(
+            onTap: () {
+              onDelete.call();
+            },
+            child: const Icon(
+              Icons.favorite_rounded,
+              color: Colors.red,
+              size: 20,
+            ),
           ),
         ),
       ],
