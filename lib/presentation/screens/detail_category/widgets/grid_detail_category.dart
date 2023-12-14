@@ -90,6 +90,13 @@ class _GridDetailCategoryState extends State<GridDetailCategory> {
                             context.beamToNamed(
                                 '${uri.path}/product?idProduct=$idProduct');
                           },
+                          onTapFavorite: (product) {
+                            if (product.isFavorite ?? false) {
+                              presenter.removeFromWishList(product: product);
+                            } else {
+                              presenter.addToWishList(product: product);
+                            }
+                          },
                         );
                       }).toList(),
                     ),

@@ -1,8 +1,12 @@
 import 'package:ecommerce/data/http/exceptions/http_exception.dart';
+import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:ecommerce/domain/entities/token/token_entity.dart';
 import 'package:ecommerce/domain/usecases/authentication/login/fetch_login.dart';
 import 'package:ecommerce/domain/usecases/authentication/login/login_params.dart';
 import 'package:ecommerce/domain/usecases/token/save_token.dart';
+import 'package:ecommerce/domain/usecases/wishlist/delete_wishlist.dart';
+import 'package:ecommerce/domain/usecases/wishlist/fetch_wishlist.dart';
+import 'package:ecommerce/domain/usecases/wishlist/save_wishlist.dart';
 import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/protocols/validation.dart';
@@ -18,6 +22,9 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
   final SaveToken _saveToken;
   final Validation _validation;
   final AuthenticationPresenter _authenticationPresenter;
+  final FetchWishlist _fetchWishlist;
+  final SaveRemoteWishlist _saveRemoteWishlist;
+  final DeleteWishlist _deleteWishlist;
 
   void _validateEmail() {
     final exceptions = _validation.validate(
@@ -110,6 +117,7 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
       );
 
       await _saveToken.call(tokenEntity: tokenEntity);
+      await _syncDataWishlist();
 
       _state = _state.copyWith(
         isLoading: false,
@@ -147,11 +155,18 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
     required SaveToken saveToken,
     required Validation validation,
     required AuthenticationPresenter authenticationPresenter,
+    required FetchWishlist fetchWishlist,
+    required FetchRemoteWishlist fetchRemoteWishlist,
+    required SaveRemoteWishlist saveRemoteWishlist,
+    required DeleteWishlist deleteWishlist,
   })  : _state = state,
         _fetchLogin = fetchLogin,
         _saveToken = saveToken,
         _validation = validation,
-        _authenticationPresenter = authenticationPresenter;
+        _authenticationPresenter = authenticationPresenter,
+        _fetchWishlist = fetchWishlist,
+        _saveRemoteWishlist = saveRemoteWishlist,
+        _deleteWishlist = deleteWishlist;
 
   @override
   bool get isLoading => _state.isLoading;
@@ -214,5 +229,27 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
       navigateTo: LoginRedirect.home,
     );
     notifyListeners();
+  }
+
+  Future<void> _syncDataWishlist() async {
+    try {
+      final List<ProductEntity> productWishlist =
+          await _fetchWishlist.fetchLocal();
+      if (productWishlist.isEmpty) {
+        return;
+      }
+
+      List<int> variantIds = [];
+
+      for (var product in productWishlist) {
+        await _deleteWishlist.deleteLocal(
+            defautVariantId: product.defaultVariantId);
+        variantIds.add(product.defaultVariantId);
+      }
+
+      await _saveRemoteWishlist.saveRemote(variantIds: variantIds);
+    } catch (e) {
+      debugPrint('###error syncDataWishlist:$e');
+    }
   }
 }

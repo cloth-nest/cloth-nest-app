@@ -21,24 +21,27 @@ class DetailCategoryState extends Equatable {
   final ScrollController controller;
   final bool canGetMore;
   final bool isGetMore;
+  final List<ProductEntity> myListProducts;
 
-  DetailCategoryState(
-      {required this.isLoading,
-      required this.tabIndex,
-      required this.sizes,
-      required this.colors,
-      required this.prices,
-      required this.selectedSizes,
-      required this.selectedColors,
-      required this.selectedPrices,
-      required this.sort,
-      required this.products,
-      required this.id,
-      required this.limit,
-      required this.page,
-      required this.controller,
-      required this.canGetMore,
-      required this.isGetMore});
+  DetailCategoryState({
+    required this.isLoading,
+    required this.tabIndex,
+    required this.sizes,
+    required this.colors,
+    required this.prices,
+    required this.selectedSizes,
+    required this.selectedColors,
+    required this.selectedPrices,
+    required this.sort,
+    required this.products,
+    required this.id,
+    required this.limit,
+    required this.page,
+    required this.controller,
+    required this.canGetMore,
+    required this.isGetMore,
+    required this.myListProducts,
+  });
 
   factory DetailCategoryState.initial() {
     return DetailCategoryState(
@@ -58,6 +61,7 @@ class DetailCategoryState extends Equatable {
       controller: ScrollController(),
       isGetMore: false,
       canGetMore: false,
+      myListProducts: [],
     );
   }
 
@@ -78,6 +82,7 @@ class DetailCategoryState extends Equatable {
     ScrollController? controller,
     bool? canGetMore,
     bool? isGetMore,
+    List<ProductEntity>? myListProducts,
   }) {
     return DetailCategoryState(
       isLoading: isLoading ?? this.isLoading,
@@ -96,6 +101,7 @@ class DetailCategoryState extends Equatable {
       controller: controller ?? this.controller,
       canGetMore: canGetMore ?? this.canGetMore,
       isGetMore: isGetMore ?? this.isGetMore,
+      myListProducts: myListProducts ?? this.myListProducts,
     );
   }
 

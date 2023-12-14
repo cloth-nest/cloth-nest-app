@@ -7,6 +7,7 @@ import 'package:ecommerce/app/routes/account/account_profile_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_product_location.dart';
 import 'package:ecommerce/app/routes/search/search_detail_location.dart';
+import 'package:ecommerce/app/routes/search/search_detail_product_location.dart';
 import 'package:ecommerce/app/routes/search/search_location.dart';
 import 'package:ecommerce/app/routes/top/top_category_location.dart';
 import 'package:ecommerce/app/routes/top/top_location.dart';
@@ -55,7 +56,9 @@ final topTabHomeRouteDelegate = BeamerDelegate(
 final searchTabHomeRouteDelegate = BeamerDelegate(
   initialPath: '/search',
   locationBuilder: (routeInformation, _) {
-    if (routeInformation.location!.contains('/search/result')) {
+    if (routeInformation.location!.contains('/search/result/product')) {
+      return SearchDetailProductLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/search/result')) {
       return SearchDetailLocation(routeInformation);
     } else if (routeInformation.location!.contains('/search')) {
       return SearchLocation();

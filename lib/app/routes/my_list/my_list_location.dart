@@ -1,8 +1,6 @@
 import 'package:beamer/beamer.dart';
-import 'package:ecommerce/app/factories/presentation/my_list/my_list_presenter_factory.dart';
 import 'package:ecommerce/app/factories/presentation/my_list/my_list_view_factory.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MyListLocation extends BeamLocation<BeamState> {
   MyListLocation([super.routeInformation]);
@@ -11,10 +9,7 @@ class MyListLocation extends BeamLocation<BeamState> {
     return [
       BeamPage(
         key: const ValueKey('my_list'),
-        child: ChangeNotifierProvider(
-          create: (_) => makeMyListPresenter(),
-          child: makeMyListView(),
-        ),
+        child: makeMyListView(),
       ),
     ];
   }

@@ -1,3 +1,4 @@
+import 'package:ecommerce/app/utils/singleton/user_token_singleton.dart';
 import 'package:ecommerce/domain/entities/detail_product/attribute_entity.dart';
 import 'package:ecommerce/domain/entities/detail_product/attribute_variant_product_entity.dart';
 import 'package:ecommerce/domain/entities/detail_product/detail_product_entity.dart';
@@ -5,6 +6,9 @@ import 'package:ecommerce/domain/entities/detail_product/image_entity.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:ecommerce/domain/usecases/detail_product/fetch_detail_product.dart';
 import 'package:ecommerce/domain/usecases/recommendation_product/fetch_recommendation_product.dart';
+import 'package:ecommerce/domain/usecases/wishlist/delete_wishlist.dart';
+import 'package:ecommerce/domain/usecases/wishlist/fetch_wishlist.dart';
+import 'package:ecommerce/domain/usecases/wishlist/save_wishlist.dart';
 import 'package:ecommerce/presentation/presenters/product_detail/product_detail_state.dart';
 import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +20,32 @@ class ProviderProductDetailPresenter
 
   final FetchDetailProduct _fetchDetailProduct;
   final FetchRecommendationProduct _fetchRecommendationProduct;
+  final SaveLocalWishlist _saveWishlist;
+  final DeleteWishlist _deleteWishlist;
+  final FetchWishlist _fetchWishlist;
+  final SaveRemoteWishlist _saveRemoteWishlist;
+  final FetchRemoteWishlist _fetchRemoteWishlist;
+  final DeleteRemoteWishlist _deleteRemoteWishlist;
 
   ProviderProductDetailPresenter({
     required ProductDetailState state,
     required FetchDetailProduct fetchDetailProduct,
     required FetchRecommendationProduct fetchRecommendationProduct,
+    required SaveLocalWishlist saveWishlist,
+    required DeleteWishlist deleteWishlist,
+    required FetchWishlist fetchWishlist,
+    required SaveRemoteWishlist saveRemoteWishlist,
+    required FetchRemoteWishlist fetchRemoteWishlist,
+    required DeleteRemoteWishlist deleteRemoteWishlist,
   })  : _state = state,
         _fetchDetailProduct = fetchDetailProduct,
-        _fetchRecommendationProduct = fetchRecommendationProduct;
+        _fetchRecommendationProduct = fetchRecommendationProduct,
+        _saveWishlist = saveWishlist,
+        _deleteWishlist = deleteWishlist,
+        _fetchWishlist = fetchWishlist,
+        _saveRemoteWishlist = saveRemoteWishlist,
+        _fetchRemoteWishlist = fetchRemoteWishlist,
+        _deleteRemoteWishlist = deleteRemoteWishlist;
 
   @override
   int get activePage => _state.activePage;
@@ -50,6 +72,31 @@ class ProviderProductDetailPresenter
 
   @override
   int get tabIndex => _state.tabIndex;
+
+  Future<void> _updateWishList() async {
+    late List<ProductEntity> wishlistProduct;
+
+    final isAuthenticated = UserTokenSingleton().latestUserSession != null;
+
+    if (isAuthenticated) {
+      wishlistProduct = await _fetchRemoteWishlist.fetchRemote();
+    } else {
+      wishlistProduct = await _fetchWishlist.fetchLocal();
+    }
+
+    final index = wishlistProduct
+        .indexWhere((element) => element.id == _state.entity?.id);
+
+    DetailProductEntity? product = _state.entity;
+
+    if (product != null && index != -1) {
+      product = product.copyWith(isFavorite: true);
+    } else {
+      product = product?.copyWith(isFavorite: true);
+    }
+
+    _state = _state.copyWith(entity: product);
+  }
 
   @override
   void initData({required int idProduct}) async {
@@ -82,14 +129,15 @@ class ProviderProductDetailPresenter
         }
       }
 
-      List<ProductEntity> products =
-          await _fetchRecommendationProduct.call(idProduct: idProduct);
+      // List<ProductEntity> products =
+      //     await _fetchRecommendationProduct.call(idProduct: idProduct);
 
       _state = _state.copyWith(
         entity: detailProductEntity,
         isLoading: false,
-        recommendationProducts: products,
+        recommendationProducts: [],
       );
+      await _updateWishList();
       notifyListeners();
     } catch (e) {
       _state = _state.copyWith(isLoading: false);
@@ -216,4 +264,59 @@ class ProviderProductDetailPresenter
 
     return 0;
   }
+
+  @override
+  bool get isFavorite => _state.entity?.isFavorite ?? false;
+
+  void _addProductWithoutFetch() {
+    _state = _state.copyWith(entity: _state.entity?.copyWith(isFavorite: true));
+  }
+
+  void _deleteProductWithoutFetch() {
+    _state =
+        _state.copyWith(entity: _state.entity?.copyWith(isFavorite: false));
+  }
+
+  @override
+  void removeFromWishList({required ProductEntity product}) async {
+    try {
+      _deleteProductWithoutFetch();
+      final isAuthenticated = UserTokenSingleton().latestUserSession != null;
+
+      if (isAuthenticated) {
+        await _deleteRemoteWishlist
+            .deleteRemote(variantIds: [product.defaultVariantId]);
+      } else {
+        await _deleteWishlist.deleteLocal(
+            defautVariantId: product.defaultVariantId);
+      }
+
+      notifyListeners();
+    } catch (e) {
+      debugPrint('error remove from wishlist: $e');
+    }
+  }
+
+  @override
+  void addToWishList({required ProductEntity product}) async {
+    try {
+      _addProductWithoutFetch();
+
+      final isAuthenticated = UserTokenSingleton().latestUserSession != null;
+
+      if (isAuthenticated) {
+        await _saveRemoteWishlist
+            .saveRemote(variantIds: [product.defaultVariantId]);
+      } else {
+        await _saveWishlist.saveLocal(product: product);
+      }
+
+      notifyListeners();
+    } catch (e) {
+      debugPrint('error add to wishlist: $e');
+    }
+  }
+
+  @override
+  DetailProductEntity? get entity => _state.entity;
 }

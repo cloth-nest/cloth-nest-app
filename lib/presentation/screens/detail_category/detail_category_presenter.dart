@@ -26,4 +26,6 @@ abstract class DetailCategoryPresenter implements ChangeNotifier {
   void setSort(String value);
   void initData({required int id, required int page, required int limit});
   void scrollListener();
+  void addToWishList({required ProductEntity product});
+  void removeFromWishList({required ProductEntity product});
 }

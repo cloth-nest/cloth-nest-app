@@ -11,15 +11,18 @@ class MyListProductLocation extends BeamLocation<BeamState> {
     final myListLocation = MyListLocation();
     final pages = myListLocation.buildPages(context, state);
 
+    final int idProduct =
+        int.parse(state.queryParameters['idProduct'].toString());
+
     return pages
       ..add(
         BeamPage(
-          key: const ValueKey('my-list-product'),
-          child: makeProductDetailView(idProduct: 1),
+          key: ValueKey('my-list-product-$idProduct'),
+          child: makeProductDetailView(idProduct: idProduct),
         ),
       );
   }
 
   @override
-  List<Pattern> get pathPatterns => ['/product'];
+  List<Pattern> get pathPatterns => ['/product?idProduct=:idProduct'];
 }

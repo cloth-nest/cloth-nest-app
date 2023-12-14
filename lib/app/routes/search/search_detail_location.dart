@@ -1,7 +1,9 @@
 import 'package:beamer/beamer.dart';
+import 'package:ecommerce/app/factories/presentation/search_detail/search_detail_presenter_factory.dart';
+import 'package:ecommerce/app/factories/presentation/search_detail/search_detail_view_factory.dart';
 import 'package:ecommerce/app/routes/search/search_location.dart';
-import 'package:ecommerce/presentation/screens/search_detail.dart/search_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchDetailLocation extends BeamLocation<BeamState> {
   SearchDetailLocation([super.routeInformation]);
@@ -13,7 +15,10 @@ class SearchDetailLocation extends BeamLocation<BeamState> {
     final pages = [
       BeamPage(
         key: ValueKey('search-detail-$keyword'),
-        child: SearchDetailScreen(keyword: keyword),
+        child: ChangeNotifierProvider(
+          create: (_) => makeSearchDetailPresenter(),
+          child: makeSearchDetailView(keyword: keyword),
+        ),
       ),
     ];
 
