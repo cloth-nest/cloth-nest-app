@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:ecommerce/data/helper/response_handler.dart';
 import 'package:ecommerce/data/http/http_client.dart';
 import 'package:ecommerce/data/models/place/place_model.dart';
 import 'package:ecommerce/domain/entities/place/place_entity.dart';
@@ -19,10 +18,12 @@ class RemoteFetchProvinces implements FetchProvinces {
     try {
       final httpResponse = await client.get(
         Uri.parse(url),
+        headers: {
+          'token': 'c380eebe-d0f8-11ed-a3ed-eac62dba9bd9',
+        },
       );
-      final List<dynamic> json =
-          jsonDecode(utf8.decode(httpResponse.bodyBytes));
-      final List<PlaceEntity> result = json.map((e) {
+      final json = ResponseHandler.handle(httpResponse);
+      final List<PlaceEntity> result = List.from(json['data']).map((e) {
         return PlaceModel.fromMap(e).toEntity();
       }).toList();
       return result;

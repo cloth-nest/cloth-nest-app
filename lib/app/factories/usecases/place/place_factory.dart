@@ -8,15 +8,17 @@ import 'package:ecommerce/domain/usecases/place/fetch_wards.dart';
 
 FetchProvinces makeFetchProvinces() => RemoteFetchProvinces(
       client: makeHttpAdapter(),
-      url: 'https://provinces.open-api.vn/api/p',
+      url:
+          'https://online-gateway.ghn.vn/shiip/public-api/master-data/province',
     );
 
 FetchDistricts makeFetchDistricts() => RemoteFetchDistricts(
       client: makeHttpAdapter(),
-      url: 'https://provinces.open-api.vn/api/p',
+      url:
+          'https://online-gateway.ghn.vn/shiip/public-api/master-data/district',
     );
 
 FetchWards makeFetchWards() => RemoteFetchWards(
       client: makeHttpAdapter(),
-      url: 'https://provinces.open-api.vn/api/d',
+      url: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/ward',
     );

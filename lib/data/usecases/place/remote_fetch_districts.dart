@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:ecommerce/data/helper/response_handler.dart';
 import 'package:ecommerce/data/http/http_client.dart';
 import 'package:ecommerce/data/models/place/place_model.dart';
 import 'package:ecommerce/domain/entities/place/place_entity.dart';
@@ -17,11 +16,18 @@ class RemoteFetchDistricts implements FetchDistricts {
   @override
   Future<List<PlaceEntity>> call({required int code}) async {
     try {
-      final httpResponse = await client.get(
-        Uri.parse('$url/$code?depth=2'),
+      final httpResponse = await client.makeRequest(
+        uri: Uri.parse(url),
+        headers: {
+          'token': 'c380eebe-d0f8-11ed-a3ed-eac62dba9bd9',
+        },
+        method: HttpMethod.post,
+        body: {
+          'province_id': code,
+        },
       );
-      final json = jsonDecode(utf8.decode(httpResponse.bodyBytes));
-      final List<PlaceEntity> result = json['districts'].map<PlaceEntity>((e) {
+      final json = ResponseHandler.handle(httpResponse);
+      final List<PlaceEntity> result = List.from(json['data']).map((e) {
         return PlaceModel.fromMap(e).toEntity();
       }).toList();
       return result;
