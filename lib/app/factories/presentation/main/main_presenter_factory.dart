@@ -1,6 +1,8 @@
 import 'package:ecommerce/app/factories/presentation/account/account_presenter_factory.dart';
 import 'package:ecommerce/app/factories/presentation/address/address_presenter_factory.dart';
 import 'package:ecommerce/app/factories/presentation/authentication/authentication_presenter_factory.dart';
+import 'package:ecommerce/app/factories/presentation/cart/cart_presenter_factory.dart';
+import 'package:ecommerce/app/factories/presentation/cart/cart_view_factory.dart';
 import 'package:ecommerce/app/factories/presentation/content_master/content_master_presenter_factory.dart';
 import 'package:ecommerce/app/factories/presentation/my_list/my_list_presenter_factory.dart';
 import 'package:ecommerce/app/factories/presentation/product_detail/product_detail_presenter.dart';
@@ -10,6 +12,7 @@ import 'package:ecommerce/presentation/presenters/main/provider_main_presenter.d
 import 'package:ecommerce/presentation/screens/account/account_presenter.dart';
 import 'package:ecommerce/presentation/screens/address/address_presenter.dart';
 import 'package:ecommerce/presentation/screens/authentication/authentication_presenter.dart';
+import 'package:ecommerce/presentation/screens/cart/cart_presenter.dart';
 import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
 import 'package:ecommerce/presentation/screens/main/main_presenter.dart';
 import 'package:ecommerce/presentation/screens/my_list/my_list_presenter.dart';
@@ -49,6 +52,10 @@ List<SingleChildWidget> makeMainPresenters() {
     ),
     ChangeNotifierProvider<SearchSharedPresenter>(
       create: (_) => makeSearchSharedPresenter(),
-    )
+    ),
+    ChangeNotifierProvider<CartPresenter>(
+      create: (_) => makeCartPresenter(),
+      child: makeCartView(),
+    ),
   ];
 }

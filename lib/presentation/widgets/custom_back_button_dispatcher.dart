@@ -188,8 +188,8 @@ class CustomBackButtonDispatcher extends RootBackButtonDispatcher {
       index = MainTab.search.index;
     } else if (lastHistory == '/my-list') {
       index = MainTab.myList.index;
-    } else if (lastHistory == '/notification') {
-      index = MainTab.notification.index;
+    } else if (lastHistory == '/cart') {
+      index = MainTab.cart.index;
     } else if (lastHistory == '/e') {
       index = MainTab.account.index;
     }

@@ -3,9 +3,13 @@ import 'dart:io';
 import 'package:animations/animations.dart';
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ecommerce/app/factories/widgets/dialog/dialog_one_button.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/app/routes/home_location.dart';
+import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
+import 'package:ecommerce/presentation/screens/authentication/authentication_presenter.dart';
+import 'package:ecommerce/presentation/screens/cart/cart_presenter.dart';
 import 'package:ecommerce/presentation/screens/main/main_presenter.dart';
 import 'package:ecommerce/presentation/screens/my_list/my_list_presenter.dart';
 import 'package:ecommerce/presentation/widgets/bottom_navigation_manager.dart';
@@ -16,7 +20,7 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/custom_back_button_dispatcher.dart';
 
-enum MainTab { top, search, myList, notification, account }
+enum MainTab { top, search, myList, cart, account }
 
 class MainGlobalKey {
   // ignore: library_private_types_in_public_api
@@ -40,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
       case 2:
         return '/my-list';
       case 3:
-        return '/notification';
+        return '/cart';
       case 4:
         return '/account';
       default:
@@ -115,7 +119,7 @@ class _MainScreenState extends State<MainScreen> {
       }
     }
 
-    if (index == MainTab.notification.index &&
+    if (index == MainTab.cart.index &&
         BottomNavigationManager()
             .isLocationTvScheduleNavigator(lastLocationHistory)) {
       final offset =
@@ -150,6 +154,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isAuthenticated =
+        context.read<AuthenticationPresenter>().authenticatedState ==
+            AuthenticatedState.authorized;
+
     return Scaffold(
       key: MainGlobalKey.key,
       body: Selector<MainPresenter, int>(
@@ -211,12 +219,11 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   Beamer(
                     key: const ValueKey<int>(3),
-                    routerDelegate:
-                        homeRouteDelegate[MainTab.notification.index],
+                    routerDelegate: homeRouteDelegate[MainTab.cart.index],
                     backButtonDispatcher: CustomBackButtonDispatcher(
                       alwaysBeamBack: false,
                       fallbackToBeamBack: false,
-                      delegate: homeRouteDelegate[MainTab.notification.index],
+                      delegate: homeRouteDelegate[MainTab.cart.index],
                       context: context,
                     ),
                   ),
@@ -299,16 +306,16 @@ class _MainScreenState extends State<MainScreen> {
                         iconPath: SvgPaths.iconList,
                       )),
                   BottomNavigationBarItem(
-                    label: 'Movie',
+                    label: 'Cart',
                     icon: BtnNavItem(
-                      btnName: LocaleKeys.navNotificationButtonText.tr(),
+                      btnName: LocaleKeys.navCartButtonText.tr(),
                       isActive: false,
-                      iconPath: SvgPaths.iconNotification,
+                      iconPath: SvgPaths.iconCartSvg,
                     ),
                     activeIcon: BtnNavItem(
-                      btnName: LocaleKeys.navNotificationButtonText.tr(),
+                      btnName: LocaleKeys.navCartButtonText.tr(),
                       isActive: true,
-                      iconPath: SvgPaths.iconNotification,
+                      iconPath: SvgPaths.iconCartSvg,
                     ),
                   ),
                   BottomNavigationBarItem(
@@ -326,7 +333,23 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ],
                 onTap: (index) {
-                  if (index == MainTab.myList.index) {
+                  if (index == MainTab.cart.index && !isAuthenticated) {
+                    dialogOneButton(
+                      context,
+                      title: 'Log in',
+                      content:
+                          'When you log in to ClothNest!, you can create a list of your products and can buy later',
+                      buttonOne: 'Login',
+                      buttonOneTap: () {
+                        Beamer.of(context, root: true).beamToReplacementNamed(
+                          '/login',
+                        );
+                      },
+                    );
+                    return;
+                  } else if (index == MainTab.cart.index) {
+                    context.read<CartPresenter>().initData();
+                  } else if (index == MainTab.myList.index) {
                     context.read<MyListPresenter>().getData();
                   }
                   if (index == currentIndex) {

@@ -4,6 +4,7 @@ import 'package:ecommerce/domain/entities/detail_product/attribute_variant_produ
 import 'package:ecommerce/domain/entities/detail_product/detail_product_entity.dart';
 import 'package:ecommerce/domain/entities/detail_product/image_entity.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
+import 'package:ecommerce/domain/usecases/cart/fetch_add_to_cart.dart';
 import 'package:ecommerce/domain/usecases/detail_product/fetch_detail_product.dart';
 import 'package:ecommerce/domain/usecases/recommendation_product/fetch_recommendation_product.dart';
 import 'package:ecommerce/domain/usecases/wishlist/delete_wishlist.dart';
@@ -26,6 +27,7 @@ class ProviderProductDetailPresenter
   final SaveRemoteWishlist _saveRemoteWishlist;
   final FetchRemoteWishlist _fetchRemoteWishlist;
   final DeleteRemoteWishlist _deleteRemoteWishlist;
+  final FetchAddToCart _fetchAddToCart;
 
   ProviderProductDetailPresenter({
     required ProductDetailState state,
@@ -37,6 +39,7 @@ class ProviderProductDetailPresenter
     required SaveRemoteWishlist saveRemoteWishlist,
     required FetchRemoteWishlist fetchRemoteWishlist,
     required DeleteRemoteWishlist deleteRemoteWishlist,
+    required FetchAddToCart fetchAddToCart,
   })  : _state = state,
         _fetchDetailProduct = fetchDetailProduct,
         _fetchRecommendationProduct = fetchRecommendationProduct,
@@ -45,7 +48,8 @@ class ProviderProductDetailPresenter
         _fetchWishlist = fetchWishlist,
         _saveRemoteWishlist = saveRemoteWishlist,
         _fetchRemoteWishlist = fetchRemoteWishlist,
-        _deleteRemoteWishlist = deleteRemoteWishlist;
+        _deleteRemoteWishlist = deleteRemoteWishlist,
+        _fetchAddToCart = fetchAddToCart;
 
   @override
   int get activePage => _state.activePage;
@@ -74,28 +78,32 @@ class ProviderProductDetailPresenter
   int get tabIndex => _state.tabIndex;
 
   Future<void> _updateWishList() async {
-    late List<ProductEntity> wishlistProduct;
+    try {
+      late List<ProductEntity> wishlistProduct;
 
-    final isAuthenticated = UserTokenSingleton().latestUserSession != null;
+      final isAuthenticated = UserTokenSingleton().latestUserSession != null;
 
-    if (isAuthenticated) {
-      wishlistProduct = await _fetchRemoteWishlist.fetchRemote();
-    } else {
-      wishlistProduct = await _fetchWishlist.fetchLocal();
+      if (isAuthenticated) {
+        wishlistProduct = await _fetchRemoteWishlist.fetchRemote();
+      } else {
+        wishlistProduct = await _fetchWishlist.fetchLocal();
+      }
+
+      final index = wishlistProduct
+          .indexWhere((element) => element.id == _state.entity?.id);
+
+      DetailProductEntity? product = _state.entity;
+
+      if (product != null && index != -1) {
+        product = product.copyWith(isFavorite: true);
+      } else {
+        product = product?.copyWith(isFavorite: false);
+      }
+
+      _state = _state.copyWith(entity: product);
+    } catch (e) {
+      debugPrint('###error update wishlist in product detail: $e');
     }
-
-    final index = wishlistProduct
-        .indexWhere((element) => element.id == _state.entity?.id);
-
-    DetailProductEntity? product = _state.entity;
-
-    if (product != null && index != -1) {
-      product = product.copyWith(isFavorite: true);
-    } else {
-      product = product?.copyWith(isFavorite: true);
-    }
-
-    _state = _state.copyWith(entity: product);
   }
 
   @override
@@ -143,6 +151,18 @@ class ProviderProductDetailPresenter
       _state = _state.copyWith(isLoading: false);
       notifyListeners();
     }
+  }
+
+  int _getVariantId() {
+    for (var entity in _state.entity?.variants ?? []) {
+      List<AttributeVariantProductEntity> attributes = entity.attributes;
+
+      if (attributes[0].value == selectedSize &&
+          attributes[1].value == selectedColor) {
+        return entity.id;
+      }
+    }
+    return 0;
   }
 
   @override
@@ -319,4 +339,24 @@ class ProviderProductDetailPresenter
 
   @override
   DetailProductEntity? get entity => _state.entity;
+
+  @override
+  void addToCart() async {
+    try {
+      int variantId = _getVariantId();
+
+      await _fetchAddToCart.call(
+        variantId: variantId,
+        quantity: 1,
+      );
+
+      _state = _state.copyWith(successAddToCart: true);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('###error add to cart in product detail: $e');
+    }
+  }
+
+  @override
+  bool? get successAddToCart => _state.successAddToCart;
 }
