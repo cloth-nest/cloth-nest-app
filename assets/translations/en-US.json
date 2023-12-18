@@ -2,7 +2,7 @@
     "appName":"Clothnest",
     "navHomeButtonText": "Home",
     "navSearchButtonText": "Search",
-    "navNotificationButtonText": "Notification",
+    "navCartButtonText": "Cart",
     "navListButtonText": "My List",
     "navProfileButtonText": "Account",
     "emailInputText":"Email",

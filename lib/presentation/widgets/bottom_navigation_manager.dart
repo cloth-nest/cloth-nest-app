@@ -57,7 +57,7 @@ class BottomNavigationManager {
         addHistory('/my-list');
         break;
       case 3:
-        addHistory('/notification');
+        addHistory('/cart');
         break;
       case 4:
         addHistory('/account');
@@ -122,7 +122,7 @@ class BottomNavigationManager {
         location == '/top' ||
         location == '/search' ||
         location == '/my-list' ||
-        location == '/notification' ||
+        location == '/cart' ||
         location == '/account') {
       return true;
     }
@@ -155,7 +155,7 @@ class BottomNavigationManager {
 
   // Checks if the given location belongs to the my-list navigation
   bool isLocationTvScheduleNavigator(String location) {
-    if (location == '/notification') {
+    if (location == '/cart') {
       return true;
     }
     return false;

@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_detail_product.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_detail_product_loading.dart';
@@ -31,6 +32,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       presenter.initData(idProduct: widget.idProduct);
     });
+    presenter.addListener(_onListener);
+  }
+
+  void _onListener() {
+    if (presenter.successAddToCart != null) {
+      showSnackBar(
+        context,
+        'Add to cart successfully',
+        const Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    presenter.removeListener(_onListener);
   }
 
   @override

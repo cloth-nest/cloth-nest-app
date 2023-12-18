@@ -21,6 +21,7 @@ abstract class ProductDetailPresenter implements ChangeNotifier {
   String get selectedSize;
   bool get isFavorite;
   DetailProductEntity? get entity;
+  bool? get successAddToCart;
 
   int? getOrderImage(int id);
   void setActivePage(int page);
@@ -30,4 +31,5 @@ abstract class ProductDetailPresenter implements ChangeNotifier {
   void setSelectedSize({required String size});
   void addToWishList({required ProductEntity product});
   void removeFromWishList({required ProductEntity product});
+  void addToCart();
 }

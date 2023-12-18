@@ -1,7 +1,9 @@
+import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_bookmark_button.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_buy_now_button.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_cart_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WProductButtons extends StatelessWidget {
   final double marginSide;
@@ -34,7 +36,9 @@ class WProductButtons extends StatelessWidget {
           /// ADD TO CART
           WProductCartButton(
             buttonName: 'buttonName',
-            onClick: () {},
+            onClick: () {
+              context.read<ProductDetailPresenter>().addToCart();
+            },
           ),
           const SizedBox(width: 10),
 

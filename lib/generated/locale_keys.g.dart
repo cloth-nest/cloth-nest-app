@@ -1,10 +1,10 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const appName = 'appName';
   static const navHomeButtonText = 'navHomeButtonText';
   static const navSearchButtonText = 'navSearchButtonText';
-  static const navNotificationButtonText = 'navNotificationButtonText';
+  static const navCartButtonText = 'navCartButtonText';
   static const navListButtonText = 'navListButtonText';
   static const navProfileButtonText = 'navProfileButtonText';
   static const emailInputText = 'emailInputText';
@@ -46,5 +46,4 @@ abstract class  LocaleKeys {
   static const babyCategories_toddler = 'babyCategories.toddler';
   static const babyCategories = 'babyCategories';
   static const autoLoginButtonText = 'autoLoginButtonText';
-
 }

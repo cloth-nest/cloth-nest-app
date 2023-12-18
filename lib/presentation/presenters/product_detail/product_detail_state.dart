@@ -14,6 +14,7 @@ class ProductDetailState {
   final String selectedColor;
   final String selectedSize;
   final bool isFavorite;
+  final bool? successAddToCart;
 
   ProductDetailState({
     required this.activePage,
@@ -25,6 +26,7 @@ class ProductDetailState {
     required this.selectedColor,
     required this.selectedSize,
     required this.isFavorite,
+    required this.successAddToCart,
   });
 
   factory ProductDetailState.initial() {
@@ -41,19 +43,22 @@ class ProductDetailState {
       selectedColor: '',
       selectedSize: '',
       isFavorite: false,
+      successAddToCart: false,
     );
   }
 
-  ProductDetailState copyWith(
-      {int? activePage,
-      PageController? pageController,
-      int? tabIndex,
-      DetailProductEntity? entity,
-      bool? isLoading,
-      List<ProductEntity>? recommendationProducts,
-      String? selectedColor,
-      String? selectedSize,
-      bool? isFavorite}) {
+  ProductDetailState copyWith({
+    int? activePage,
+    PageController? pageController,
+    int? tabIndex,
+    DetailProductEntity? entity,
+    bool? isLoading,
+    List<ProductEntity>? recommendationProducts,
+    String? selectedColor,
+    String? selectedSize,
+    bool? isFavorite,
+    bool? successAddToCart,
+  }) {
     return ProductDetailState(
       activePage: activePage ?? this.activePage,
       pageController: pageController ?? this.pageController,
@@ -65,6 +70,7 @@ class ProductDetailState {
       selectedColor: selectedColor ?? this.selectedColor,
       selectedSize: selectedSize ?? this.selectedSize,
       isFavorite: isFavorite ?? this.isFavorite,
+      successAddToCart: successAddToCart,
     );
   }
 }

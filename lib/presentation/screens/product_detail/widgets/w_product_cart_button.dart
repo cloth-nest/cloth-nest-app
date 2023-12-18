@@ -2,6 +2,7 @@ import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/presentation/widgets/button/base_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class WProductCartButton extends BaseButton {
   const WProductCartButton({
@@ -32,10 +33,8 @@ class WProductCartButton extends BaseButton {
         height: buttonContainerSize,
         child: Padding(
           padding: const EdgeInsets.all(iconButtonSize),
-          child: Image.asset(
-            SvgPaths.iconCart,
-            height: iconButtonSize,
-            width: iconButtonSize,
+          child: SvgPicture.asset(
+            SvgPaths.iconCartSvg,
           ),
         ),
       ),

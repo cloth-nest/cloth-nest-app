@@ -4,6 +4,8 @@ import 'package:ecommerce/app/routes/account/account_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_detail_address_location.dart';
 import 'package:ecommerce/app/routes/account/account_location.dart';
 import 'package:ecommerce/app/routes/account/account_profile_location.dart';
+import 'package:ecommerce/app/routes/cart/cart_location.dart';
+import 'package:ecommerce/app/routes/cart/cart_product_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_product_location.dart';
 import 'package:ecommerce/app/routes/search/search_detail_location.dart';
@@ -35,7 +37,7 @@ final homeRouteDelegate = [
   topTabHomeRouteDelegate,
   searchTabHomeRouteDelegate,
   myListTabHomeRouteDelegate,
-  notificationTabHomeRouteDelegate,
+  cartTabHomeRouteDelegate,
   accountTabHomeRouteDelegate,
 ];
 
@@ -79,9 +81,14 @@ final myListTabHomeRouteDelegate = BeamerDelegate(
   },
 );
 
-final notificationTabHomeRouteDelegate = BeamerDelegate(
-  initialPath: '/notification',
+final cartTabHomeRouteDelegate = BeamerDelegate(
+  initialPath: '/cart',
   locationBuilder: (routeInformation, _) {
+    if (routeInformation.location!.contains('cart/product')) {
+      return CartProductLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/cart')) {
+      return CartLocation(routeInformation);
+    }
     return NotFound(
       path: routeInformation.location!,
     );

@@ -1,3 +1,4 @@
+import 'package:ecommerce/app/factories/usecases/cart/cart_factory.dart';
 import 'package:ecommerce/app/factories/usecases/detail_product/detail_product_factory.dart';
 import 'package:ecommerce/presentation/presenters/product_detail/product_detail_state.dart';
 import 'package:ecommerce/presentation/presenters/product_detail/provider_product_detail_presenter.dart';
@@ -18,4 +19,5 @@ ProductDetailPresenter makeProductDetailPresenter() =>
       saveRemoteWishlist: makeRemoteSaveWishList(),
       fetchRemoteWishlist: makeRemoteFetchWishlist(),
       deleteRemoteWishlist: makeRemoteDeleteWishList(),
+      fetchAddToCart: makeFetchAddToCart(),
     );
