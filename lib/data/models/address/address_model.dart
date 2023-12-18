@@ -10,7 +10,7 @@ class AddressModel {
   final String provinceName;
   final int districtCode;
   final String districtName;
-  final int wardCode;
+  final String wardCode;
   final String wardName;
   final String detail;
   final String phone;
@@ -43,7 +43,7 @@ class AddressModel {
     String? provinceName,
     int? districtCode,
     String? districtName,
-    int? wardCode,
+    String? wardCode,
     String? wardName,
     String? detail,
     String? phone,
@@ -97,7 +97,7 @@ class AddressModel {
       provinceName: map['provinceName'] as String,
       districtCode: map['districtCode'] as int,
       districtName: map['districtName'] as String,
-      wardCode: map['wardCode'] as int,
+      wardCode: map['wardCode'] as String,
       wardName: map['wardName'] as String,
       detail: map['detail'] as String,
       phone: map['phone'] as String,

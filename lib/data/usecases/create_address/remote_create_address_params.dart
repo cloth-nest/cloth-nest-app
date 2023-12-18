@@ -70,7 +70,7 @@ class RemoteCreateAddressParams extends Equatable {
         'provinceName': provinceName,
         'districtCode': districtCode,
         'districtName': districtName,
-        'wardCode': wardCode,
+        'wardCode': wardCode.toString(),
         'wardName': wardName,
         'phone': phone,
         'detail': detail,

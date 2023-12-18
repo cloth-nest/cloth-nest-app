@@ -7,7 +7,7 @@ class AddressEntity {
   final String provinceName;
   final int districtCode;
   final String districtName;
-  final int wardCode;
+  final String wardCode;
   final String wardName;
   final String detail;
   final String phone;
@@ -40,7 +40,7 @@ class AddressEntity {
     String? provinceName,
     int? districtCode,
     String? districtName,
-    int? wardCode,
+    String? wardCode,
     String? wardName,
     String? detail,
     String? phone,

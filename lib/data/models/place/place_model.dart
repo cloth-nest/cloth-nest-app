@@ -18,9 +18,17 @@ class PlaceModel {
   }
 
   factory PlaceModel.fromMap(Map<String, dynamic> map) {
+    if (map['WardCode'] != null) {
+      return PlaceModel(
+        code: int.tryParse(map['WardCode']) ??
+            map['DistrictID'] ??
+            map['ProvinceID'],
+        name: map['ProvinceName'] ?? map['DistrictName'] ?? map['WardName'],
+      );
+    }
     return PlaceModel(
-      name: map['name'],
-      code: map['code'],
+      code: map['DistrictID'] ?? map['ProvinceID'],
+      name: map['ProvinceName'] ?? map['DistrictName'] ?? map['WardName'],
     );
   }
 
