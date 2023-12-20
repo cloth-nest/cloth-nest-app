@@ -20,6 +20,7 @@ class SvgPaths {
   static const String iconCart = '$_imagePath/images/ic_cart.png';
   static const String iconCartSvg = '$_svgPath/ic_cart.svg';
   static const String iconCamera = '$_imagePath/images/ic_camera.png';
+  static const String fakeMap = '$_imagePath/images/fake_map.png';
   static const String iconSelect = '$_svgPath/ic_selected.svg';
   static const String iconUnselect = '$_svgPath/ic_unselect.svg';
   static const String iconLogout = '$_svgPath/ic_logout.svg';
