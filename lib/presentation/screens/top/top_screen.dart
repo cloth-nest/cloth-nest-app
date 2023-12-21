@@ -1,5 +1,4 @@
 import 'package:ecommerce/app/resources/app_colors.dart';
-import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/presentation/screens/content_master/content_master_presenter.dart';
 import 'package:ecommerce/presentation/screens/top/top_presenter.dart';
@@ -68,10 +67,14 @@ class _TopScreenState extends State<TopScreen>
               ),
             ),
             const SizedBox(width: 20),
-            Image.asset(
-              SvgPaths.iconCart,
-              width: 30,
-              height: 30,
+            GestureDetector(
+              onTap: () {
+                beamTo(context, path: 'qr_code');
+              },
+              child: const Icon(
+                Icons.qr_code_scanner_outlined,
+                color: AppColors.black,
+              ),
             ),
           ],
         ),

@@ -5,8 +5,8 @@ import 'package:ecommerce/domain/usecases/authentication/login/fetch_login.dart'
 import 'package:ecommerce/domain/usecases/authentication/login/login_params.dart';
 import 'package:ecommerce/domain/usecases/token/save_token.dart';
 import 'package:ecommerce/domain/usecases/wishlist/delete_wishlist.dart';
+import 'package:ecommerce/domain/usecases/wishlist/fetch_sync_wishlist.dart';
 import 'package:ecommerce/domain/usecases/wishlist/fetch_wishlist.dart';
-import 'package:ecommerce/domain/usecases/wishlist/save_wishlist.dart';
 import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/protocols/validation.dart';
@@ -23,7 +23,7 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
   final Validation _validation;
   final AuthenticationPresenter _authenticationPresenter;
   final FetchWishlist _fetchWishlist;
-  final SaveRemoteWishlist _saveRemoteWishlist;
+  final FetchSyncWishlist _fetchSyncRemoteWishlist;
   final DeleteWishlist _deleteWishlist;
 
   void _validateEmail() {
@@ -157,7 +157,7 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
     required AuthenticationPresenter authenticationPresenter,
     required FetchWishlist fetchWishlist,
     required FetchRemoteWishlist fetchRemoteWishlist,
-    required SaveRemoteWishlist saveRemoteWishlist,
+    required FetchSyncWishlist fetchSyncRemoteWishlist,
     required DeleteWishlist deleteWishlist,
   })  : _state = state,
         _fetchLogin = fetchLogin,
@@ -165,7 +165,7 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
         _validation = validation,
         _authenticationPresenter = authenticationPresenter,
         _fetchWishlist = fetchWishlist,
-        _saveRemoteWishlist = saveRemoteWishlist,
+        _fetchSyncRemoteWishlist = fetchSyncRemoteWishlist,
         _deleteWishlist = deleteWishlist;
 
   @override
@@ -247,7 +247,7 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
         variantIds.add(product.defaultVariantId);
       }
 
-      await _saveRemoteWishlist.saveRemote(variantIds: variantIds);
+      await _fetchSyncRemoteWishlist.call(variantIds: variantIds);
     } catch (e) {
       debugPrint('###error syncDataWishlist:$e');
     }
