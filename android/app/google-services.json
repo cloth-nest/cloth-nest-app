@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "881324803347",
+    "project_id": "cloth-nest",
+    "storage_bucket": "cloth-nest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881324803347:android:19d91892a6b8118aed06e6",
+        "android_client_info": {
+          "package_name": "com.clothnest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDllc3TDmql4falRo2e5lZIM5WC3nnkA6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
