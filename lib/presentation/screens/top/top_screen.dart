@@ -71,13 +71,49 @@ class _TopScreenState extends State<TopScreen>
                     .map((e) => Text(e.name.toUpperCase()))
                     .toList(),
               ),
-              const SizedBox(height: 15),
-              Expanded(
-                child: Selector<TopPresenter, int>(
-                  selector: (_, searchPresenter) => searchPresenter.tabIndex,
-                  builder: (_, tabIndex, __) {
-                    final subCategories = contentMasterPresenter
-                        .rootCategories[tabIndex].subCategory;
+            ),
+            const SizedBox(width: 20),
+            GestureDetector(
+              onTap: () {
+                beamTo(context, path: 'qr_code');
+              },
+              child: const Icon(
+                Icons.qr_code_scanner_outlined,
+                color: AppColors.black,
+              ),
+            ),
+          ],
+        ),
+        elevation: 0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          children: [
+            const SizedBox(height: 15),
+            TabBar(
+              controller: _tabController,
+              indicatorPadding: const EdgeInsets.symmetric(horizontal: 15),
+              indicatorColor: AppColors.black,
+              labelColor: AppColors.textLightBasic,
+              labelStyle: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 12,
+                  ),
+              labelPadding: const EdgeInsets.only(bottom: 10),
+              unselectedLabelColor: AppColors.textGray999,
+              tabs: contentMasterPresenter.rootCategories
+                  .map((e) => Text(e.name.toUpperCase()))
+                  .toList(),
+            ),
+            const SizedBox(height: 15),
+            Expanded(
+              child: Selector<TopPresenter, int>(
+                selector: (_, searchPresenter) => searchPresenter.tabIndex,
+                builder: (_, tabIndex, __) {
+                  final subCategories = contentMasterPresenter
+                      .rootCategories[tabIndex].subCategory;
+
 
                     if (subCategories.isEmpty) {
                       return const SizedBox.shrink();
