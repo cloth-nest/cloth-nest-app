@@ -5,5 +5,5 @@ import 'package:ecommerce/domain/usecases/detail_product/fetch_detail_product.da
 
 FetchDetailProduct makeFetchDetailProduct() => RemoteFetchDetailProduct(
       client: makeHttpAuthorizedAdapter(),
-      url: makeApiUrl('product'),
+      url: makeApiUrl('product/detail'),
     );

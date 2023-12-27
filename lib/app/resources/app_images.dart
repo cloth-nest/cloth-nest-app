@@ -4,7 +4,8 @@ const String _svgPath = 'assets/svgs';
 class SvgPaths {
   static const String iconHome = '$_svgPath/ic_home.svg';
   static const String iconSearch = '$_svgPath/ic_search.svg';
-  static const String iconList = '$_svgPath/ic_list.svg';
+  static const String iconOrder = '$_svgPath/ic_list.svg';
+  static const String iconMyList = '$_svgPath/ic_love.svg';
   static const String iconNotification = '$_svgPath/ic_notification.svg';
   static const String iconProfile = '$_svgPath/ic_profile.svg';
   static const String iconUserId = '$_svgPath/ic_user_id.svg';
@@ -21,6 +22,7 @@ class SvgPaths {
   static const String iconCartSvg = '$_svgPath/ic_cart.svg';
   static const String iconCamera = '$_imagePath/images/ic_camera.png';
   static const String fakeMap = '$_imagePath/images/fake_map.png';
+  static const String star = '$_imagePath/images/star.png';
   static const String iconSelect = '$_svgPath/ic_selected.svg';
   static const String iconUnselect = '$_svgPath/ic_unselect.svg';
   static const String iconLogout = '$_svgPath/ic_logout.svg';

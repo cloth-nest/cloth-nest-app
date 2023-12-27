@@ -20,7 +20,8 @@ class CheckOutScreen extends StatefulWidget {
   State<CheckOutScreen> createState() => _SecondCheckOutScreenState();
 }
 
-class _SecondCheckOutScreenState extends State<CheckOutScreen> {
+class _SecondCheckOutScreenState extends State<CheckOutScreen>
+    with WidgetsBindingObserver {
   // List<Payment> payments = [
   //   Payment(
   //     img: AppAssets.icCash,
@@ -44,10 +45,17 @@ class _SecondCheckOutScreenState extends State<CheckOutScreen> {
   late CheckOutPresenter presenter;
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      beamTo(context, path: 'success');
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     presenter = context.read<CheckOutPresenter>();
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       presenter.initData();
     });
@@ -56,6 +64,7 @@ class _SecondCheckOutScreenState extends State<CheckOutScreen> {
   @override
   void dispose() {
     super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     couponController.dispose();
   }
 
@@ -324,7 +333,9 @@ class _SecondCheckOutScreenState extends State<CheckOutScreen> {
                     ),
                     child: BRoundButton(
                       buttonName: 'Checkout',
-                      onClick: () {},
+                      onClick: () {
+                        presenter.checkOut();
+                      },
                     ),
                   ),
                 ],

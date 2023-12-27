@@ -10,6 +10,7 @@ class CheckOutState {
   final BillEntity? billEntity;
   final String shippingMethod;
   final List<AddressEntity> addresses;
+  final String? navigateTo;
 
   CheckOutState({
     required this.isLoading,
@@ -18,6 +19,7 @@ class CheckOutState {
     this.billEntity,
     required this.shippingMethod,
     required this.addresses,
+    this.navigateTo,
   });
 
   factory CheckOutState.initial() => CheckOutState(
@@ -34,6 +36,7 @@ class CheckOutState {
     BillEntity? billEntity,
     String? shippingMethod,
     List<AddressEntity>? addresses,
+    String? navigateTo,
   }) {
     return CheckOutState(
       isLoading: isLoading ?? this.isLoading,
@@ -42,6 +45,7 @@ class CheckOutState {
       billEntity: billEntity ?? this.billEntity,
       shippingMethod: shippingMethod ?? this.shippingMethod,
       addresses: addresses ?? this.addresses,
+      navigateTo: navigateTo,
     );
   }
 }

@@ -1,29 +1,36 @@
 import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/domain/entities/bill/bill_entity.dart';
+import 'package:ecommerce/domain/entities/order/order_entity.dart';
+import 'package:ecommerce/domain/entities/payment/payment_result_entity.dart';
 import 'package:ecommerce/domain/usecases/bill/fetch_calculate_bill.dart';
-import 'package:ecommerce/domain/usecases/detail_address/fetch_detail_address.dart';
 import 'package:ecommerce/domain/usecases/fetch_address/fetch_address.dart';
+import 'package:ecommerce/domain/usecases/checkout/fetch_checkout.dart';
+import 'package:ecommerce/domain/usecases/payment/fetch_payment.dart';
 import 'package:ecommerce/presentation/presenters/checkout/checkout_out_state.dart';
 import 'package:ecommerce/presentation/screens/checkout/checkout_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProviderCheckOutPresenter
     with ChangeNotifier
     implements CheckOutPresenter {
   CheckOutState _state;
-  final FetchDetailAddress _fetchDetailAddress;
   final FetchCalculateBill _fetchCalculateBill;
   final FetchAddress _fetchAddress;
+  final FetchCheckOut _fetchCheckOut;
+  final FetchPayment _fetchPayment;
 
   ProviderCheckOutPresenter({
     required CheckOutState state,
-    required FetchDetailAddress fetchDetailAddress,
     required FetchCalculateBill fetchCalculateBill,
     required FetchAddress fetchAddress,
+    required FetchCheckOut fetchOrder,
+    required FetchPayment fetchPayment,
   })  : _state = state,
-        _fetchDetailAddress = fetchDetailAddress,
         _fetchCalculateBill = fetchCalculateBill,
-        _fetchAddress = fetchAddress;
+        _fetchAddress = fetchAddress,
+        _fetchCheckOut = fetchOrder,
+        _fetchPayment = fetchPayment;
 
   Future _calculateFee() async {
     try {
@@ -46,15 +53,23 @@ class ProviderCheckOutPresenter
       _state = _state.copyWith(isLoading: true);
       notifyListeners();
       // for testing
-      AddressEntity address = await _fetchDetailAddress.call(id: 3);
-      BillEntity bill = await _fetchCalculateBill.call(
-        ghnServerTypeId: getServiceId(),
-        addressId: address.id,
-      );
+      late AddressEntity defaultAddress;
+
       List<AddressEntity> addresses = await _fetchAddress.call();
 
+      for (final address in addresses) {
+        if (address.isDefault == true) {
+          defaultAddress = address;
+        }
+      }
+
+      BillEntity bill = await _fetchCalculateBill.call(
+        ghnServerTypeId: getServiceId(),
+        addressId: defaultAddress.id,
+      );
+
       _state = _state.copyWith(
-        selectedAddress: address,
+        selectedAddress: defaultAddress,
         isLoading: false,
         billEntity: bill,
         addresses: addresses,
@@ -125,4 +140,30 @@ class ProviderCheckOutPresenter
       debugPrint('###error set new address: $e');
     }
   }
+
+  @override
+  void checkOut() async {
+    try {
+      OrderEntity orderEntity = await _fetchCheckOut.call(
+        addressId: _state.selectedAddress?.id ?? -1,
+        phone: _state.selectedAddress?.phone ?? '',
+        ghnServerTypeId: 2,
+        paymentMethod: 'ZALO_PAY',
+      );
+      PaymentResultEntity paymentResultEntity =
+          await _fetchPayment.call(orderId: orderEntity.id);
+
+      await const MethodChannel('flutter.native/channelPayOrder')
+          .invokeMethod('payOrder', {
+        "zptoken": paymentResultEntity.zpTransToken,
+      });
+
+      debugPrint('##go to here');
+    } catch (e) {
+      debugPrint('##error check out: $e');
+    }
+  }
+
+  @override
+  String? get navigateTo => _state.navigateTo;
 }
