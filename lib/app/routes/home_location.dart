@@ -5,16 +5,23 @@ import 'package:ecommerce/app/routes/account/account_detail_address_location.dar
 import 'package:ecommerce/app/routes/account/account_location.dart';
 import 'package:ecommerce/app/routes/account/account_profile_location.dart';
 import 'package:ecommerce/app/routes/cart/cart_checkout_location.dart';
+import 'package:ecommerce/app/routes/cart/cart_checkout_success_location.dart';
+import 'package:ecommerce/app/routes/cart/cart_checkout_success_orders_detail_location.dart';
+import 'package:ecommerce/app/routes/cart/cart_checkout_success_orders_location.dart';
 import 'package:ecommerce/app/routes/cart/cart_location.dart';
 import 'package:ecommerce/app/routes/cart/cart_product_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_location.dart';
 import 'package:ecommerce/app/routes/my_list/my_list_product_location.dart';
+import 'package:ecommerce/app/routes/order/order_detail_location.dart';
+import 'package:ecommerce/app/routes/order/order_location.dart';
 import 'package:ecommerce/app/routes/search/search_detail_location.dart';
 import 'package:ecommerce/app/routes/search/search_detail_product_location.dart';
 import 'package:ecommerce/app/routes/search/search_location.dart';
 import 'package:ecommerce/app/routes/top/top_category_location.dart';
 import 'package:ecommerce/app/routes/top/top_location.dart';
 import 'package:ecommerce/app/routes/top/top_product_location.dart';
+import 'package:ecommerce/app/routes/top/top_qr_location.dart';
+import 'package:ecommerce/app/routes/top/top_qr_product_location.dart';
 import 'package:ecommerce/presentation/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -39,13 +46,18 @@ final homeRouteDelegate = [
   searchTabHomeRouteDelegate,
   myListTabHomeRouteDelegate,
   cartTabHomeRouteDelegate,
+  orderTabHomeRouteDelegate,
   accountTabHomeRouteDelegate,
 ];
 
 final topTabHomeRouteDelegate = BeamerDelegate(
   initialPath: '/top',
   locationBuilder: (routeInformation, _) {
-    if (routeInformation.location!.contains('/top/detail/product')) {
+    if (routeInformation.location!.contains('/top/qr_code/product')) {
+      return TopQrProductLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/top/qr_code')) {
+      return TopQrLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/top/detail/product')) {
       return TopProductLocation(routeInformation);
     } else if (routeInformation.location!.contains('/top/detail')) {
       return TopCategoryLocation(routeInformation);
@@ -85,7 +97,18 @@ final myListTabHomeRouteDelegate = BeamerDelegate(
 final cartTabHomeRouteDelegate = BeamerDelegate(
   initialPath: '/cart',
   locationBuilder: (routeInformation, _) {
-    if (routeInformation.location!.contains('cart/check_out')) {
+    if (routeInformation.location!
+        .contains('cart/check_out/success/orders/detail')) {
+      return CartCheckOutSuccessOrdersDetailLocation(routeInformation);
+    } else if (routeInformation.location!
+        .contains('cart/check_out/success/orders/cart')) {
+      return CartLocation(routeInformation);
+    } else if (routeInformation.location!
+        .contains('cart/check_out/success/orders')) {
+      return CartCheckOutSuccessOrdersLocation(routeInformation);
+    } else if (routeInformation.location!.contains('cart/check_out/success')) {
+      return CartCheckOutSuccessLocation(routeInformation);
+    } else if (routeInformation.location!.contains('cart/check_out')) {
       return CartCheckOutLocation(routeInformation);
     } else if (routeInformation.location!.contains('cart/product')) {
       return CartProductLocation(routeInformation);
@@ -95,6 +118,18 @@ final cartTabHomeRouteDelegate = BeamerDelegate(
     return NotFound(
       path: routeInformation.location!,
     );
+  },
+);
+
+final orderTabHomeRouteDelegate = BeamerDelegate(
+  initialPath: '/order',
+  locationBuilder: (routeInformation, _) {
+    if (routeInformation.location!.contains('/order/detail')) {
+      return OrderDetailLocation(routeInformation);
+    } else if (routeInformation.location!.contains('/order')) {
+      return OrderLocation(routeInformation);
+    }
+    return NotFound();
   },
 );
 

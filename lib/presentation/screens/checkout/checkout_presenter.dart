@@ -5,6 +5,8 @@ abstract class CheckOutPresenter implements ChangeNotifier {
   void initData();
   void setShippingMethod({required String method});
   void setNewAddress({required AddressEntity newAddress});
+  void checkOut();
+
   String get shippingMethod;
   bool get isLoading;
   AddressEntity? get selectedAddress;
@@ -13,4 +15,5 @@ abstract class CheckOutPresenter implements ChangeNotifier {
   double get totalBeforeVAT;
   double get total;
   List<AddressEntity> get addresses;
+  String? get navigateTo;
 }

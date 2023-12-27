@@ -7,6 +7,7 @@ abstract class  LocaleKeys {
   static const navCartButtonText = 'navCartButtonText';
   static const navListButtonText = 'navListButtonText';
   static const navProfileButtonText = 'navProfileButtonText';
+  static const navOrderButtonText = 'navOrderButtonText';
   static const emailInputText = 'emailInputText';
   static const passwordInputText = 'passwordInputText';
   static const firstNameInputText = 'firstNameInputText';
