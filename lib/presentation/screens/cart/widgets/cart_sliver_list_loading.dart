@@ -31,6 +31,7 @@ class CartSliverListLoading extends StatelessWidget {
                         height: 13,
                         width: 140,
                       ),
+                      SizedBox(height: 3),
                       Skeleton(
                         height: 13,
                         width: 70,

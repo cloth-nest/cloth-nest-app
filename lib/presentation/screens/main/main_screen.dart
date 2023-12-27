@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/custom_back_button_dispatcher.dart';
 
-enum MainTab { top, search, myList, cart, account }
+enum MainTab { top, search, myList, cart, order, account }
 
 class MainGlobalKey {
   // ignore: library_private_types_in_public_api
@@ -46,6 +46,8 @@ class _MainScreenState extends State<MainScreen> {
       case 3:
         return '/cart';
       case 4:
+        return '/order';
+      case 5:
         return '/account';
       default:
         return '/not-found';
@@ -83,42 +85,6 @@ class _MainScreenState extends State<MainScreen> {
       }
     }
 
-    if (index == MainTab.myList.index &&
-        BottomNavigationManager()
-            .isLocationMyListNavigator(lastLocationHistory)) {
-      final offsetWebcast =
-          BottomNavigationManager().getMyListWebcastScrollController().offset;
-
-      final offsetBroadCast =
-          BottomNavigationManager().getMyListBroadcastScrollController().offset;
-      if (offsetWebcast == 0 &&
-          BottomNavigationManager().isActiveWebcastItemMyList()) {
-        return;
-      }
-      if (offsetWebcast > 0 &&
-          BottomNavigationManager().isActiveWebcastItemMyList()) {
-        BottomNavigationManager().getMyListWebcastScrollController().animateTo(
-            0,
-            duration: const Duration(milliseconds: 750),
-            curve: Curves.easeOut);
-        return;
-      }
-
-      if (offsetBroadCast == 0 &&
-          BottomNavigationManager().isActiveWebcastItemMyList() == false) {
-        return;
-      }
-      if (offsetBroadCast > 0 &&
-          BottomNavigationManager().isActiveWebcastItemMyList() == false) {
-        BottomNavigationManager()
-            .getMyListBroadcastScrollController()
-            .animateTo(0,
-                duration: const Duration(milliseconds: 750),
-                curve: Curves.easeOut);
-        return;
-      }
-    }
-
     if (index == MainTab.cart.index &&
         BottomNavigationManager()
             .isLocationTvScheduleNavigator(lastLocationHistory)) {
@@ -129,6 +95,21 @@ class _MainScreenState extends State<MainScreen> {
       }
       if (offset > 0) {
         BottomNavigationManager().getTvScheduleScrollController().animateTo(0,
+            duration: const Duration(milliseconds: 750), curve: Curves.easeOut);
+        return;
+      }
+    }
+
+    if (index == MainTab.order.index &&
+        BottomNavigationManager()
+            .isLocationOrderNavigator(lastLocationHistory)) {
+      final offset =
+          BottomNavigationManager().getOrderScrollController().offset;
+      if (offset == 0) {
+        return;
+      }
+      if (offset > 0) {
+        BottomNavigationManager().getOrderScrollController().animateTo(0,
             duration: const Duration(milliseconds: 750), curve: Curves.easeOut);
         return;
       }
@@ -229,6 +210,16 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   Beamer(
                     key: const ValueKey<int>(4),
+                    routerDelegate: homeRouteDelegate[MainTab.order.index],
+                    backButtonDispatcher: CustomBackButtonDispatcher(
+                      alwaysBeamBack: false,
+                      fallbackToBeamBack: false,
+                      delegate: homeRouteDelegate[MainTab.order.index],
+                      context: context,
+                    ),
+                  ),
+                  Beamer(
+                    key: const ValueKey<int>(5),
                     routerDelegate: homeRouteDelegate[MainTab.account.index],
                     backButtonDispatcher: CustomBackButtonDispatcher(
                       alwaysBeamBack: false,
@@ -298,12 +289,12 @@ class _MainScreenState extends State<MainScreen> {
                       icon: BtnNavItem(
                         btnName: LocaleKeys.navListButtonText.tr(),
                         isActive: false,
-                        iconPath: SvgPaths.iconList,
+                        iconPath: SvgPaths.iconMyList,
                       ),
                       activeIcon: BtnNavItem(
                         btnName: LocaleKeys.navListButtonText.tr(),
                         isActive: true,
-                        iconPath: SvgPaths.iconList,
+                        iconPath: SvgPaths.iconMyList,
                       )),
                   BottomNavigationBarItem(
                     label: 'Cart',
@@ -316,6 +307,19 @@ class _MainScreenState extends State<MainScreen> {
                       btnName: LocaleKeys.navCartButtonText.tr(),
                       isActive: true,
                       iconPath: SvgPaths.iconCartSvg,
+                    ),
+                  ),
+                  BottomNavigationBarItem(
+                    label: 'Order',
+                    icon: BtnNavItem(
+                      btnName: LocaleKeys.navOrderButtonText.tr(),
+                      isActive: false,
+                      iconPath: SvgPaths.iconOrder,
+                    ),
+                    activeIcon: BtnNavItem(
+                      btnName: LocaleKeys.navOrderButtonText.tr(),
+                      isActive: true,
+                      iconPath: SvgPaths.iconOrder,
                     ),
                   ),
                   BottomNavigationBarItem(
@@ -333,7 +337,9 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ],
                 onTap: (index) {
-                  if (index == MainTab.cart.index && !isAuthenticated) {
+                  if ((index == MainTab.cart.index ||
+                          index == MainTab.order.index) &&
+                      !isAuthenticated) {
                     dialogOneButton(
                       context,
                       title: 'Log in',

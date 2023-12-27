@@ -11,6 +11,7 @@ class BottomNavigationManager {
   static final _myListBroadcastScrollController = ScrollController();
   static final _tvScheduleScrollController = ScrollController();
   static final _accountScrollController = ScrollController();
+  static final _orderScrollController = ScrollController();
 
   static bool _isActiveWebcastItemMyList = true;
 
@@ -60,6 +61,9 @@ class BottomNavigationManager {
         addHistory('/cart');
         break;
       case 4:
+        addHistory('/order');
+        break;
+      case 5:
         addHistory('/account');
         break;
       default:
@@ -89,6 +93,11 @@ class BottomNavigationManager {
   // Returns the scroll controller for search navigation
   ScrollController getSearchScrollController() {
     return _searchScrollController;
+  }
+
+  // Returns the scroll controller for search navigation
+  ScrollController getOrderScrollController() {
+    return _orderScrollController;
   }
 
   ScrollController getMyListWebcastScrollController() {
@@ -123,6 +132,7 @@ class BottomNavigationManager {
         location == '/search' ||
         location == '/my-list' ||
         location == '/cart' ||
+        location == '/order' ||
         location == '/account') {
       return true;
     }
@@ -132,6 +142,13 @@ class BottomNavigationManager {
   // Checks if the given location belongs to the top navigation
   bool isLocationTopNavigator(String location) {
     if (location == '/top' || location == '/home') {
+      return true;
+    }
+    return false;
+  }
+
+  bool isLocationOrderNavigator(String location) {
+    if (location == '/order' || location == '/home') {
       return true;
     }
     return false;

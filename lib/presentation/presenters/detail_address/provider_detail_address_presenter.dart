@@ -64,7 +64,8 @@ class ProviderDetailAddressPresenter
       }
 
       for (var ward in wards) {
-        if (ward.code == entity.wardCode && ward.name == entity.wardName) {
+        if (ward.code.toString() == entity.wardCode &&
+            ward.name == entity.wardName) {
           wardTmp = ward;
         }
       }

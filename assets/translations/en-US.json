@@ -5,6 +5,7 @@
     "navCartButtonText": "Cart",
     "navListButtonText": "My List",
     "navProfileButtonText": "Account",
+    "navOrderButtonText": "Orders",
     "emailInputText":"Email",
     "passwordInputText":"Password",
     "firstNameInputText":"First name",
