@@ -5,11 +5,13 @@ class LoginParams extends Equatable {
   final String email;
   final String password;
   final bool isRemember;
+  final String firebaseToken;
 
   const LoginParams({
     required this.email,
     required this.password,
     this.isRemember = false,
+    required this.firebaseToken,
   });
 
   @override
@@ -17,5 +19,6 @@ class LoginParams extends Equatable {
         email,
         password,
         isRemember,
+        firebaseToken,
       ];
 }

@@ -8,6 +8,7 @@ import 'package:ecommerce/app/factories/presentation/my_list/my_list_presenter_f
 import 'package:ecommerce/app/factories/presentation/product_detail/product_detail_presenter.dart';
 import 'package:ecommerce/app/factories/presentation/search_shared/search_shared_presenter_factory.dart';
 import 'package:ecommerce/app/factories/presentation/verify_email/verify_email_presenter_factory.dart';
+import 'package:ecommerce/presentation/presenters/accessibility/accessibility_presenter.dart';
 import 'package:ecommerce/presentation/presenters/main/provider_main_presenter.dart';
 import 'package:ecommerce/presentation/screens/account/account_presenter.dart';
 import 'package:ecommerce/presentation/screens/address/address_presenter.dart';
@@ -24,7 +25,9 @@ import 'package:provider/single_child_widget.dart';
 
 MainPresenter makeMainPresenter() => ProviderMainPresenter();
 
-List<SingleChildWidget> makeMainPresenters() {
+List<SingleChildWidget> makeMainPresenters(
+  AccessibilityPresenter accessibilityPresenter,
+) {
   return [
     ChangeNotifierProvider<MainPresenter>(
       create: (_) => makeMainPresenter(),
@@ -56,6 +59,9 @@ List<SingleChildWidget> makeMainPresenters() {
     ChangeNotifierProvider<CartPresenter>(
       create: (_) => makeCartPresenter(),
       child: makeCartView(),
+    ),
+    ChangeNotifierProvider<AccessibilityPresenter>(
+      create: (_) => accessibilityPresenter,
     ),
   ];
 }

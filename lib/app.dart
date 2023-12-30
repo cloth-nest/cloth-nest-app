@@ -2,7 +2,11 @@ import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/configs/i18n/app_languages.dart';
 import 'package:ecommerce/app/resources/app_themes.dart';
+import 'package:ecommerce/main.dart';
+import 'package:ecommerce/presentation/presenters/accessibility/accessibility_presenter.dart';
+import 'package:ecommerce/presentation/screens/main/main_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NavigationService {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -20,7 +24,50 @@ class EcommerceView extends StatefulWidget {
   State<EcommerceView> createState() => _EcommerceViewState();
 }
 
-class _EcommerceViewState extends State<EcommerceView> {
+class _EcommerceViewState extends State<EcommerceView>
+    with WidgetsBindingObserver {
+  late AccessibilityPresenter _presenter;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _presenter = context.read<AccessibilityPresenter>();
+
+    _presenter.addListener(_onListener);
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void _onListener() {
+    final remoteMessage = _presenter.remoteMessage;
+    final localMessage = _presenter.localMessage;
+
+    if (remoteMessage != null) {
+      onClickNotification(
+        message: remoteMessage,
+        mainPresenter: context.read<MainPresenter>(),
+        delegate: widget.rootRouteDelegate,
+      );
+      _presenter.resetRemoteMessage();
+      return;
+    }
+    if (localMessage != null) {
+      onClickLocalNotification(
+        message: localMessage,
+        mainPresenter: context.read<MainPresenter>(),
+        delegate: widget.rootRouteDelegate,
+      );
+      _presenter.resetLocalMessage();
+      return;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _presenter.removeListener(_onListener);
+  }
+
   @override
   Widget build(BuildContext context) {
     return EcommerceApp(
