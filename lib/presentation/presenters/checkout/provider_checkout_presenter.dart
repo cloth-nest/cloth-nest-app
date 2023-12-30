@@ -1,3 +1,5 @@
+import 'package:ecommerce/app/factories/usecases/firebase_token/firebase_token_factory.dart';
+import 'package:ecommerce/app/factories/usecases/send_notification/send_notification_factory.dart';
 import 'package:ecommerce/domain/entities/address/address_entity.dart';
 import 'package:ecommerce/domain/entities/bill/bill_entity.dart';
 import 'package:ecommerce/domain/entities/order/order_entity.dart';
@@ -153,12 +155,18 @@ class ProviderCheckOutPresenter
       PaymentResultEntity paymentResultEntity =
           await _fetchPayment.call(orderId: orderEntity.id);
 
+      final String adminToken =
+          await makeFetchFirebaseToken().call(email: 'root@clothnest.vn');
+
+      await makeFetchSendNotification().call(
+        name:
+            '${_state.selectedAddress?.firstName} ${_state.selectedAddress?.lastName}',
+        token: adminToken,
+      );
       await const MethodChannel('flutter.native/channelPayOrder')
           .invokeMethod('payOrder', {
         "zptoken": paymentResultEntity.zpTransToken,
       });
-
-      debugPrint('##go to here');
     } catch (e) {
       debugPrint('##error check out: $e');
     }

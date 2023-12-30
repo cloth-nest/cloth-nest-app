@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/app/protocols/firebase.dart';
 import 'package:ecommerce/infra/firebase/firebase_message_subject.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -49,6 +50,19 @@ class FirebaseSingletonRemoteMessageAdapter {
     await listenToMessage();
   }
 
+  Future<void> saveToken({required String email}) async {
+    try {
+      final fcmToken = await _firebaseMessaging.getToken();
+
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(email)
+          .set({'token': fcmToken});
+    } catch (e) {
+      debugPrint('save token error: $e');
+    }
+  }
+
   /// Requests permission to send push notifications.
   Future<NotificationSettings> requestPermission() async {
     final settings = await _firebaseMessaging.requestPermission(
@@ -89,6 +103,25 @@ class FirebaseSingletonRemoteMessageAdapter {
   /// Deletes the Firebase Cloud Messaging token.
   Future<void> deleteToken() async {
     await _firebaseMessaging.deleteToken();
+  }
+
+  Future<String?> getFCMToken(String gmail) async {
+    try {
+      DocumentSnapshot doc =
+          await FirebaseFirestore.instance.collection('Users').doc(gmail).get();
+
+      if (doc.data() == null) {
+        return '';
+      }
+
+      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+      String fcmToken = data['token'];
+
+      return fcmToken;
+    } catch (e) {
+      debugPrint('getFCMToken error: $e');
+      return null;
+    }
   }
 
   /// Listens for new messages.

@@ -36,7 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
         contentMasterPresenter.fetchCategories(),
         //contentMasterPresenter.fetchProductTypes(),
       ]);
-
       splashPresenter.findNextRoute();
     });
   }

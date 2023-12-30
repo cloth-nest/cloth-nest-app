@@ -7,6 +7,7 @@ import 'package:ecommerce/domain/usecases/token/save_token.dart';
 import 'package:ecommerce/domain/usecases/wishlist/delete_wishlist.dart';
 import 'package:ecommerce/domain/usecases/wishlist/fetch_sync_wishlist.dart';
 import 'package:ecommerce/domain/usecases/wishlist/fetch_wishlist.dart';
+import 'package:ecommerce/infra/firebase/firebase_singleton_remote_message_adapter.dart';
 import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
 import 'package:ecommerce/presentation/presenters/login/login_state.dart';
 import 'package:ecommerce/presentation/protocols/validation.dart';
@@ -106,6 +107,8 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
       final loginParams = LoginParams(
         email: _state.loginId ?? '',
         password: _state.password ?? '',
+        firebaseToken:
+            await FirebaseSingletonRemoteMessageAdapter().getToken() ?? '',
       );
 
       TokenEntity tokenEntity =
@@ -118,7 +121,8 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
 
       await _saveToken.call(tokenEntity: tokenEntity);
       await _syncDataWishlist();
-
+      await FirebaseSingletonRemoteMessageAdapter()
+          .saveToken(email: _state.loginId ?? '');
       _state = _state.copyWith(
         isLoading: false,
         navigateTo: LoginRedirect.homeAuth,
