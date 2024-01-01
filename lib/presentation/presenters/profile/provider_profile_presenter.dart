@@ -94,7 +94,7 @@ class ProviderProfilePresenter with ChangeNotifier implements ProfilePresenter {
   @override
   void setPhone({required String phone}) {
     _state = _state.copyWith(
-      phoneController: TextEditingController(text: phone),
+      phone: phone,
       isActive: true,
     );
     notifyListeners();
@@ -107,6 +107,7 @@ class ProviderProfilePresenter with ChangeNotifier implements ProfilePresenter {
       lastName: user.lastName,
       firstNameController: TextEditingController(text: user.firstName),
       lastNameController: TextEditingController(text: user.lastName),
+      phoneController: TextEditingController(text: user.phone),
     );
     notifyListeners();
   }
@@ -136,6 +137,7 @@ class ProviderProfilePresenter with ChangeNotifier implements ProfilePresenter {
           firstName: _state.firstName!,
           lastName: _state.lastName!,
           avatar: avatar ?? '',
+          phone: _state.phone ?? '',
         ),
       );
       notifyListeners();

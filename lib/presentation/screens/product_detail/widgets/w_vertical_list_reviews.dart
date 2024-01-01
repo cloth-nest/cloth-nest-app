@@ -1,18 +1,32 @@
+import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
+import 'package:ecommerce/presentation/screens/product_detail/widgets/w_item_review.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WVericalListReviews extends StatelessWidget {
   const WVericalListReviews({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: Text(
-          'No data',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
-    );
+    final presenter = context.read<ProductDetailPresenter>();
+
+    return presenter.reviews.isNotEmpty
+        ? ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
+            itemCount: presenter.reviews.length,
+            itemBuilder: (BuildContext _, int index) {
+              return ItemReview(
+                comment: presenter.reviews[index],
+              );
+            },
+          )
+        : Center(
+            child: Text(
+              'There is no data',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          );
   }
 }

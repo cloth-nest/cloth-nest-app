@@ -106,7 +106,11 @@ class _AccountScreenState extends State<AccountScreen> {
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40.0),
                     child: ButtonLogin(
-                      onTap: () {},
+                      onTap: () {
+                        Beamer.of(context, root: true).beamToReplacementNamed(
+                          '/login',
+                        );
+                      },
                     ),
                   ),
             const SizedBox(height: 20),

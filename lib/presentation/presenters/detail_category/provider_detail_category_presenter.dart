@@ -51,6 +51,7 @@ class ProviderDetailCategoryPresenter
         isLoading: true,
         products: [],
         page: 1,
+        id: id,
       );
       notifyListeners();
 
@@ -237,7 +238,7 @@ class ProviderDetailCategoryPresenter
         colors: colors,
         sizes: sizes,
         idCategory: id,
-        //priceRange: priceTmp,
+        priceRange: priceTmp,
         orderDirection: sort,
       ));
       _state = _state.copyWith(products: [..._state.products, ...products]);
@@ -369,7 +370,6 @@ class ProviderDetailCategoryPresenter
         final entity = result[i];
         final index = _state.myListProducts
             .indexWhere((element) => element.id == entity.id);
-        debugPrint('index: $index');
         if (index > -1) {
           result[i] = entity.copyWith(isFavorite: true);
         } else {

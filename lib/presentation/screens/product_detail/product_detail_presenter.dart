@@ -3,6 +3,7 @@ import 'package:ecommerce/domain/entities/detail_product/attribute_variant_produ
 import 'package:ecommerce/domain/entities/detail_product/detail_product_entity.dart';
 import 'package:ecommerce/domain/entities/detail_product/image_entity.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
+import 'package:ecommerce/domain/entities/review/review_entity.dart';
 import 'package:flutter/material.dart';
 
 abstract class ProductDetailPresenter implements ChangeNotifier {
@@ -22,6 +23,8 @@ abstract class ProductDetailPresenter implements ChangeNotifier {
   bool get isFavorite;
   DetailProductEntity? get entity;
   bool? get successAddToCart;
+  String get sizeChartImage;
+  List<ReviewEntity> get reviews;
 
   int? getOrderImage(int id);
   void setActivePage(int page);

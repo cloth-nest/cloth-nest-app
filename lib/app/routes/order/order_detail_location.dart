@@ -13,7 +13,7 @@ class OrderDetailLocation extends BeamLocation<BeamState> {
     final orderLocation = OrderLocation();
     final pages = orderLocation.buildPages(context, state);
 
-    final int idOrder = int.parse(state.queryParameters['idOrder'].toString());
+    final int idOrder = int.parse(state.queryParameters['idOrder'] ?? '1');
 
     return pages
       ..add(

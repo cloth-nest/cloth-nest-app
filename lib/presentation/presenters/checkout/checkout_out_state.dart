@@ -11,6 +11,8 @@ class CheckOutState {
   final String shippingMethod;
   final List<AddressEntity> addresses;
   final String? navigateTo;
+  final String paymentMethod;
+  final List<String> shippingMethods;
 
   CheckOutState({
     required this.isLoading,
@@ -20,14 +22,20 @@ class CheckOutState {
     required this.shippingMethod,
     required this.addresses,
     this.navigateTo,
+    required this.paymentMethod,
+    required this.shippingMethods,
   });
 
   factory CheckOutState.initial() => CheckOutState(
-        isLoading: false,
-        carts: [],
-        shippingMethod: 'Normal Delivery',
-        addresses: [],
-      );
+      isLoading: false,
+      carts: [],
+      shippingMethod: 'Normal Delivery',
+      paymentMethod: 'Payment by Cash',
+      addresses: [],
+      shippingMethods: [
+        'Normal Delivery',
+        'Fast Delivery',
+      ]);
 
   CheckOutState copyWith({
     bool? isLoading,
@@ -37,6 +45,8 @@ class CheckOutState {
     String? shippingMethod,
     List<AddressEntity>? addresses,
     String? navigateTo,
+    String? paymentMethod,
+    List<String>? shippingMethods,
   }) {
     return CheckOutState(
       isLoading: isLoading ?? this.isLoading,
@@ -46,6 +56,8 @@ class CheckOutState {
       shippingMethod: shippingMethod ?? this.shippingMethod,
       addresses: addresses ?? this.addresses,
       navigateTo: navigateTo,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      shippingMethods: shippingMethods ?? this.shippingMethods,
     );
   }
 }

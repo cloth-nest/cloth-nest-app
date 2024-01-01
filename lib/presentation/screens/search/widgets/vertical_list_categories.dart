@@ -1,3 +1,4 @@
+import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/domain/entities/category/category_entity.dart';
 import 'package:ecommerce/presentation/screens/search/widgets/item_horizontal_category.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,9 @@ class VerticalListCategories extends StatelessWidget {
             (category) {
               return ItemHorizontalCategory(
                 onTap: () {
-                  /// TODO: navigate to detail category
+                  beamTo(context,
+                      path:
+                          'category_detail?title=${category.name}&id=${category.id}');
                 },
                 category: category.name,
               );

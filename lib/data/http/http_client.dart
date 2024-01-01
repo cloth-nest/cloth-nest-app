@@ -18,7 +18,10 @@ abstract class HttpClient {
     Map<String, String>? headers,
   });
 
-  Future<http.Response> get(Uri uri, {Map<String, String>? headers});
+  Future<http.Response> get(
+    Uri uri, {
+    Map<String, String>? headers,
+  });
 
   Future<http.Response> post(
     Uri uri, {

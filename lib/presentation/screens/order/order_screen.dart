@@ -79,6 +79,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 child: Selector<OrderPresenter, bool>(
                   selector: (_, presenter) => presenter.isGetMore,
                   builder: (_, isGetMore, __) => CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
                     controller: presenter.controller,
                     slivers: [
                       SliverList(

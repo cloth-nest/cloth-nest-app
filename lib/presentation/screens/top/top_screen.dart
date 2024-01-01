@@ -61,8 +61,12 @@ class _TopScreenState extends State<TopScreen>
                   searchController: topPresenter.searchController,
                   isShowButton: isShowButton,
                   onClearButton: () {},
-                  onSubmitSearch: (value) {},
-                  onPressedBtnSearch: (value) {},
+                  onSubmitSearch: (value) {
+                    beamTo(context, path: 'search/result?keyword=$value');
+                  },
+                  onPressedBtnSearch: (value) {
+                    beamTo(context, path: 'search/result?keyword=$value');
+                  },
                 ),
               ),
             ),

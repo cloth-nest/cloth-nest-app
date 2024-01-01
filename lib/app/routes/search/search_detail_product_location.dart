@@ -11,13 +11,12 @@ class SearchDetailProductLocation extends BeamLocation<BeamState> {
     final searchDetailLocation = SearchDetailLocation();
     final pages = searchDetailLocation.buildPages(context, state);
 
-    final int idProduct =
-        int.parse(state.queryParameters['idProduct'].toString());
+    final int idProduct = int.parse(state.queryParameters['idProduct'] ?? '-1');
 
     return pages
       ..add(
         BeamPage(
-          key: ValueKey('search-detail-product-$idProduct'),
+          key: const ValueKey('search-detail-product-'),
           child: makeProductDetailView(idProduct: idProduct),
         ),
       );

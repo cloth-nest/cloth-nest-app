@@ -22,7 +22,7 @@ class RemoteFetchSendNotification implements FetchSendNotification {
             {
               "data": {
                 "title": "ClothNest Application",
-                "content": '$name has created an order'
+                "content": name,
               },
               "to": token,
             },

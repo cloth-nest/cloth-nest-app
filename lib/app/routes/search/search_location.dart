@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SearchLocation extends BeamLocation<BeamState> {
+  SearchLocation([super.routeInformation]);
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     return [

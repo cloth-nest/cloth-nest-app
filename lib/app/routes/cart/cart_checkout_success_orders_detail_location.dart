@@ -13,12 +13,12 @@ class CartCheckOutSuccessOrdersDetailLocation extends BeamLocation<BeamState> {
     final orderLocation = CartCheckOutSuccessLocation();
     final pages = orderLocation.buildPages(context, state);
 
-    final int idOrder = int.parse(state.queryParameters['idOrder'].toString());
+    final int idOrder = int.parse(state.queryParameters['idOrder'] ?? '1');
 
     return pages
       ..add(
         BeamPage(
-          key: ValueKey('check-out-success-orders-detail-$idOrder'),
+          key: const ValueKey('check-out-success-orders-detail'),
           title: 'order',
           child: ChangeNotifierProvider(
             create: (_) => makeOrderDetailPresenter(),

@@ -9,13 +9,12 @@ class TopQrProductLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     final topQrLocation = TopQrLocation();
     final pages = topQrLocation.buildPages(context, state);
-    final int idProduct =
-        int.parse(state.queryParameters['idProduct'].toString());
+    final int idProduct = int.parse(state.queryParameters['idProduct'] ?? '-1');
 
     return pages
       ..add(
         BeamPage(
-          key: ValueKey('top-qr-detail-product-$idProduct'),
+          key: const ValueKey('top-qr-detail-product'),
           child: makeProductDetailView(idProduct: idProduct),
         ),
       );

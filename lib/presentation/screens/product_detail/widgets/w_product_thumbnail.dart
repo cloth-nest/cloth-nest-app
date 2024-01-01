@@ -42,6 +42,11 @@ class _WProductThumbNailState extends State<WProductThumbNail>
   Future<void> setAutoSlide() async {
     _animationController.reset();
 
+    _presenter.pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.linear,
+    );
+
     await _animationController.forward();
   }
 
@@ -56,36 +61,33 @@ class _WProductThumbNailState extends State<WProductThumbNail>
     final themeColor = Theme.of(context);
 
     return Selector<ProductDetailPresenter, List<ImageEntity>>(
-      selector: (_, presenter) => presenter.images,
-      builder: (_, images, __) => images.isEmpty
-          ? const SizedBox.shrink()
-          : AspectRatio(
-              aspectRatio: 16 / 9,
-              child: LayoutBuilder(
-                builder: (_, constraints) {
-                  return SizedBox(
-                    height: constraints.maxHeight,
-                    width: constraints.maxWidth,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Listener(
-                          onPointerDown: (event) {
-                            _animationController.stop();
-                          },
-                          onPointerUp: (_) {
-                            _animationController.forward();
-                          },
-                          child: Selector<ProductDetailPresenter, int>(
-                            selector: (_, presenter) => presenter.activePage,
-                            builder: (_, activePage, __) => PageView.builder(
+        selector: (_, presenter) => presenter.images,
+        builder: (_, images, __) => images.isEmpty
+            ? const SizedBox.shrink()
+            : AspectRatio(
+                aspectRatio: 16 / 9,
+                child: LayoutBuilder(
+                  builder: (_, constraints) {
+                    return SizedBox(
+                      height: constraints.maxHeight,
+                      width: constraints.maxWidth,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Listener(
+                            onPointerDown: (event) {
+                              _animationController.stop();
+                            },
+                            onPointerUp: (_) {
+                              _animationController.forward();
+                            },
+                            child: PageView.builder(
                               allowImplicitScrolling: true,
                               physics: const ClampingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               controller: _presenter.pageController,
                               onPageChanged: (value) {
-                                _presenter.setActivePage(
-                                    value % _presenter.images.length);
+                                _presenter.setActivePage(value % images.length);
                                 _animationController.reset();
                                 _animationController.forward();
                               },
@@ -95,10 +97,8 @@ class _WProductThumbNailState extends State<WProductThumbNail>
                                   child: Container(
                                     color: AppColors.white,
                                     child: CachedNetworkImage(
-                                      imageUrl: _presenter
-                                          .images[
-                                              index % _presenter.images.length]
-                                          .image,
+                                      imageUrl:
+                                          images[index % images.length].image,
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -106,28 +106,25 @@ class _WProductThumbNailState extends State<WProductThumbNail>
                               },
                             ),
                           ),
-                        ),
-                        Positioned(
-                          bottom: 13,
-                          child: Container(
-                            height: 20,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: themeColor.scaffoldBackgroundColor,
+                          Positioned(
+                            bottom: 13,
+                            child: Container(
+                              height: 20,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: themeColor.scaffoldBackgroundColor,
+                              ),
+                              child: Center(
+                                child: _customLoadingIndicator(images.length),
+                              ),
                             ),
-                            child: Center(
-                              child: _customLoadingIndicator(
-                                  _presenter.images.length),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-    );
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ));
   }
 
   Widget _customLoadingIndicator(int length) {
