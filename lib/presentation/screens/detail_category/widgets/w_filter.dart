@@ -1,4 +1,5 @@
 import 'package:ecommerce/app/resources/app_colors.dart';
+import 'package:ecommerce/app/utils/extensions/double_extension.dart';
 import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/presentation/screens/account/widgets/notification_dot.dart';
 import 'package:ecommerce/presentation/screens/detail_category/detail_category_presenter.dart';
@@ -28,11 +29,11 @@ class WFilter extends StatelessWidget {
       'Multi-Colour'
     ];
     final prices = [
-      'Below 100.000đ',
-      '100.000đ - 200.000đ',
-      '200.000đ - 300.000đ',
-      '300.000đ - 500.000đ',
-      'Above 500.000đ',
+      'Below ${10.0.toMoney()}',
+      '${10.0.toMoney()} - ${20.0.toMoney()}',
+      '${20.0.toMoney()} - ${30.0.toMoney()}',
+      '${30.0.toMoney()} - ${50.0.toMoney()}',
+      'Above ${50.0.toMoney()}',
     ];
 
     final _presenter = context.read<DetailCategoryPresenter>();

@@ -11,13 +11,12 @@ class MyListProductLocation extends BeamLocation<BeamState> {
     final myListLocation = MyListLocation();
     final pages = myListLocation.buildPages(context, state);
 
-    final int idProduct =
-        int.parse(state.queryParameters['idProduct'].toString());
+    final int idProduct = int.parse(state.queryParameters['idProduct'] ?? '-1');
 
     return pages
       ..add(
         BeamPage(
-          key: ValueKey('my-list-product-$idProduct'),
+          key: const ValueKey('my-list-product'),
           child: makeProductDetailView(idProduct: idProduct),
         ),
       );

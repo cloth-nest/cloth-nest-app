@@ -386,6 +386,7 @@ class ProviderDetailAddressPresenter
         selectedProvince: provinceTmp,
         selectedDistrict: districtTmp,
         selectedWard: wardTmp,
+        isFormValid: true,
       );
       notifyListeners();
     }

@@ -1,6 +1,9 @@
+import 'package:beamer/beamer.dart';
+import 'package:ecommerce/app/factories/widgets/dialog/dialog_one_button.dart';
+import 'package:ecommerce/app/utils/singleton/user_token_singleton.dart';
+import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/presentation/screens/product_detail/product_detail_presenter.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_buttons.dart';
-import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_colors.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_description.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_name.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_price.dart';
@@ -10,7 +13,6 @@ import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_vertical_list_recommends.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_vertical_list_reviews.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class WDetailProduct extends StatefulWidget {
@@ -71,12 +73,12 @@ class _WDetailProductState extends State<WDetailProduct>
                 ),
               ),
 
-              /// Colors
-              const SliverToBoxAdapter(
-                child: WProductColors(
-                  marginSide: _marginSide,
-                ),
-              ),
+              // /// Colors
+              // const SliverToBoxAdapter(
+              //   child: WProductColors(
+              //     marginSide: _marginSide,
+              //   ),
+              // ),
 
               /// Sizes
               const SliverToBoxAdapter(
@@ -102,6 +104,30 @@ class _WDetailProductState extends State<WDetailProduct>
                       }
                     }
                   },
+                  onBuyNow: () {
+                    final isAuthenticated =
+                        UserTokenSingleton().latestUserSession != null;
+
+                    if (isAuthenticated) {
+                      beamTo(context,
+                          path:
+                              'checkout?variantId=${presenter.entity!.defaultVariantId}');
+                    } else {
+                      dialogOneButton(
+                        context,
+                        title: 'Log in',
+                        content:
+                            'When you log in to ClothNest!, you can create a list of your products and can buy later',
+                        buttonOne: 'Login',
+                        buttonOneTap: () {
+                          Beamer.of(context, root: true).beamToReplacementNamed(
+                            '/login',
+                          );
+                        },
+                      );
+                      return;
+                    }
+                  },
                 ),
               ),
 
@@ -111,6 +137,39 @@ class _WDetailProductState extends State<WDetailProduct>
               const SliverToBoxAdapter(
                 child: WProductDescription(
                   marginSide: _marginSide,
+                ),
+              ),
+
+              // Size Chart
+              SliverToBoxAdapter(
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: Image.network(presenter.sizeChartImage),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Text(
+                      'Size chart',
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        decoration: TextDecoration.underline,
+                        decorationStyle: TextDecorationStyle.dashed,
+                        color: Colors.transparent,
+                        decorationColor: Colors.black,
+                        shadows: [
+                          const Shadow(
+                              color: Colors.black, offset: Offset(0, -5))
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
 
@@ -125,9 +184,11 @@ class _WDetailProductState extends State<WDetailProduct>
               SliverToBoxAdapter(
                 child: Selector<ProductDetailPresenter, int>(
                   selector: (_, presenter) => presenter.tabIndex,
-                  builder: (_, tabIndex, __) => tabIndex == 0
-                      ? const WVerticalListRecommends()
-                      : const WVericalListReviews(),
+                  builder: (_, tabIndex, __) {
+                    return tabIndex == 0
+                        ? const WVerticalListRecommends()
+                        : const WVericalListReviews();
+                  },
                 ),
               ),
 

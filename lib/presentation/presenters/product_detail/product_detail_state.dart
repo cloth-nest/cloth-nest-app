@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:ecommerce/domain/entities/review/review_entity.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce/domain/entities/detail_product/detail_product_entity.dart';
@@ -15,19 +16,20 @@ class ProductDetailState {
   final String selectedSize;
   final bool isFavorite;
   final bool? successAddToCart;
+  final List<ReviewEntity> reviews;
 
-  ProductDetailState({
-    required this.activePage,
-    required this.pageController,
-    required this.tabIndex,
-    this.entity,
-    required this.isLoading,
-    required this.recommendationProducts,
-    required this.selectedColor,
-    required this.selectedSize,
-    required this.isFavorite,
-    required this.successAddToCart,
-  });
+  ProductDetailState(
+      {required this.activePage,
+      required this.pageController,
+      required this.tabIndex,
+      this.entity,
+      required this.isLoading,
+      required this.recommendationProducts,
+      required this.selectedColor,
+      required this.selectedSize,
+      required this.isFavorite,
+      required this.successAddToCart,
+      required this.reviews});
 
   factory ProductDetailState.initial() {
     return ProductDetailState(
@@ -44,6 +46,7 @@ class ProductDetailState {
       selectedSize: '',
       isFavorite: false,
       successAddToCart: false,
+      reviews: [],
     );
   }
 
@@ -58,6 +61,7 @@ class ProductDetailState {
     String? selectedSize,
     bool? isFavorite,
     bool? successAddToCart,
+    List<ReviewEntity>? reviews,
   }) {
     return ProductDetailState(
       activePage: activePage ?? this.activePage,
@@ -71,6 +75,7 @@ class ProductDetailState {
       selectedSize: selectedSize ?? this.selectedSize,
       isFavorite: isFavorite ?? this.isFavorite,
       successAddToCart: successAddToCart,
+      reviews: reviews ?? this.reviews,
     );
   }
 }

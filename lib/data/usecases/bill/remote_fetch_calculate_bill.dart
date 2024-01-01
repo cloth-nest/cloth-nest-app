@@ -1,3 +1,4 @@
+import 'package:ecommerce/app/factories/http/api_url_factory.dart';
 import 'package:ecommerce/data/helper/response_handler.dart';
 import 'package:ecommerce/data/http/http_client.dart';
 import 'package:ecommerce/data/models/bill/bill_model.dart';
@@ -17,15 +18,24 @@ class RemoteFetchCalculateBill implements FetchCalculateBill {
   Future<BillEntity> call({
     required int addressId,
     required int ghnServerTypeId,
+    Map<String, dynamic>? carts,
   }) async {
     try {
       final response = await client.makeRequest(
-        uri: Uri.parse(url),
+        uri: carts != null
+            ? Uri.parse(makeApiUrl('order/calc-bill-without-cart'))
+            : Uri.parse(url),
         method: HttpMethod.post,
-        body: {
-          'ghnServerTypeId': ghnServerTypeId,
-          'addressId': addressId,
-        },
+        body: carts == null
+            ? {
+                'ghnServerTypeId': ghnServerTypeId,
+                'addressId': addressId,
+              }
+            : {
+                'ghnServerTypeId': ghnServerTypeId,
+                'addressId': addressId,
+                'carts': [carts],
+              },
       );
       final json = ResponseHandler.handle(response);
       final BillEntity entity =

@@ -75,7 +75,7 @@ class _WListSearchState extends State<WListSearch> {
                         child: Padding(
                       padding: const EdgeInsets.only(top: 16),
                       child: Text(
-                        '結果がありません',
+                        'There is no data',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     )),

@@ -39,6 +39,7 @@ class ItemProduct extends StatelessWidget {
               CachedNetworkImage(
                 width: size.width / 2,
                 height: size.width / 2,
+                memCacheWidth: (size.width / 2).round(),
                 imageUrl: entity.image,
                 fit: BoxFit.fitHeight,
                 placeholder: (context, url) => Container(

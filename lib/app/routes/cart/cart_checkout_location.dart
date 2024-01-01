@@ -19,7 +19,7 @@ class CartCheckOutLocation extends BeamLocation<BeamState> {
           key: const ValueKey('check-out'),
           child: ChangeNotifierProvider(
             create: (_) => makeCheckOutPresenter(),
-            child: makeCheckOutView(),
+            child: makeCheckOutView(null),
           ),
         ),
       );

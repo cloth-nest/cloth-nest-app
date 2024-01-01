@@ -6,13 +6,14 @@ class UserEntity extends Equatable {
   final String firstName;
   final String lastName;
   final String avatar;
+  final String phone;
 
-  const UserEntity({
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.avatar,
-  });
+  const UserEntity(
+      {required this.email,
+      required this.firstName,
+      required this.lastName,
+      required this.avatar,
+      required this.phone});
 
   factory UserEntity.inital() {
     return const UserEntity(
@@ -20,6 +21,7 @@ class UserEntity extends Equatable {
       firstName: '',
       lastName: '',
       avatar: '',
+      phone: '',
     );
   }
 
@@ -37,6 +39,7 @@ class UserEntity extends Equatable {
       firstName: firstName,
       lastName: lastName,
       avatar: avatar,
+      phone: phone,
     );
   }
 }

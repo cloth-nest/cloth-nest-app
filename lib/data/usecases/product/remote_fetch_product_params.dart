@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:ecommerce/app/utils/extensions/double_extension.dart';
 import 'package:ecommerce/domain/usecases/product/fetch_product_params.dart';
 import 'package:equatable/equatable.dart';
 
@@ -90,18 +91,16 @@ String? toOrderDirection({required String direction}) {
 }
 
 String? toPriceRange({required String priceRange}) {
-  switch (priceRange) {
-    case 'Below 100.000đ':
-      return 'LT10';
-    case '100.000đ - 200.000đ':
-      return 'GTE10_LT20';
-    case '200.000đ - 300.000đ':
-      return 'GTE20_LT30';
-    case '300.000đ - 500.000đ':
-      return 'GTE30_LT50';
-    case 'Above 500.000đ':
-      return 'GTE50';
-    default:
+  if (priceRange == 'Below ${10.0.toMoney()}') {
+    return 'LT10';
+  } else if (priceRange == '${10.0.toMoney()} - ${20.0.toMoney()}') {
+    return 'GTE10_LT20';
+  } else if (priceRange == '${20.0.toMoney()} - ${30.0.toMoney()}') {
+    return 'GTE20_LT30';
+  } else if (priceRange == '${30.0.toMoney()} - ${50.0.toMoney()}') {
+    return 'GTE30_LT50';
+  } else if (priceRange == 'Above ${50.0.toMoney()}') {
+    return 'GTE50';
   }
   return 'ALL';
 }

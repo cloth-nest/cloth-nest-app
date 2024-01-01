@@ -11,13 +11,12 @@ class CartProductLocation extends BeamLocation<BeamState> {
     final cartLocation = CartLocation();
     final pages = cartLocation.buildPages(context, state);
 
-    final int idProduct =
-        int.parse(state.queryParameters['idProduct'].toString());
+    final int idProduct = int.parse(state.queryParameters['idProduct'] ?? '-1');
 
     return pages
       ..add(
         BeamPage(
-          key: ValueKey('cart-product-$idProduct'),
+          key: const ValueKey('cart-product'),
           child: makeProductDetailView(idProduct: idProduct),
         ),
       );

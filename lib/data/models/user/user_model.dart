@@ -18,11 +18,15 @@ class UserModel extends HiveObject {
   @HiveField(3)
   final String avatar;
 
+  @HiveField(4)
+  final String phone;
+
   UserModel({
     required this.email,
     required this.firstName,
     required this.lastName,
     required this.avatar,
+    required this.phone,
   });
 
   Map<String, dynamic> toJson() {
@@ -31,16 +35,17 @@ class UserModel extends HiveObject {
       'firstName': firstName,
       'lastName': lastName,
       'avatar': avatar,
+      'phone': phone,
     };
   }
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      email: json['email'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      avatar: json['avatar'] ?? '',
-    );
+        email: json['email'] as String,
+        firstName: json['firstName'] as String,
+        lastName: json['lastName'] as String,
+        avatar: json['avatar'] ?? '',
+        phone: json['phone'] ?? '');
   }
 
   UserEntity toEntity() {
@@ -49,6 +54,7 @@ class UserModel extends HiveObject {
       firstName: firstName,
       lastName: lastName,
       avatar: avatar,
+      phone: phone,
     );
   }
 }

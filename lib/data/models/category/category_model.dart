@@ -34,5 +34,6 @@ class CategoryModel {
         subCategory: List<CategoryModel>.from(subCategory)
             .map((e) => e.toEntity())
             .toList(),
+        categoryThumbUrl: bgImgUrl,
       );
 }

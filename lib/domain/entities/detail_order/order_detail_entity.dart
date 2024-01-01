@@ -5,6 +5,7 @@ class OrderDetailEntity {
   final double price;
   final String image;
   final String name;
+  final int idProduct;
 
   OrderDetailEntity({
     required this.id,
@@ -12,5 +13,6 @@ class OrderDetailEntity {
     required this.price,
     required this.image,
     required this.name,
+    required this.idProduct,
   });
 }

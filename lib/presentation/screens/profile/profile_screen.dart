@@ -208,6 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         builder: (_, phoneController, __) => NormalTextField(
                           controller: phoneController,
                           focusNode: phoneFocusNode,
+                          keyboardType: TextInputType.phone,
                           placeHolder: 'Please enter your phone',
                           onChanged: (String? value) {
                             _presenter.setPhone(phone: value!);

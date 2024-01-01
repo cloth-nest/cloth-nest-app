@@ -15,7 +15,7 @@ class WProductDescription extends StatelessWidget {
       padding: EdgeInsets.only(
         left: marginSide,
         right: marginSide,
-        bottom: 20,
+        bottom: 10,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

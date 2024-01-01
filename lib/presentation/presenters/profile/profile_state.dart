@@ -16,6 +16,7 @@ class ProfileState {
   final String? lastName;
   final String? navigateTo;
   final UserEntity? newUser;
+  final String? phone;
 
   ProfileState({
     required this.isLoading,
@@ -29,6 +30,7 @@ class ProfileState {
     this.lastName,
     this.navigateTo,
     this.newUser,
+    this.phone,
   });
 
   factory ProfileState.initial() {
@@ -53,6 +55,7 @@ class ProfileState {
     String? lastName,
     String? navigateTo,
     UserEntity? newUser,
+    String? phone,
   }) {
     return ProfileState(
       isLoading: isLoading ?? this.isLoading,
@@ -66,6 +69,7 @@ class ProfileState {
       lastName: lastName ?? this.lastName,
       navigateTo: navigateTo,
       newUser: newUser ?? this.newUser,
+      phone: phone ?? this.phone,
     );
   }
 }

@@ -4,9 +4,11 @@ import 'package:ecommerce/domain/entities/detail_product/attribute_variant_produ
 import 'package:ecommerce/domain/entities/detail_product/detail_product_entity.dart';
 import 'package:ecommerce/domain/entities/detail_product/image_entity.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
+import 'package:ecommerce/domain/entities/review/review_entity.dart';
 import 'package:ecommerce/domain/usecases/cart/fetch_add_to_cart.dart';
 import 'package:ecommerce/domain/usecases/detail_product/fetch_detail_product.dart';
 import 'package:ecommerce/domain/usecases/recommendation_product/fetch_recommendation_product.dart';
+import 'package:ecommerce/domain/usecases/review/fetch_review.dart';
 import 'package:ecommerce/domain/usecases/wishlist/delete_wishlist.dart';
 import 'package:ecommerce/domain/usecases/wishlist/fetch_wishlist.dart';
 import 'package:ecommerce/domain/usecases/wishlist/save_wishlist.dart';
@@ -28,6 +30,7 @@ class ProviderProductDetailPresenter
   final FetchRemoteWishlist _fetchRemoteWishlist;
   final DeleteRemoteWishlist _deleteRemoteWishlist;
   final FetchAddToCart _fetchAddToCart;
+  final FetchReviews _fetchReviews;
 
   ProviderProductDetailPresenter({
     required ProductDetailState state,
@@ -40,6 +43,7 @@ class ProviderProductDetailPresenter
     required FetchRemoteWishlist fetchRemoteWishlist,
     required DeleteRemoteWishlist deleteRemoteWishlist,
     required FetchAddToCart fetchAddToCart,
+    required FetchReviews fetchReviews,
   })  : _state = state,
         _fetchDetailProduct = fetchDetailProduct,
         _fetchRecommendationProduct = fetchRecommendationProduct,
@@ -49,7 +53,8 @@ class ProviderProductDetailPresenter
         _saveRemoteWishlist = saveRemoteWishlist,
         _fetchRemoteWishlist = fetchRemoteWishlist,
         _deleteRemoteWishlist = deleteRemoteWishlist,
-        _fetchAddToCart = fetchAddToCart;
+        _fetchAddToCart = fetchAddToCart,
+        _fetchReviews = fetchReviews;
 
   @override
   int get activePage => _state.activePage;
@@ -140,10 +145,14 @@ class ProviderProductDetailPresenter
       // List<ProductEntity> products =
       //     await _fetchRecommendationProduct.call(idProduct: idProduct);
 
+      List<ReviewEntity> reviews =
+          await _fetchReviews.call(idProduct: idProduct);
+
       _state = _state.copyWith(
         entity: detailProductEntity,
         isLoading: false,
         recommendationProducts: [],
+        reviews: reviews,
       );
       await _updateWishList();
       notifyListeners();
@@ -157,8 +166,7 @@ class ProviderProductDetailPresenter
     for (var entity in _state.entity?.variants ?? []) {
       List<AttributeVariantProductEntity> attributes = entity.attributes;
 
-      if (attributes[0].value == selectedSize &&
-          attributes[1].value == selectedColor) {
+      if (attributes[0].value == selectedSize) {
         return entity.id;
       }
     }
@@ -359,4 +367,10 @@ class ProviderProductDetailPresenter
 
   @override
   bool? get successAddToCart => _state.successAddToCart;
+
+  @override
+  String get sizeChartImage => _state.entity?.productType.sizeChartImage ?? '';
+
+  @override
+  List<ReviewEntity> get reviews => _state.reviews;
 }

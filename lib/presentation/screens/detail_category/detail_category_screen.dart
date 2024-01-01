@@ -15,12 +15,10 @@ import 'package:provider/provider.dart';
 class DetailCategoryScreen extends StatefulWidget {
   final String title;
   final int id;
-  final List<CategoryEntity> categories;
 
   const DetailCategoryScreen({
     super.key,
     required this.title,
-    required this.categories,
     required this.id,
   });
 
@@ -33,20 +31,22 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
   late TabController _tabController;
   late DetailCategoryPresenter _presenter;
   late ContentMasterPresenter contentMasterPresenter;
+  late List<CategoryEntity> categories;
 
   @override
   void initState() {
     super.initState();
+    contentMasterPresenter = context.read<ContentMasterPresenter>();
 
+    categories = contentMasterPresenter.secondCategories['${widget.id}'];
     _tabController = TabController(
-      length: widget.categories.length,
+      length: categories.length,
       vsync: this,
     );
-    contentMasterPresenter = context.read<ContentMasterPresenter>();
     _presenter = context.read<DetailCategoryPresenter>();
     _tabController.addListener(onChangeTabListener);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _presenter.initData(id: widget.categories[0].id, page: 1, limit: 6);
+      _presenter.initData(id: categories[0].id, page: 1, limit: 6);
     });
   }
 
@@ -55,7 +55,7 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
       _tabController.index,
       limit: 6,
       page: 1,
-      id: widget.categories[_tabController.index].id,
+      id: categories[_tabController.index].id,
     );
   }
 
@@ -120,9 +120,8 @@ class _DetailCategoryScreenState extends State<DetailCategoryScreen>
                   right: 15,
                 ),
                 unselectedLabelColor: AppColors.textGray999,
-                tabs: widget.categories
-                    .map((e) => Text(e.name.toUpperCase()))
-                    .toList(),
+                tabs:
+                    categories.map((e) => Text(e.name.toUpperCase())).toList(),
               ),
             ),
           ),

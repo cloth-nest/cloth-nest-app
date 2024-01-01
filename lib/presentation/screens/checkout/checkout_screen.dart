@@ -12,8 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CheckOutScreen extends StatefulWidget {
+  final int? variantId;
+
   const CheckOutScreen({
     super.key,
+    this.variantId,
   });
 
   @override
@@ -56,15 +59,23 @@ class _SecondCheckOutScreenState extends State<CheckOutScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     presenter = context.read<CheckOutPresenter>();
+    presenter.addListener(_onListener);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      presenter.initData();
+      presenter.initData(widget.variantId);
     });
+  }
+
+  void _onListener() {
+    if (presenter.navigateTo != null) {
+      beamTo(context, path: 'success');
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    presenter.removeListener(_onListener);
     couponController.dispose();
   }
 
@@ -243,88 +254,53 @@ class _SecondCheckOutScreenState extends State<CheckOutScreen>
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Selector<CheckOutPresenter, String>(
-                      selector: (_, presenter) => presenter.shippingMethod,
-                      builder: (_, shippingMethod, __) => WShippingMethod(
-                        callback: (method) {
-                          presenter.setShippingMethod(method: method);
-                        },
-                        source: const [
-                          'Fast Delivery',
-                          'Normal Delivery',
-                        ],
-                        value: shippingMethod,
-                        hint: 'Shipping Method',
+                    child: Selector<CheckOutPresenter, List<String>>(
+                      selector: (_, presenter) => presenter.shippingMethods,
+                      builder: (_, shippingMethods, __) =>
+                          Selector<CheckOutPresenter, String>(
+                        selector: (_, presenter) => presenter.shippingMethod,
+                        builder: (_, shippingMethod, __) => WShippingMethod(
+                          callback: (method) {
+                            presenter.setShippingMethod(method: method);
+                          },
+                          source: shippingMethods,
+                          value: shippingMethod,
+                          hint: 'Shipping Method',
+                        ),
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  //   child: Row(
-                  //     children: [
-                  //       Expanded(
-                  //         flex: 2,
-                  //         child: TextFieldInput(
-                  //           hintText: 'Coupon Code',
-                  //           controller: couponController,
-                  //         ),
-                  //       ),
-                  //       const SizedBox(width: 10),
-                  //       Expanded(
-                  //         child: CustomButton(
-                  //           margin: 0,
-                  //           width: 0,
-                  //           content: 'Apply',
-                  //           onTap: () {
-                  //             _bloc.add(CouponChecked(
-                  //               couponCode: couponController.text.trim(),
-                  //               productList: widget.carts
-                  //                   .map((x) => {
-                  //                         'id': x.product.id,
-                  //                         'quantity': x.quantity,
-                  //                       })
-                  //                   .toList(),
-                  //             ));
-                  //           },
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
                   const SizedBox(height: 10),
                   _buildDivider(),
                   const SizedBox(height: 10),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //   child: Text(
-                  //     'Choose Payment Method',
-                  //     style: AppStyles.medium,
-                  //   ),
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      'Payment Method',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  ),
                   const SizedBox(height: 10),
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   child: Wrap(
-                  //     // spacing: 10,
-                  //     // direction: Axis.vertical,
-                  //     children: payments
-                  //         .map(
-                  //           (e) => GestureDetector(
-                  //             onTap: () {
-                  //               setState(() {
-                  //                 namePayment = e.name;
-                  //               });
-                  //             },
-                  //             child: ItemPaymentMethod(
-                  //               payment: e,
-                  //               isPicked: namePayment == e.name,
-                  //             ),
-                  //           ),
-                  //         )
-                  //         .toList(),
-                  //   ),
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Selector<CheckOutPresenter, String>(
+                      selector: (_, presenter) => presenter.paymentMethod,
+                      builder: (_, paymentMethod, __) => WShippingMethod(
+                        callback: (method) {
+                          presenter.setPaymentMethod(method: method);
+                        },
+                        source: const [
+                          'Payment by Cash',
+                          'Payment by ZaloPay',
+                        ],
+                        value: paymentMethod,
+                        hint: 'Payment Method',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  _buildDivider(),
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.only(
                       bottom: 8.0,
