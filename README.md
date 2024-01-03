@@ -1,3 +1,9 @@
+# Clothnest App
+## Members
+- Mai Phạm Quốc Hưng - MSSV: 20521366
+- Nguyễn Thái Tuấn - MSSV: 20522122​
+- Phạm Trương Hải Đoàn - MSSV: 20520046
+
 ## Source Structure
 
 ```
@@ -29,10 +35,20 @@
 ├── assets                      # Contains assets such as images, translations, etc.
 ```
 
-## Generate locales
-
+## How to run
+B1. Clone repo:
+```bash
+git clone https://github.com/cloth-nest/cloth-nest-app.git
 ```
+B2. Open terminal to this repo and run:
+```bash
+flutter pub get
 flutter pub run easy_localization:generate -S "assets/translations" -O "lib/app/res" -f keys -o locale_keys.g.dart
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+B3. To run app, run this in your terminal
+```bash
+flutter run
 ```
 
 ## Generate hive
