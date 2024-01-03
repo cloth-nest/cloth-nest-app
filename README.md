@@ -50,9 +50,3 @@ B3. To run app, run this in your terminal
 ```bash
 flutter run
 ```
-
-## Generate hive
-
-```
-flutter pub run build_runner build --delete-conflicting-outputs
-```
