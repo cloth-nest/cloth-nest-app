@@ -25,6 +25,7 @@ class ItemMyList extends StatelessWidget {
         padding: const EdgeInsets.only(
           left: 20.0,
           bottom: 10,
+          right: 10,
           top: 10,
         ),
         child: Row(

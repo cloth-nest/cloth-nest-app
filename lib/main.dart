@@ -126,25 +126,23 @@ void onClickNotification({
     });
   }
 
-  if (screen.contains('/order')) {
-    final userToken = await makeFetchLocalToken().call(key: uniqueUserTokenKey);
+  final userToken = await makeFetchLocalToken().call(key: uniqueUserTokenKey);
 
-    if (userToken == null) {
-      navigateToScreen('/login', null, null);
-    } else {
-      final List<String> params = screen.split('/')
-        ..removeWhere((element) => element.isEmpty);
-      final int idOrder = int.tryParse(params[2]) ?? -1;
+  if (userToken == null) {
+    navigateToScreen('/login', null, null);
+  } else {
+    final List<String> params = screen.split('/')
+      ..removeWhere((element) => element.isEmpty);
+    final int idOrder = int.tryParse(params[2]) ?? -1;
 
-      navigateToScreen('/order', MainTab.order, () {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) {
-            orderTabHomeRouteDelegate
-                .beamToNamed('/order/detail?idOrder=$idOrder');
-          },
-        );
-      });
-    }
+    navigateToScreen('/order', MainTab.order, () {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          orderTabHomeRouteDelegate
+              .beamToNamed('/order/detail?idOrder=$idOrder');
+        },
+      );
+    });
   }
 }
 

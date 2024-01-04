@@ -32,6 +32,8 @@ import 'package:ecommerce/app/routes/top/top_product_location.dart';
 import 'package:ecommerce/app/routes/top/top_qr_location.dart';
 import 'package:ecommerce/app/routes/top/top_qr_product_checkout_location.dart';
 import 'package:ecommerce/app/routes/top/top_qr_product_checkout_success_location.dart';
+import 'package:ecommerce/app/routes/top/top_qr_product_checkout_success_orders_detail_location.dart';
+import 'package:ecommerce/app/routes/top/top_qr_product_checkout_success_orders_location.dart';
 import 'package:ecommerce/app/routes/top/top_qr_product_location.dart';
 import 'package:ecommerce/app/routes/top/top_search_detail_location.dart';
 import 'package:ecommerce/app/routes/top/top_search_detail_product_checkout_location.dart';
@@ -68,6 +70,12 @@ final topTabHomeRouteDelegate = BeamerDelegate(
   initialPath: '/top',
   locationBuilder: (routeInformation, _) {
     if (routeInformation.location!
+        .contains('/top/qr_code/product/checkout/success/orders/detail')) {
+      return TopQrProductCheckOutSuccessOrdersDetailLocation(routeInformation);
+    } else if (routeInformation.location!
+        .contains('/top/qr_code/product/checkout/success/orders')) {
+      return TopQrProductCheckOutSuccessOrdersLocation(routeInformation);
+    } else if (routeInformation.location!
         .contains('/top/qr_code/product/checkout/success')) {
       return TopQrProductCheckOutSuccessLocation(routeInformation);
     } else if (routeInformation.location!

@@ -98,11 +98,12 @@ class ItemProduct extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: horizontalPadding),
                 child: WReviews(
-                  rating: 5,
-                  numReviews: 7,
+                  rating: entity.rating ?? 0,
+                  numReviews: entity.numOfReviews ?? 0,
                 ),
               ),
             ],

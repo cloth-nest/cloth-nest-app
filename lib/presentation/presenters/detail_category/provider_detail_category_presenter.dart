@@ -159,6 +159,10 @@ class ProviderDetailCategoryPresenter
         }
       }
 
+      if (isEmpty) {
+        priceTmp = '';
+      }
+
       _state = _state.copyWith(
         isLoading: true,
         selectedPrices: isEmpty ? [] : value,
@@ -166,8 +170,26 @@ class ProviderDetailCategoryPresenter
 
       notifyListeners();
 
-      await fetchProducts(
-          id: _state.id, page: _state.page, limit: _state.limit);
+      List<ProductEntity> products = await _fetchProduct.call(
+          params: FetchProductParams(
+        page: _state.page,
+        limit: _state.limit,
+        colors: colors,
+        sizes: sizes,
+        idCategory: _state.id,
+        priceRange: priceTmp,
+        orderDirection: sort,
+      ));
+
+      _state = _state.copyWith(products: [...products]);
+
+      await _updateWishList(products: _state.products);
+
+      if (products.length < 6) {
+        _state = _state.copyWith(canGetMore: false);
+      } else {
+        _state = _state.copyWith(canGetMore: true);
+      }
 
       _state = _state.copyWith(isLoading: false);
       notifyListeners();
@@ -193,8 +215,26 @@ class ProviderDetailCategoryPresenter
 
       notifyListeners();
 
-      await fetchProducts(
-          id: _state.id, page: _state.page, limit: _state.limit);
+      List<ProductEntity> products = await _fetchProduct.call(
+          params: FetchProductParams(
+        page: _state.page,
+        limit: _state.limit,
+        colors: colors,
+        sizes: sizes,
+        idCategory: _state.id,
+        priceRange: priceTmp,
+        orderDirection: sort,
+      ));
+
+      _state = _state.copyWith(products: [...products]);
+
+      await _updateWishList(products: _state.products);
+
+      if (products.length < 6) {
+        _state = _state.copyWith(canGetMore: false);
+      } else {
+        _state = _state.copyWith(canGetMore: true);
+      }
 
       _state = _state.copyWith(
         isLoading: false,
@@ -213,8 +253,27 @@ class ProviderDetailCategoryPresenter
         sort: value,
       );
 
-      await fetchProducts(
-          id: _state.id, page: _state.page, limit: _state.limit);
+      List<ProductEntity> products = await _fetchProduct.call(
+          params: FetchProductParams(
+        page: _state.page,
+        limit: _state.limit,
+        colors: colors,
+        sizes: sizes,
+        idCategory: _state.id,
+        priceRange: priceTmp,
+        orderDirection: sort,
+      ));
+
+      _state = _state.copyWith(products: [...products]);
+
+      await _updateWishList(products: _state.products);
+
+      if (products.length < 6) {
+        _state = _state.copyWith(canGetMore: false);
+      } else {
+        _state = _state.copyWith(canGetMore: true);
+      }
+
       _state = _state.copyWith(
         isLoading: false,
       );
@@ -241,6 +300,7 @@ class ProviderDetailCategoryPresenter
         priceRange: priceTmp,
         orderDirection: sort,
       ));
+
       _state = _state.copyWith(products: [..._state.products, ...products]);
 
       await _updateWishList(products: _state.products);

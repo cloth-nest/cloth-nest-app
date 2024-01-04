@@ -185,9 +185,14 @@ class _WDetailProductState extends State<WDetailProduct>
                 child: Selector<ProductDetailPresenter, int>(
                   selector: (_, presenter) => presenter.tabIndex,
                   builder: (_, tabIndex, __) {
-                    return tabIndex == 0
-                        ? const WVerticalListRecommends()
-                        : const WVericalListReviews();
+                    print('###tabIndex: $tabIndex');
+                    return IndexedStack(
+                      index: tabIndex,
+                      children: const [
+                        WVerticalListRecommends(),
+                        WVericalListReviews(),
+                      ],
+                    );
                   },
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:ecommerce/data/http/exceptions/http_exception.dart';
 import 'package:ecommerce/domain/usecases/authentication/sign_up/fetch_sign_up.dart';
 import 'package:ecommerce/domain/usecases/authentication/sign_up/sign_up_params.dart';
+import 'package:ecommerce/infra/firebase/firebase_singleton_remote_message_adapter.dart';
 import 'package:ecommerce/presentation/presenters/sign_up/sign_up_state.dart';
 import 'package:ecommerce/presentation/protocols/validation.dart';
 import 'package:ecommerce/presentation/screens/sign_up/sign_up_presenter.dart';
@@ -77,6 +78,8 @@ class ProviderSignUpPresenter with ChangeNotifier implements SignUpPresenter {
         password: _state.password ?? '',
         firstName: _state.firstName ?? '',
         lastName: _state.lastName ?? '',
+        firebaseToken:
+            await FirebaseSingletonRemoteMessageAdapter().getToken() ?? '',
       );
 
       await _fetchSignUp.call(params: signUpParams);

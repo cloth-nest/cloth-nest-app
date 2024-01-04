@@ -6,5 +6,5 @@ import 'package:ecommerce/domain/usecases/recommendation_product/fetch_recommend
 FetchRecommendationProduct makeFetchRecommendationProduct() =>
     RemoteFetchRecommendationProduct(
       client: makeHttpAuthorizedAdapter(),
-      url: makeApiUrl('product/rcm'),
+      url: makeApiUrl('recommendation'),
     );

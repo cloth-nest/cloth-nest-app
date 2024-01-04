@@ -7,8 +7,7 @@ import 'package:ecommerce/app/factories/widgets/dialog/dialog_one_button.dart';
 import 'package:ecommerce/app/res/locale_keys.g.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
 import 'package:ecommerce/app/routes/home_location.dart';
-import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
-import 'package:ecommerce/presentation/screens/authentication/authentication_presenter.dart';
+import 'package:ecommerce/app/utils/singleton/user_token_singleton.dart';
 import 'package:ecommerce/presentation/screens/cart/cart_presenter.dart';
 import 'package:ecommerce/presentation/screens/main/main_presenter.dart';
 import 'package:ecommerce/presentation/screens/my_list/my_list_presenter.dart';
@@ -135,9 +134,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isAuthenticated =
-        context.read<AuthenticationPresenter>().authenticatedState ==
-            AuthenticatedState.authorized;
+    final isAuthenticated = UserTokenSingleton().latestUserSession != null;
 
     return Scaffold(
       key: MainGlobalKey.key,

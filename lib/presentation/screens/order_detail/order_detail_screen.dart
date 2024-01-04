@@ -50,7 +50,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           ),
         );
       } else {
-        showErrorDialog(context, 'Cancel Failed', presenter.errorMessage!);
+        showErrorDialog(
+            context, 'Cancel Failed', presenter.errorMessage.toString());
       }
     }
   }
@@ -438,7 +439,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                             ),
                                             const SizedBox(height: 20),
                                             (order.status != 'DELIVERED' &&
-                                                    order.status != 'CANCELED')
+                                                    order.status !=
+                                                        'CANCELED' &&
+                                                    order.status !=
+                                                        'ON_PROCESS')
                                                 ? BRoundButton(
                                                     buttonName: 'Cancel Order',
                                                     onClick: () {

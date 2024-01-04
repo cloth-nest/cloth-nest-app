@@ -18,14 +18,13 @@ class RemoteFetchRecommendationProduct implements FetchRecommendationProduct {
   @override
   Future<List<ProductEntity>> call({required int idProduct}) async {
     try {
-      /// TODO: for testing
       final response = await client.makeRequest(
-        uri: Uri.parse('$url/2?page=1&limit=5'),
+        uri: Uri.parse('$url/$idProduct?count=20'),
         method: HttpMethod.get,
       );
 
       final json = ResponseHandler.handle(response);
-      final List<ProductEntity> products = List.from(json['data']['products'])
+      final List<ProductEntity> products = List.from(json['data'])
           .map((e) => ProductModel.fromMap(e).toEntity())
           .toList();
       return products;

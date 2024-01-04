@@ -1,9 +1,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:ecommerce/presentation/screens/detail_category/detail_category_presenter.dart';
+import 'package:ecommerce/presentation/screens/detail_category/widgets/custom_delegate.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/item_product.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:provider/provider.dart';
 
 class GridDetailCategory extends StatefulWidget {
@@ -67,16 +67,21 @@ class _GridDetailCategoryState extends State<GridDetailCategory> {
                       ),
                     );
                   }
-                  final rowSizes =
-                      List.generate(products.length + 1 ~/ 2, (_) => auto);
+
                   return SliverToBoxAdapter(
-                    child: LayoutGrid(
-                      columnSizes: [1.fr, 1.fr],
-                      // set all the row sizes to auto (self-sizing height)
-                      rowSizes: rowSizes,
-                      rowGap: isGetMore ? 10 : 20,
-                      columnGap: 2, // equivalent to crossAxisSpacing
-                      children: products.map((e) {
+                    child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8.0,
+                        mainAxisSpacing: 20.0,
+                        height: isGetMore ? 375 : 368,
+                      ),
+                      itemCount: products.length,
+                      itemBuilder: (_, index) {
+                        final e = products[index];
                         return ItemProduct(
                           entity: e,
                           callback: (idProduct) {
@@ -98,7 +103,7 @@ class _GridDetailCategoryState extends State<GridDetailCategory> {
                             }
                           },
                         );
-                      }).toList(),
+                      },
                     ),
                   );
                 }),

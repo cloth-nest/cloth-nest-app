@@ -27,6 +27,12 @@ class ProductModel {
   @HiveField(6)
   final int defautVariantId;
 
+  @HiveField(7)
+  final double? rating;
+
+  @HiveField(7)
+  final int? numOfReviews;
+
   ProductModel({
     required this.id,
     required this.name,
@@ -35,6 +41,8 @@ class ProductModel {
     required this.image,
     this.colors,
     required this.defautVariantId,
+    this.rating,
+    this.numOfReviews,
   });
 
   Map<String, dynamic> toMap() {
@@ -59,17 +67,25 @@ class ProductModel {
       description: map['description'] as String,
       image: map['image'] as String,
       colors: map['colors'] != null ? List<String>.from((map['colors'])) : null,
-      defautVariantId: map['defautVariantId'] ?? map['defaultVariant'],
+      defautVariantId: map['defautVariantId'] ??
+          map['defaultVariant'] ??
+          map['defaultVariantId'],
+      rating: map['rating'] != null ? map['rating'] * 1.0 : null,
+      numOfReviews: map['numOfReviews'],
     );
   }
 
-  ProductEntity toEntity() => ProductEntity(
-        id: id,
-        name: name,
-        price: price,
-        description: description,
-        image: image,
-        colors: colors,
-        defaultVariantId: defautVariantId,
-      );
+  ProductEntity toEntity() {
+    return ProductEntity(
+      id: id,
+      name: name,
+      price: price,
+      description: description,
+      image: image,
+      colors: colors,
+      defaultVariantId: defautVariantId,
+      rating: rating,
+      numOfReviews: numOfReviews,
+    );
+  }
 }

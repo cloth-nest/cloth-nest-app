@@ -12,7 +12,7 @@ class TopCategoryLocation extends BeamLocation<BeamState> {
     final topLocation = TopLocation();
     final pages = topLocation.buildPages(context, state);
     final title = state.queryParameters['title'] ?? '';
-    final int id = int.parse(state.queryParameters['id'].toString());
+    final int id = int.parse(state.queryParameters['id'] ?? '-1');
 
     return pages
       ..add(

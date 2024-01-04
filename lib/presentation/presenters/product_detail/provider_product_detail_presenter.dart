@@ -142,8 +142,13 @@ class ProviderProductDetailPresenter
         }
       }
 
-      // List<ProductEntity> products =
-      //     await _fetchRecommendationProduct.call(idProduct: idProduct);
+      List<ProductEntity> products = [];
+
+      try {
+        products = await _fetchRecommendationProduct.call(idProduct: idProduct);
+      } catch (e) {
+        debugPrint('#error: $e');
+      }
 
       List<ReviewEntity> reviews =
           await _fetchReviews.call(idProduct: idProduct);
@@ -151,8 +156,9 @@ class ProviderProductDetailPresenter
       _state = _state.copyWith(
         entity: detailProductEntity,
         isLoading: false,
-        recommendationProducts: [],
+        recommendationProducts: products,
         reviews: reviews,
+        tabIndex: 0,
       );
       await _updateWishList();
       notifyListeners();

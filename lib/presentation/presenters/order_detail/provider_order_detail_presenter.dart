@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce/app/factories/usecases/firebase_token/firebase_token_factory.dart';
 import 'package:ecommerce/app/factories/usecases/send_notification/send_notification_factory.dart';
+import 'package:ecommerce/data/http/exceptions/bad_request_exception.dart';
 import 'package:ecommerce/domain/entities/order/order_entity.dart';
 import 'package:ecommerce/domain/usecases/cancel_order/fetch_cancel_order.dart';
 import 'package:ecommerce/domain/usecases/order_detail/fetch_order_detail.dart';
@@ -74,6 +75,14 @@ class ProviderOrderDetailPresenter
       );
       notifyListeners();
     } catch (e) {
+      if (e is BadRequestException) {
+        _state = _state.copyWith(
+          errorMessage: e.message.toString(),
+          isLoadingCancel: false,
+        );
+        notifyListeners();
+        return;
+      }
       _state = _state.copyWith(
         errorMessage: e.toString(),
         isLoadingCancel: false,

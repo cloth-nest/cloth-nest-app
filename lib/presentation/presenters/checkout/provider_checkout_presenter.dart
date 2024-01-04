@@ -14,6 +14,7 @@ import 'package:ecommerce/presentation/presenters/checkout/checkout_out_state.da
 import 'package:ecommerce/presentation/screens/checkout/checkout_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProviderCheckOutPresenter
     with ChangeNotifier
@@ -214,10 +215,13 @@ class ProviderCheckOutPresenter
         PaymentResultEntity paymentResultEntity =
             await _fetchPayment.call(orderId: orderEntity.id);
 
-        await const MethodChannel('flutter.native/channelPayOrder')
-            .invokeMethod('payOrder', {
-          "zptoken": paymentResultEntity.zpTransToken,
-        });
+        await launchUrl(Uri.parse(paymentResultEntity.orderUrl),
+            mode: LaunchMode.externalApplication);
+
+        // await const MethodChannel('flutter.native/channelPayOrder')
+        //     .invokeMethod('payOrder', {
+        //   "zptoken": paymentResultEntity.zpTransToken,
+        // });
       } else {
         _state = _state.copyWith(navigateTo: 'success');
         notifyListeners();

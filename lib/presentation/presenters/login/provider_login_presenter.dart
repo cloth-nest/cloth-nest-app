@@ -121,8 +121,8 @@ class ProviderLoginPresenter with ChangeNotifier implements LoginPresenter {
 
       await _saveToken.call(tokenEntity: tokenEntity);
       await _syncDataWishlist();
-      await FirebaseSingletonRemoteMessageAdapter()
-          .saveToken(email: _state.loginId ?? '');
+      // await FirebaseSingletonRemoteMessageAdapter()
+      //     .saveToken(email: _state.loginId ?? '');
       _state = _state.copyWith(
         isLoading: false,
         navigateTo: LoginRedirect.homeAuth,

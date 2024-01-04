@@ -1,4 +1,3 @@
-import 'package:ecommerce/app/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -23,7 +22,7 @@ class WReviews extends StatelessWidget {
           itemPadding: const EdgeInsets.only(right: 4.0),
           itemBuilder: (context, index) => const Icon(
             Icons.star,
-            color: AppColors.black,
+            color: Color(0xFFFFB930),
           ),
           itemSize: 20.0,
         ),

@@ -246,7 +246,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               const EdgeInsets.symmetric(vertical: 11),
                           buttonName: LocaleKeys.loginButtonText.tr(),
                           onClick: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
                             widget.presenter.login();
                           },
                           customTextStyle: const TextStyle(

@@ -59,12 +59,14 @@ class ProviderReviewOrderPresenter
         rating: rating,
         files: images,
       );
+
+      _state = _state.copyWith(isLoading: false, errorMessage: 'success');
+      notifyListeners();
     } catch (e) {
-      debugPrint('##error review: $e');
-    } finally {
       _state = _state.copyWith(isLoading: false);
       notifyListeners();
-    }
+      debugPrint('##error review: $e');
+    } finally {}
   }
 
   @override
@@ -75,4 +77,8 @@ class ProviderReviewOrderPresenter
     _state = _state.copyWith(review: review);
     notifyListeners();
   }
+
+  @override
+  // TODO: implement errorMessage
+  String? get errorMessage => _state.errorMessage;
 }

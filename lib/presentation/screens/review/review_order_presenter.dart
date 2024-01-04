@@ -7,6 +7,7 @@ abstract class ReviewOrderPresenter implements ChangeNotifier {
   double get rating;
   List<File> get images;
   String get reviewContent;
+  String? get errorMessage;
 
   void setRate({required double rate});
   void setImages({required List<File> images});

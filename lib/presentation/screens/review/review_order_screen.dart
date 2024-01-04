@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/presentation/screens/review/components/item_upload_group.dart';
 import 'package:ecommerce/presentation/screens/review/review_order_presenter.dart';
 import 'package:ecommerce/presentation/widgets/button/b_round_button.dart';
@@ -30,6 +31,20 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
   void initState() {
     super.initState();
     presenter = context.read<ReviewOrderPresenter>();
+    presenter.addListener(_onListener);
+  }
+
+  void _onListener() {
+    if (presenter.errorMessage != null && presenter.errorMessage == 'success') {
+      showSnackBar(
+        context,
+        'Review successfully',
+        const Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+      );
+    }
   }
 
   @override
@@ -37,6 +52,7 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
     super.dispose();
     reviewController.dispose();
     focusNode.dispose();
+    presenter.removeListener(_onListener);
   }
 
   @override

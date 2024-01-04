@@ -38,7 +38,7 @@ class ReviewModel {
     return ReviewModel(
       images: (map['images'] as List).map((e) => e['image'] as String).toList(),
       content: map['content'] as String,
-      rating: map['rating'] * 1.0,
+      rating: map['rating'] * 1.0 ?? 1.0,
       createdAt: map['createdAt'] as String,
       lastName: map['user']['lastName'] as String,
       firstName: map['user']['firstName'] as String,

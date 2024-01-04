@@ -6,12 +6,14 @@ class RemoteSignUpParams extends Equatable {
   final String password;
   final String firstName;
   final String lastName;
+  final String firebaseToken;
 
   const RemoteSignUpParams({
     required this.email,
     required this.password,
     required this.firstName,
     required this.lastName,
+    required this.firebaseToken,
   });
 
   @override
@@ -19,15 +21,18 @@ class RemoteSignUpParams extends Equatable {
 
   factory RemoteSignUpParams.fromDomain(SignUpParams params) =>
       RemoteSignUpParams(
-          email: params.email,
-          password: params.password,
-          firstName: params.firstName,
-          lastName: params.lastName);
+        email: params.email,
+        password: params.password,
+        firstName: params.firstName,
+        lastName: params.lastName,
+        firebaseToken: params.firebaseToken,
+      );
 
   Map<String, dynamic> toJson() => {
         'email': email,
         'password': password,
         "firstName": firstName,
         "lastName": lastName,
+        "firebaseToken": firebaseToken,
       };
 }

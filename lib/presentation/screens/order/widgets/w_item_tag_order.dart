@@ -28,6 +28,7 @@ class WItemTagOrder extends StatelessWidget {
     switch (orderStatus) {
       case 'DELIVERED':
         return const Color(0xFF08C25E);
+      case 'ON_PROCESS':
       case 'WAIT_FOR_PAYMENT':
         return const Color(0xFF3086FF);
       default:
@@ -40,6 +41,7 @@ class WItemTagOrder extends StatelessWidget {
       case 'DELIVERED':
         return const Color(0xFFEDFFE5);
       case 'WAIT_FOR_PAYMENT':
+      case 'ON_PROCESS':
         return const Color(0xFFE5F2FF);
 
       default:

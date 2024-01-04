@@ -37,7 +37,7 @@ class OrderDetailModel {
           map['productVariant'] != null ? map['productVariant']['image'] : '',
       idProduct: map['productVariant'] != null
           ? map['productVariant']['productId']
-          : '',
+          : -1,
     );
   }
 

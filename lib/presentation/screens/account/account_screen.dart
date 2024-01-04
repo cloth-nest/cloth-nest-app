@@ -2,9 +2,9 @@ import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/factories/presentation/permission/open_app_settings_factory.dart';
 import 'package:ecommerce/app/factories/widgets/dialog/dialog_one_button.dart';
 import 'package:ecommerce/app/resources/app_images.dart';
+import 'package:ecommerce/app/utils/singleton/user_token_singleton.dart';
 import 'package:ecommerce/domain/entities/user/user_entity.dart';
 import 'package:ecommerce/presentation/presenters/account/account_state.dart';
-import 'package:ecommerce/presentation/presenters/authentication/provider_authentication_presenter.dart';
 import 'package:ecommerce/presentation/screens/account/account_presenter.dart';
 import 'package:ecommerce/presentation/screens/account/widgets/button_choose_language.dart';
 import 'package:ecommerce/presentation/screens/account/widgets/button_loggin.dart';
@@ -12,7 +12,6 @@ import 'package:ecommerce/presentation/screens/account/widgets/button_logout.dar
 import 'package:ecommerce/presentation/screens/account/widgets/button_switch.dart';
 import 'package:ecommerce/presentation/screens/account/widgets/item_account.dart';
 import 'package:ecommerce/presentation/screens/account/widgets/item_account_list.dart';
-import 'package:ecommerce/presentation/screens/authentication/authentication_presenter.dart';
 import 'package:ecommerce/presentation/widgets/bottom_navigation_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,9 +31,8 @@ class _AccountScreenState extends State<AccountScreen> {
   void initState() {
     super.initState();
     _presenter = context.read<AccountPresenter>();
-    final isAuthenticated =
-        context.read<AuthenticationPresenter>().authenticatedState ==
-            AuthenticatedState.authorized;
+    final isAuthenticated = UserTokenSingleton().latestUserSession != null;
+
     if (isAuthenticated) {
       _presenter.fetchProfile();
     }
@@ -76,9 +74,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isAuthenticated =
-        context.read<AuthenticationPresenter>().authenticatedState ==
-            AuthenticatedState.authorized;
+    final isAuthenticated = UserTokenSingleton().latestUserSession != null;
 
     return Scaffold(
       appBar: AppBar(

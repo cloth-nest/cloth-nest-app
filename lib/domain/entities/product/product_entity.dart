@@ -11,6 +11,8 @@ class ProductEntity {
   final bool? isFavorite;
   final int defaultVariantId;
   final int? idWishlist;
+  final double? rating;
+  final int? numOfReviews;
 
   ProductEntity({
     required this.id,
@@ -22,6 +24,8 @@ class ProductEntity {
     this.isFavorite = false,
     required this.defaultVariantId,
     this.idWishlist,
+    this.rating,
+    this.numOfReviews,
   });
 
   ProductModel toModel() => ProductModel(
@@ -43,6 +47,8 @@ class ProductEntity {
     bool? isFavorite,
     int? defaultVariantId,
     int? idWishlist,
+    double? rating,
+    int? numOfReviews,
   }) {
     return ProductEntity(
       id: id ?? this.id,
@@ -54,6 +60,8 @@ class ProductEntity {
       isFavorite: isFavorite ?? this.isFavorite,
       defaultVariantId: defaultVariantId ?? this.defaultVariantId,
       idWishlist: idWishlist ?? this.idWishlist,
+      rating: rating ?? this.rating,
+      numOfReviews: numOfReviews ?? this.numOfReviews,
     );
   }
 }
