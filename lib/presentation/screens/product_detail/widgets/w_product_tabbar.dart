@@ -55,6 +55,11 @@ class _WProductTabbarState extends State<WProductTabbar> {
                 'Review',
               ),
             ),
+            Tab(
+              child: Text(
+                'Available',
+              ),
+            ),
           ],
         ),
       ),

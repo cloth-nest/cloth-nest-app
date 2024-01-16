@@ -1,33 +1,23 @@
+import 'dart:io';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ecommerce/app/utils/dialog/android_alert_dialog.dart';
+import 'package:ecommerce/app/utils/dialog/custom_dialog.dart';
+import 'package:ecommerce/app/utils/dialog/ios_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
 
-Future<void> showErrorDialog(
-    BuildContext context, String title, String message) async {
-  return showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return CupertinoAlertDialog(
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Text(title),
-        ),
-        content: Text(message),
-        actions: <Widget>[
-          CupertinoDialogAction(
-            child: const Text('OK'),
-            onPressed: () {
-              if (Navigator.of(context).canPop()) {
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-        ],
-      );
-    },
-  );
+showCustomDialog(BuildContext context, String title, String message) {
+  final List<CustomDialog> customDialogList = [
+    AndroidAlertDialog(title: title, content: message),
+    IosAlertDialog(title: title, content: message),
+  ];
+
+  if (Platform.isAndroid) {
+    return customDialogList[0].show(context);
+  }
+  return customDialogList[1].show(context);
 }
 
 showSnackBar(BuildContext context, String content, Icon icon,

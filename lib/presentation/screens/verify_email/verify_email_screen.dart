@@ -62,7 +62,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
         _thirdController.clear();
         _fourthController.clear();
       });
-      showErrorDialog(
+      showCustomDialog(
         context,
         'Verify email failed',
         errorMessage,

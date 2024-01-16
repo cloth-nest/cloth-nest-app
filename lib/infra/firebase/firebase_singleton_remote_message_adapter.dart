@@ -6,47 +6,33 @@ import 'package:flutter/foundation.dart';
 
 /// A class that handles remote notifications from Firebase and local notifications using `FlutterLocalNotificationsPlugin`.
 class FirebaseSingletonRemoteMessageAdapter {
-  /// Creates a singleton instance of the [FirebaseSingletonRemoteMessageAdapter] class.
   static final FirebaseSingletonRemoteMessageAdapter _instance =
       FirebaseSingletonRemoteMessageAdapter._internal(
-    /// The Firebase Messaging instance.
     firebaseMessaging: FirebaseMessaging.instance,
-
-    /// The Firebase Message Subject instance.
     subject: FirebaseMessageSubject(),
   );
 
-  /// Returns the singleton instance.
   factory FirebaseSingletonRemoteMessageAdapter() {
     return _instance;
   }
 
-  /// Private constructor to initialize the singleton instance.
   FirebaseSingletonRemoteMessageAdapter._internal({
-    /// Required Firebase Messaging instance.
     required FirebaseMessaging firebaseMessaging,
-
-    /// Required Firebase Message Subject instance.
     required FirebaseMessageSubject subject,
   })  : _firebaseMessaging = firebaseMessaging,
         _subject = subject;
 
-  /// The Firebase Messaging instance.
   final FirebaseMessaging _firebaseMessaging;
 
-  /// The Firebase Message Subject instance.
   final FirebaseMessageSubject _subject;
 
   // ------------------------------
   // Firebase Messaging methods
   // ------------------------------
 
-  /// Create Firebase push notification services.
   Future<void> initPushNotification() async {
-    /// Listens for messages when the app is opened from a notification.
     await listenToMessageOnAppOpened();
 
-    /// Listens for new messages.
     await listenToMessage();
   }
 
@@ -63,7 +49,6 @@ class FirebaseSingletonRemoteMessageAdapter {
     }
   }
 
-  /// Requests permission to send push notifications.
   Future<NotificationSettings> requestPermission() async {
     final settings = await _firebaseMessaging.requestPermission(
       /// Enables an alert for the notification.
@@ -147,7 +132,6 @@ class FirebaseSingletonRemoteMessageAdapter {
     if (notification == null) return;
   }
 
-  /// Listens for messages when the app is opened from a notification.
   Future<void> listenToMessageOnAppOpened() async {
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessageOnOpenedApp);
   }

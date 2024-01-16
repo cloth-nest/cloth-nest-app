@@ -1,6 +1,5 @@
 import 'package:beamer/beamer.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
-import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/domain/entities/cart/cart_entity.dart';
 import 'package:ecommerce/presentation/screens/cart/cart_presenter.dart';
 import 'package:ecommerce/presentation/screens/cart/widgets/w_item_cart.dart';
@@ -40,8 +39,7 @@ class CartSliverList extends StatelessWidget {
                             const EdgeInsets.symmetric(vertical: 11),
                         buttonName: 'Checkout',
                         onClick: () {
-                          beamTo(context, path: 'check_out');
-                          FocusScope.of(context).requestFocus(FocusNode());
+                          context.read<CartPresenter>().checkInventory();
                         },
                         customTextStyle: const TextStyle(
                           fontSize: 15,

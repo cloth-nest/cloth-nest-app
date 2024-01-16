@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/app/resources/app_colors.dart';
-import 'package:ecommerce/app/utils/extensions/color_extension.dart';
 import 'package:ecommerce/app/utils/extensions/double_extension.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
-import 'package:ecommerce/presentation/screens/detail_category/widgets/horizontal_list_color.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/w_gender_size.dart';
 import 'package:ecommerce/presentation/screens/detail_category/widgets/w_reviews.dart';
 import 'package:flutter/material.dart';
@@ -58,14 +56,14 @@ class ItemProduct extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 5),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: horizontalPadding),
-                child: HorizontalListColor(
-                  colors: entity.colors?.toListColor() ?? [],
-                ),
-              ),
+              //const SizedBox(height: 5),
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.symmetric(horizontal: horizontalPadding),
+              //   child: HorizontalListColor(
+              //     colors: entity.colors?.toListColor() ?? [],
+              //   ),
+              // ),
               const SizedBox(height: 5),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),

@@ -5,5 +5,5 @@ import 'package:ecommerce/domain/usecases/inventory/fetch_inventory.dart';
 
 FetchInventory makeFetchInventory() => RemoteFetchInventory(
       client: makeHttpAuthorizedAdapter(),
-      url: makeApiUrl('path'),
+      url: makeApiUrl('order/check-inventory'),
     );

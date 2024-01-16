@@ -50,7 +50,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           ),
         );
       } else {
-        showErrorDialog(
+        showCustomDialog(
             context, 'Cancel Failed', presenter.errorMessage.toString());
       }
     }

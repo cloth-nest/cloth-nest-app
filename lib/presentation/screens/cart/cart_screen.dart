@@ -1,4 +1,5 @@
 import 'package:ecommerce/app/resources/app_colors.dart';
+import 'package:ecommerce/app/utils/utils.dart';
 import 'package:ecommerce/domain/entities/cart/cart_entity.dart';
 import 'package:ecommerce/presentation/screens/cart/cart_presenter.dart';
 import 'package:ecommerce/presentation/screens/cart/widgets/cart_sliver_list.dart';
@@ -20,6 +21,7 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     _presenter = context.read<CartPresenter>();
+    _presenter.addListener(_onListener);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _presenter.initData();
@@ -78,5 +80,17 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
     );
+  }
+
+  void _onListener() {
+    if (_presenter.isAvailable != null) {
+      if (_presenter.isAvailable == false) {
+        showCustomDialog(
+            context, 'Checkout Failed', 'Products are not available');
+      } else {
+        beamTo(context, path: 'check_out');
+        FocusScope.of(context).requestFocus(FocusNode());
+      }
+    }
   }
 }

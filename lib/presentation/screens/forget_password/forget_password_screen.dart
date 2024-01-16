@@ -37,7 +37,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     String? navigateTo = _presenter.navigateTo;
 
     if (errorMessage != null) {
-      showErrorDialog(context, 'Forget Password Failed', errorMessage);
+      showCustomDialog(context, 'Forget Password Failed', errorMessage);
     }
 
     if (navigateTo != null) {

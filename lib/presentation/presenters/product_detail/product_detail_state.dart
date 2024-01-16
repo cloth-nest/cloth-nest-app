@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:ecommerce/domain/entities/detail_product/variant_entity.dart';
+import 'package:ecommerce/domain/entities/detail_product/warehouse_stock_entity.dart';
 import 'package:ecommerce/domain/entities/review/review_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -17,19 +19,24 @@ class ProductDetailState {
   final bool isFavorite;
   final bool? successAddToCart;
   final List<ReviewEntity> reviews;
+  final VariantEntity? selectedVariantEntity;
+  final List<WarehouseStockEntity>? warehouses;
 
-  ProductDetailState(
-      {required this.activePage,
-      required this.pageController,
-      required this.tabIndex,
-      this.entity,
-      required this.isLoading,
-      required this.recommendationProducts,
-      required this.selectedColor,
-      required this.selectedSize,
-      required this.isFavorite,
-      required this.successAddToCart,
-      required this.reviews});
+  ProductDetailState({
+    required this.activePage,
+    required this.pageController,
+    required this.tabIndex,
+    this.entity,
+    required this.isLoading,
+    required this.recommendationProducts,
+    required this.selectedColor,
+    required this.selectedSize,
+    required this.isFavorite,
+    required this.successAddToCart,
+    required this.reviews,
+    this.selectedVariantEntity,
+    this.warehouses,
+  });
 
   factory ProductDetailState.initial() {
     return ProductDetailState(
@@ -62,8 +69,13 @@ class ProductDetailState {
     bool? isFavorite,
     bool? successAddToCart,
     List<ReviewEntity>? reviews,
+    VariantEntity? selectedVariantEntity,
+    List<WarehouseStockEntity>? warehouses,
   }) {
     return ProductDetailState(
+      warehouses: warehouses ?? this.warehouses,
+      selectedVariantEntity:
+          selectedVariantEntity ?? this.selectedVariantEntity,
       activePage: activePage ?? this.activePage,
       pageController: pageController ?? this.pageController,
       tabIndex: tabIndex ?? this.tabIndex,

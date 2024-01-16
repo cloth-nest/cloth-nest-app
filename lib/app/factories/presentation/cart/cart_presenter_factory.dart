@@ -1,4 +1,5 @@
 import 'package:ecommerce/app/factories/usecases/cart/cart_factory.dart';
+import 'package:ecommerce/app/factories/usecases/inventory/inventory_factory.dart';
 import 'package:ecommerce/presentation/presenters/cart/cart_state.dart';
 import 'package:ecommerce/presentation/presenters/cart/provider_cart_presenter.dart';
 import 'package:ecommerce/presentation/screens/cart/cart_presenter.dart';
@@ -8,4 +9,5 @@ CartPresenter makeCartPresenter() => ProviderCartPresenter(
       fetchCart: makeFetchCart(),
       fetchAddToCart: makeFetchAddToCart(),
       fetchRemoveFromCart: makeFetchRemoveFromCart(),
+      fetchInventory: makeFetchInventory(),
     );

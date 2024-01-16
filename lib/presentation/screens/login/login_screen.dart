@@ -44,7 +44,7 @@ class _LoginViewState extends State<LoginView> {
     String? errorMessage = _presenter.errorMessage;
 
     if (errorMessage != null) {
-      showErrorDialog(context, 'Login Failed', errorMessage);
+      showCustomDialog(context, 'Login Failed', errorMessage);
     }
 
     if (navigateTo != null) {

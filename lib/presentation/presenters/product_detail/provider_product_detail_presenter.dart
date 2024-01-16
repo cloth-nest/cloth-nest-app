@@ -3,6 +3,8 @@ import 'package:ecommerce/domain/entities/detail_product/attribute_entity.dart';
 import 'package:ecommerce/domain/entities/detail_product/attribute_variant_product_entity.dart';
 import 'package:ecommerce/domain/entities/detail_product/detail_product_entity.dart';
 import 'package:ecommerce/domain/entities/detail_product/image_entity.dart';
+import 'package:ecommerce/domain/entities/detail_product/variant_entity.dart';
+import 'package:ecommerce/domain/entities/detail_product/warehouse_stock_entity.dart';
 import 'package:ecommerce/domain/entities/product/product_entity.dart';
 import 'package:ecommerce/domain/entities/review/review_entity.dart';
 import 'package:ecommerce/domain/usecases/cart/fetch_add_to_cart.dart';
@@ -120,6 +122,11 @@ class ProviderProductDetailPresenter
       DetailProductEntity detailProductEntity =
           await _fetchDetailProduct.call(idProduct: idProduct);
 
+      _state = _state.copyWith(
+        selectedVariantEntity: detailProductEntity.variants.first,
+        warehouses: detailProductEntity.variants.first.warehouseStocks,
+      );
+
       for (var attributeVariant
           in detailProductEntity.productType.attributeVariants) {
         if (attributeVariant.name == 'Color') {
@@ -176,6 +183,22 @@ class ProviderProductDetailPresenter
         return entity.id;
       }
     }
+
+    return 0;
+  }
+
+  int _getCurrentVariantIndex() {
+    int index = 0;
+
+    for (var entity in _state.entity?.variants ?? []) {
+      List<AttributeVariantProductEntity> attributes = entity.attributes;
+
+      if (attributes[0].value == selectedSize) {
+        return index;
+      }
+      index++;
+    }
+
     return 0;
   }
 
@@ -272,9 +295,15 @@ class ProviderProductDetailPresenter
   }
 
   @override
-  void setSelectedSize({required String size}) {
+  void setSelectedSize({required int index, required String size}) {
     if (size != _state.selectedSize) {
-      _state = _state.copyWith(selectedSize: size);
+      _state = _state.copyWith(
+        selectedSize: size,
+        selectedVariantEntity:
+            _state.entity?.variants[_getCurrentVariantIndex()],
+        warehouses:
+            _state.entity?.variants[_getCurrentVariantIndex()].warehouseStocks,
+      );
       notifyListeners();
     }
   }
@@ -317,12 +346,12 @@ class ProviderProductDetailPresenter
       _deleteProductWithoutFetch();
       final isAuthenticated = UserTokenSingleton().latestUserSession != null;
 
+      int variantId = _getVariantId();
+
       if (isAuthenticated) {
-        await _deleteRemoteWishlist
-            .deleteRemote(variantIds: [product.defaultVariantId]);
+        await _deleteRemoteWishlist.deleteRemote(variantIds: [variantId]);
       } else {
-        await _deleteWishlist.deleteLocal(
-            defautVariantId: product.defaultVariantId);
+        await _deleteWishlist.deleteLocal(defautVariantId: variantId);
       }
 
       notifyListeners();
@@ -339,8 +368,9 @@ class ProviderProductDetailPresenter
       final isAuthenticated = UserTokenSingleton().latestUserSession != null;
 
       if (isAuthenticated) {
-        await _saveRemoteWishlist
-            .saveRemote(variantIds: [product.defaultVariantId]);
+        int variantId = _getVariantId();
+
+        await _saveRemoteWishlist.saveRemote(variantIds: [variantId]);
       } else {
         await _saveWishlist.saveLocal(product: product);
       }
@@ -379,4 +409,25 @@ class ProviderProductDetailPresenter
 
   @override
   List<ReviewEntity> get reviews => _state.reviews;
+
+  @override
+  VariantEntity get selectedVariantEntity =>
+      _state.selectedVariantEntity ?? VariantEntity.initial();
+
+  @override
+  List<WarehouseStockEntity> get warehouses {
+    if (_state.warehouses == null) {
+      return [];
+    }
+
+    List<WarehouseStockEntity> results = [];
+
+    for (WarehouseStockEntity warehouse in _state.warehouses ?? []) {
+      if (warehouse.quantity > 0) {
+        results.add(warehouse);
+      }
+    }
+
+    return results;
+  }
 }

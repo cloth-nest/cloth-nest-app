@@ -39,7 +39,7 @@ class _SignUpViewState extends State<SignUpView> {
     String? errorMessage = _presenter.errorMessage;
 
     if (errorMessage != null) {
-      showErrorDialog(context, 'Sign Up Failed', errorMessage);
+      showCustomDialog(context, 'Sign Up Failed', errorMessage);
     }
 
     if (navigateTo != null) {

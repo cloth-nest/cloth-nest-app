@@ -12,6 +12,7 @@ import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_product_thumbnail.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_vertical_list_recommends.dart';
 import 'package:ecommerce/presentation/screens/product_detail/widgets/w_vertical_list_reviews.dart';
+import 'package:ecommerce/presentation/screens/product_detail/widgets/w_vertical_list_stocks.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,7 @@ class _WDetailProductState extends State<WDetailProduct>
   void initState() {
     super.initState();
     presenter = context.read<ProductDetailPresenter>();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(changeTab);
   }
 
@@ -185,12 +186,12 @@ class _WDetailProductState extends State<WDetailProduct>
                 child: Selector<ProductDetailPresenter, int>(
                   selector: (_, presenter) => presenter.tabIndex,
                   builder: (_, tabIndex, __) {
-                    print('###tabIndex: $tabIndex');
                     return IndexedStack(
                       index: tabIndex,
                       children: const [
                         WVerticalListRecommends(),
                         WVericalListReviews(),
+                        WVericalListStocks(),
                       ],
                     );
                   },

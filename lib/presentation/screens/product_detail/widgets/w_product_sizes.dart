@@ -45,7 +45,7 @@ class WProductSizes extends StatelessWidget {
                         isSelected:
                             selectedSize.toLowerCase() == e.toLowerCase(),
                         callback: (size) {
-                          presenter.setSelectedSize(size: size);
+                          presenter.setSelectedSize(index: 1, size: size);
                         },
                         context: context,
                       ),

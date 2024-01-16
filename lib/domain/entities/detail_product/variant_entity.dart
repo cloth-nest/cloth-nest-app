@@ -22,4 +22,17 @@ class VariantEntity {
     required this.warehouseStocks,
     required this.attributes,
   });
+
+  factory VariantEntity.initial() {
+    return VariantEntity(
+      id: 0,
+      sku: '',
+      name: '',
+      order: 0,
+      price: 0,
+      variantImages: [],
+      warehouseStocks: [],
+      attributes: [],
+    );
+  }
 }

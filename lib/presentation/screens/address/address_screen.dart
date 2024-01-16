@@ -54,7 +54,7 @@ class _AddressScreenState extends State<AddressScreen> {
     }
 
     if (_presenter.errorMessage != null) {
-      showErrorDialog(context, 'Delete Failed', _presenter.errorMessage!);
+      showCustomDialog(context, 'Delete Failed', _presenter.errorMessage!);
     }
   }
 

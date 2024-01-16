@@ -44,7 +44,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     String? navigateTo = _presenter.navigateTo;
 
     if (errorMessage != null) {
-      showErrorDialog(context, 'Reset Password Failed', errorMessage);
+      showCustomDialog(context, 'Reset Password Failed', errorMessage);
     }
 
     if (navigateTo != null) {

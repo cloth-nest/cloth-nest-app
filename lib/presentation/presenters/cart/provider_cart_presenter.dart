@@ -2,6 +2,7 @@ import 'package:ecommerce/domain/entities/cart/cart_entity.dart';
 import 'package:ecommerce/domain/usecases/cart/fetch_add_to_cart.dart';
 import 'package:ecommerce/domain/usecases/cart/fetch_cart.dart';
 import 'package:ecommerce/domain/usecases/cart/fetch_remove_from_cart.dart';
+import 'package:ecommerce/domain/usecases/inventory/fetch_inventory.dart';
 import 'package:ecommerce/presentation/presenters/cart/cart_state.dart';
 import 'package:ecommerce/presentation/screens/cart/cart_presenter.dart';
 import 'package:flutter/material.dart';
@@ -12,16 +13,19 @@ class ProviderCartPresenter with ChangeNotifier implements CartPresenter {
   final FetchCart _fetchCart;
   final FetchAddToCart _fetchAddToCart;
   final FetchRemoveFromCart _fetchRemoveFromCart;
+  final FetchInventory _fetchInventory;
 
   ProviderCartPresenter({
     required CartState state,
     required FetchCart fetchCart,
     required FetchAddToCart fetchAddToCart,
     required FetchRemoveFromCart fetchRemoveFromCart,
+    required FetchInventory fetchInventory,
   })  : _state = state,
         _fetchCart = fetchCart,
         _fetchAddToCart = fetchAddToCart,
-        _fetchRemoveFromCart = fetchRemoveFromCart;
+        _fetchRemoveFromCart = fetchRemoveFromCart,
+        _fetchInventory = fetchInventory;
 
   @override
   bool get isLoading => _state.isLoading;
@@ -121,4 +125,19 @@ class ProviderCartPresenter with ChangeNotifier implements CartPresenter {
     );
     notifyListeners();
   }
+
+  @override
+  void checkInventory() async {
+    try {
+      final bool isAvailable = await _fetchInventory.call();
+
+      _state = _state.copyWith(isAvailable: isAvailable);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('##error check inventory: $e');
+    }
+  }
+
+  @override
+  bool? get isAvailable => _state.isAvailable;
 }
